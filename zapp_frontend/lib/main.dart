@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zapp_frontend/screen1.dart';
 
 
 
@@ -86,7 +87,10 @@ class MyApp extends StatelessWidget {
           child: MaterialButton(
             minWidth: MediaQuery.of(context).size.width,
             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            onPressed: () {},
+            onPressed: () { //AQUI SALTO A LA SIGUIENTE PAGINA
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SubPage()));
+
+            },
             child: Text("Login",
                 textAlign: TextAlign.center,
                 style: style.copyWith(
