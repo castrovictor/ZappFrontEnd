@@ -1,19 +1,10 @@
-/// Flutter code sample for BottomNavigationBar
-
-// This example shows a [BottomNavigationBar] as it is used within a [Scaffold]
-// widget. The [BottomNavigationBar] has three [BottomNavigationBarItem]
-// widgets and the [currentIndex] is set to index 0. The selected item is
-// amber. The `_onItemTapped` function changes the selected item's index
-// and displays a corresponding message in the center of the [Scaffold].
-//
-// ![A scaffold with a bottom navigation bar containing three bottom navigation
-// bar items. The first one is selected.](https://flutter.github.io/assets-for-api-docs/assets/material/bottom_navigation_bar.png)
-
 import 'package:flutter/material.dart';
-import 'deberes.dart';
-import 'archivador.dart';
-import 'perfil.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'perfil.dart';
+import 'administrar.dart';
+import 'biblioteca.dart';
+import 'crearTarea.dart';
+import 'usuarios.dart';
 
 PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
@@ -21,8 +12,10 @@ PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 // ignore: non_constant_identifier_names
 List<Widget> _NavScreens() {
   return [
-    Deberes(),
-    Archivador(),
+    Administrar(),
+    Biblioteca(),
+    CrearTarea(),
+    Usuarios(),
     Perfil(),
   ];
 }
@@ -30,14 +23,25 @@ List<Widget> _NavScreens() {
 List<PersistentBottomNavBarItem> _navBarsItems() {
   return [
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.pending_actions_rounded),
-      title: ("Deberes"),
+      icon: Icon(Icons.settings_rounded),
+      title: ("Administrar"),
       activeColor: Colors.blue,
       inactiveColor: Colors.grey,
     ),
     PersistentBottomNavBarItem(
-      icon: Icon(Icons.topic_rounded),
-      title: ("Archivador"),
+      icon: Icon(Icons.account_balance_rounded),
+      title: ("Biblioteca"),
+      activeColor: Colors.blue,
+      inactiveColor: Colors.grey,
+    ),
+    PersistentBottomNavBarItem(
+        icon: Icon(Icons.add),
+        title: ("Añade Tarea"),
+        activeColor: Colors.blue,
+        inactiveColor: Colors.grey),
+    PersistentBottomNavBarItem(
+      icon: Icon(Icons.group),
+      title: ("Usuarios"),
       activeColor: Colors.blue,
       inactiveColor: Colors.grey,
     ),
@@ -50,14 +54,14 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
   ];
 }
 
-class VistasSocio extends StatefulWidget {
-  VistasSocio({Key key}) : super(key: key);
+class VistasVoluntario extends StatefulWidget {
+  VistasVoluntario({Key key}) : super(key: key);
 
   @override
-  _VistasSocio createState() => _VistasSocio();
+  _VistasVoluntario createState() => _VistasVoluntario();
 }
 
-class _VistasSocio extends State<VistasSocio> {
+class _VistasVoluntario extends State<VistasVoluntario> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +82,7 @@ class _VistasSocio extends State<VistasSocio> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             popAllScreensOnTapOfSelectedTab: true,
-            navBarStyle: NavBarStyle.style3,
+            navBarStyle: NavBarStyle.style15,
           ),
         ));
   }

@@ -89,67 +89,6 @@ class LoginSocio extends StatelessWidget {
                   ),
                   loginButton,
                 ])),
-        /*
-          child: ResponsiveGridRow(children: [
-        ResponsiveGridCol(
-          child: Container(
-            height: 20,
-            alignment: Alignment(0, 0),
-            child: Text("Código",
-                style: TextStyle(fontFamily: 'Montserrat', fontSize: 20.0)),
-          ),
-        ),
-        ResponsiveGridCol(
-          lg: 8,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: 45.0),
-                codigo,
-              ]),
-        ),
-        ResponsiveGridCol(
-          xs: 6,
-          md: 3,
-          child: Container(
-            height: 100,
-            alignment: Alignment(0, 0),
-            color: Colors.green,
-            child: Text("xs : 6 \r\nmd : 3"),
-          ),
-        ),
-        ResponsiveGridCol(
-          xs: 6,
-          md: 3,
-          child: Container(
-            height: 100,
-            alignment: Alignment(0, 0),
-            color: Colors.orange,
-            child: Text("xs : 6 \r\nmd : 3"),
-          ),
-        ),
-        ResponsiveGridCol(
-          xs: 6,
-          md: 3,
-          child: Container(
-            height: 100,
-            alignment: Alignment(0, 0),
-            color: Colors.red,
-            child: Text("xs : 6 \r\nmd : 3"),
-          ),
-        ),
-        ResponsiveGridCol(
-          xs: 6,
-          md: 3,
-          child: Container(
-            height: 100,
-            alignment: Alignment(0, 0),
-            color: Colors.blue,
-            child: Text("xs : 6 \r\nmd : 3"),
-          ),
-        ),
-      ])*/
       ),
     );
   }
