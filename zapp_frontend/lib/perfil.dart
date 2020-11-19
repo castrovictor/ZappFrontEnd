@@ -6,22 +6,124 @@ class Perfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(36.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                          child: Center(
-                        child: Text("Pagina perfil en obras",
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.bold)),
-                      ))
-                    ]))));
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Perfil de usuario ",
+            style: TextStyle(fontSize: 18.0),
+          ),
+        ),
+        backgroundColor: Colors.blue[300],
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: AssetImage('assets/user-150x150.png'),
+                ),
+
+                Text(
+                  'Perfil de usuario',
+                  style: TextStyle(
+                    fontFamily: 'SourceSansPro',
+                    fontSize: 25,
+                  ),
+                ),
+                Text(
+                  'Bienvenido',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'SourceSansPro',
+                    color: Colors.red[400],
+                    letterSpacing: 2.5,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                  width: 200,
+                  child: Divider(
+                    color: Colors.teal[100],
+                  ),
+                ),
+
+
+
+                Card(
+                    color: Colors.white,
+                    margin:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+
+                      //leading: Icon (icono al principio
+                      trailing: Icon(
+                        Icons.phone,
+                        color: Colors.teal[900],
+                      ),
+                      title: Text(
+                        'Nombre',
+                        style:
+                        TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
+                      ),
+                    )),
+                Card(
+                  color: Colors.white,
+                  margin:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                  child: ListTile(
+                    trailing: Icon(
+                      Icons.cake,
+                      color: Colors.teal[900],
+                    ),
+                    title: Text(
+                      'Edad',
+                      style: TextStyle(fontSize: 20.0, fontFamily: 'Neucha'),
+                    ),
+                  ),
+                ),
+                Card(
+                    color: Colors.white,
+                    margin:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+
+                      //leading: Icon (icono al principio
+                      trailing: Icon(
+                        Icons.phone,
+                        color: Colors.teal[900],
+                      ),
+                      title: Text(
+                        'Numero de telefono',
+                        style:
+                        TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
+                      ),
+                    )),
+                Card(
+                    color: Colors.white,
+                    margin:
+                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                    child: ListTile(
+
+                      //leading: Icon (icono al principio
+                      trailing: Icon(
+                        Icons.phone,
+                        color: Colors.teal[900],
+                      ),
+                      title: Text(
+                        'Nombre coordinador',
+                        style:
+                        TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
+                      ),
+                    )),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
   }
 }
