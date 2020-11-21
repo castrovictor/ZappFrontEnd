@@ -14,7 +14,6 @@ List<Widget> _NavScreens() {
   return [
     Administrar(),
     Biblioteca(),
-    CrearTarea(),
     Usuarios(),
     Perfil(),
   ];
@@ -34,11 +33,6 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
       activeColor: Colors.blue,
       inactiveColor: Colors.grey,
     ),
-    PersistentBottomNavBarItem(
-        icon: Icon(Icons.add),
-        title: ("Añade Tarea"),
-        activeColor: Colors.blue,
-        inactiveColor: Colors.grey),
     PersistentBottomNavBarItem(
       icon: Icon(Icons.group),
       title: ("Usuarios"),
@@ -82,7 +76,7 @@ class _VistasVoluntario extends State<VistasVoluntario> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             popAllScreensOnTapOfSelectedTab: true,
-            navBarStyle: NavBarStyle.style15,
+            navBarStyle: NavBarStyle.style3,
           ),
         ));
   }
