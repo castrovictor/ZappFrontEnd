@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'vistasSocio.dart';
+import 'myTextFormField.dart';
 
 // ignore: must_be_immutable
 class LoginSocio extends StatelessWidget {
