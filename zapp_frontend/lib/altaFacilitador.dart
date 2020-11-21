@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'package:zapp_frontend/perfil.dart';
@@ -8,15 +7,15 @@ import 'myTextFormField.dart';
 import 'model.dart';
 import 'package:http/http.dart' as http;
 
-class AltaSocio extends StatefulWidget {
-  AltaSocio();
+class AltaFacilitador extends StatefulWidget {
+  AltaFacilitador();
   @override
-  _AltaSocio createState() => _AltaSocio();
+  _AltaFacilitador createState() => _AltaFacilitador();
 }
 
 // Define a corresponding State class.
 // This class holds the data related to the Form.
-class _AltaSocio extends State<AltaSocio> {
+class _AltaFacilitador extends State<AltaFacilitador> {
   final _formKey = GlobalKey<FormState>();
   ModelSocio model = ModelSocio();
   String nombre;
@@ -108,7 +107,7 @@ class _AltaSocio extends State<AltaSocio> {
                                   return null;
                                 },
                                 onSaved: (String value) {
-                                  model.apellidos = value;
+                                  apellidos = value;
                                 },
                               ),
                               SizedBox(
@@ -126,7 +125,7 @@ class _AltaSocio extends State<AltaSocio> {
                                   return null;
                                 },
                                 onSaved: (String value) {
-                                  model.email = value;
+                                  email = value;
                                 },
                                 isEmail: true,
                               ),

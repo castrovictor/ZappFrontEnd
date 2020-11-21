@@ -3,6 +3,7 @@ import 'crearTarea.dart';
 import 'altaFacilitador.dart';
 import 'altaSocio.dart';
 
+// ignore: must_be_immutable
 class Administrar extends StatelessWidget {
   Administrar();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
