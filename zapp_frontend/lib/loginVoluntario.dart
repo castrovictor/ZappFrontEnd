@@ -13,6 +13,9 @@ class LoginVoluntario extends StatefulWidget {
 
 class _LoginVoluntario extends State<LoginVoluntario> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  final _formKey = GlobalKey<FormState>();
+  String codigo;
+  String contrasena;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class _LoginVoluntario extends State<LoginVoluntario> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    final emailField = TextField(
+    /*final emailField = TextField(
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -59,13 +62,101 @@ class _LoginVoluntario extends State<LoginVoluntario> {
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
+    );*/
+    final login = Material(
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () async {
+          if (_formKey.currentState.validate()) {
+            _formKey.currentState.save();
+
+            //const url = 'https://pythoneverywhere/alta_socio';
+            //await http.post(url,
+            //    body: jsonEncode(<String, String>{
+            //      'nombre': model.nombre,
+            //    }));
+            print(codigo);
+            print(contrasena);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => VistasVoluntario()));
+          }
+        },
+        child: Text("Iniciar sesión",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
     );
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Voluntario'),
-        ),
         // body: SingleChildScrollView(
+        appBar: AppBar(
+          title: const Text('Facilitador'),
+        ),
+        body: Center(
+            child: Padding(
+                padding: const EdgeInsets.all(36.0),
+                child: SingleChildScrollView(
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                  height: 155.0,
+                                  child: Center(
+                                    child: Image.asset(
+                                      "assets/logo.png",
+                                      fit: BoxFit.contain,
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
+                              ),
+                              MyTextFormField(
+                                hintText: 'Código',
+                                text: 'Codigo',
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return 'Introduce un codigo';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (String value) {
+                                  codigo = value;
+                                },
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.02,
+                              ),
+                              MyTextFormField(
+                                hintText: 'Contraseña',
+                                text: 'Contraseña',
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return 'Introduce una contraseña';
+                                  }
+                                  return null;
+                                },
+                                onSaved: (String value) {
+                                  contrasena = value;
+                                },
+                                isPassword: true,
+                              ),
+                              login,
+                            ]))))));
+  }
+}
+/*
         body: Center(
           child: Container(
             color: Colors.white,
@@ -102,3 +193,4 @@ class _LoginVoluntario extends State<LoginVoluntario> {
         ));
   }
 }
+*/

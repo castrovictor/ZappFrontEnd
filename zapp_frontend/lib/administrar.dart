@@ -84,8 +84,7 @@ class Administrar extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: Container(
-          color: Colors.white,
+        child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(36.0),
             child: Column(

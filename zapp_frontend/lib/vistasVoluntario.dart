@@ -7,6 +7,7 @@ import 'crearTarea.dart';
 import 'usuarios.dart';
 
 PersistentTabController _controller = PersistentTabController(initialIndex: 0);
+String titulo;
 
 //Screens for each nav items.
 // ignore: non_constant_identifier_names

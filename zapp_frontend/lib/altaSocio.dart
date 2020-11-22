@@ -62,13 +62,16 @@ class _AltaSocio extends State<AltaSocio> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               SizedBox(
-                                  child: Center(
-                                child: Text("Alta Socio",
-                                    style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 30.0,
-                                        fontWeight: FontWeight.bold)),
-                              )),
+                                child: Center(
+                                    child: Text(
+                                  'Alta Socio',
+                                  style: TextStyle(
+                                    fontFamily: 'Monste',
+                                    fontSize: 40,
+                                    letterSpacing: 2.5,
+                                  ),
+                                )),
+                              ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height:
