@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'perfil.dart';
+import 'perfilFacilitador.dart';
 import 'administrar.dart';
 import 'biblioteca.dart';
 import 'crearTarea.dart';
