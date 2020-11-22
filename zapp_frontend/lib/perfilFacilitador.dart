@@ -83,7 +83,7 @@ class Perfil extends StatelessWidget {
                         color: Colors.teal[900],
                       ),
                       title: Text(
-                        'Número de teléfono',
+                        'Numero de telefono',
                         style:
                             TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
                       ),
@@ -95,11 +95,11 @@ class Perfil extends StatelessWidget {
                     child: ListTile(
                       //leading: Icon (icono al principio
                       trailing: Icon(
-                        Icons.person_outline,
+                        Icons.email,
                         color: Colors.teal[900],
                       ),
                       title: Text(
-                        'Nombre coordinador',
+                        'Email',
                         style:
                             TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
                       ),
