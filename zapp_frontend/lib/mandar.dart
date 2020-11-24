@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'mandado.dart';
 
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
+  MyApp({this.nombre});
+  final String nombre;
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -52,6 +55,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     Map<String, Widget> widgets;
+
+    TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
     widgets = {
       "Socios a los que mandar la tarea:": SearchableDropdown.multiple(
         items: items,
@@ -91,6 +96,26 @@ class _MyAppState extends State<MyApp> {
         menuConstraints: BoxConstraints.tight(Size.fromHeight(350)),
       ),
     };
+
+    final mandar = Material(
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TareaMandada(
+                      nombre: "hola", selectedItems: selectedItems)));
+        },
+        child: Text("Entrar",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
 
     return MaterialApp(
         home: Scaffold(

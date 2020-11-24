@@ -15,7 +15,7 @@ class Perfil extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CircleAvatar(
-                  radius: 80,
+                  radius: 40,
                   backgroundImage: AssetImage('assets/persona.png'),
                 ),
                 Text(
@@ -44,12 +44,13 @@ class Perfil extends StatelessWidget {
                 Card(
                     color: Colors.white,
                     margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                        EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
                     child: ListTile(
                       //leading: Icon (icono al principio
                       trailing: Icon(
                         Icons.person,
                         color: Colors.teal[900],
+                        size: 25.0,
                       ),
                       title: Text(
                         'Nombre',
@@ -60,27 +61,29 @@ class Perfil extends StatelessWidget {
                 Card(
                   color: Colors.white,
                   margin:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                      EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
                   child: ListTile(
                     trailing: Icon(
                       Icons.cake,
                       color: Colors.teal[900],
+                      size: 25.0,
                     ),
                     title: Text(
                       'Edad',
-                      style: TextStyle(fontSize: 20.0, fontFamily: 'Neucha'),
+                      style: TextStyle(fontSize: 30.0, fontFamily: 'Neucha'),
                     ),
                   ),
                 ),
                 Card(
                     color: Colors.white,
                     margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                        EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
                     child: ListTile(
                       //leading: Icon (icono al principio
                       trailing: Icon(
                         Icons.phone,
                         color: Colors.teal[900],
+                        size: 25.0,
                       ),
                       title: Text(
                         'Número de teléfono',
@@ -91,12 +94,13 @@ class Perfil extends StatelessWidget {
                 Card(
                     color: Colors.white,
                     margin:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+                        EdgeInsets.symmetric(vertical: 30.0, horizontal: 25.0),
                     child: ListTile(
                       //leading: Icon (icono al principio
                       trailing: Icon(
                         Icons.person_outline,
                         color: Colors.teal[900],
+                        size: 25.0,
                       ),
                       title: Text(
                         'Nombre coordinador',

@@ -16,7 +16,7 @@ List<Widget> _NavScreens() {
     Administrar(),
     Biblioteca(),
     Usuarios(),
-    Perfil(),
+    PerfilFacilitador(),
   ];
 }
 

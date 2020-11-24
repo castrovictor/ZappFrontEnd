@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-
 class ListSearch extends StatefulWidget {
   ListSearchState createState() => ListSearchState();
 }
 
-
 class ListSearchState extends State<ListSearch> {
-
   TextEditingController _textController = TextEditingController();
   // String lista
   static List<String> mainDataList = [
-          "Apple",
-          "Apricot",
-          "Banana",
-          "Blackberry",
-          "Coconut",
-          "Date",
-          "Fig",
-          "Gooseberry",
-          "Grapes",
-          "Lemon",
-          "Litchi",
-          "Mango",
-          "Orange",
-          "Papaya",
-          "Peach",
-          "Pineapple",
-          "Pomegranate",
-          "Starfruit"
-        ];
+    "Apple",
+    "Apricot",
+    "Banana",
+    "Blackberry",
+    "Coconut",
+    "Date",
+    "Fig",
+    "Gooseberry",
+    "Grapes",
+    "Lemon",
+    "Litchi",
+    "Mango",
+    "Orange",
+    "Papaya",
+    "Peach",
+    "Pineapple",
+    "Pomegranate",
+    "Starfruit"
+  ];
 
   // Copy Main List into New List.
   List<String> newDataList = List.from(mainDataList);
@@ -46,8 +43,8 @@ class ListSearchState extends State<ListSearch> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Column(
+      resizeToAvoidBottomPadding: false,
+      body: Column(
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(12.0),
@@ -65,7 +62,8 @@ class ListSearchState extends State<ListSearch> {
               children: newDataList.map((data) {
                 return ListTile(
                   title: Text(data),
-                  onTap: () => print(data),);
+                  onTap: () => print(data),
+                );
               }).toList(),
             ),
           )
@@ -82,15 +80,7 @@ class Usuarios extends StatelessWidget {
     return MaterialApp(
         home: Scaffold(
             resizeToAvoidBottomPadding: false,
-            appBar: AppBar(
-                title: Text('Búsqueda usuarios')
-            ),
-            body: Center(
-                child: ListSearch()
-            )
-        )
-    );
+            appBar: AppBar(title: Text('Búsqueda usuarios')),
+            body: Center(child: ListSearch())));
   }
-
 }
-

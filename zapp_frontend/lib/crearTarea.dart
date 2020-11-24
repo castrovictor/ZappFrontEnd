@@ -12,7 +12,6 @@ class CrearTarea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final crear = Material(
-      elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
       child: MaterialButton(
@@ -28,8 +27,8 @@ class CrearTarea extends StatelessWidget {
             //      'nombre': model.nombre,
             //    }));
             print(nombre);
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MyApp()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyApp(nombre: nombre)));
           }
         },
         child: Text("Crear",
