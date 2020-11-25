@@ -49,7 +49,7 @@ class TareaWidget extends StatelessWidget {
 // ignore: must_be_immutable
 class Deberes extends StatelessWidget {
   Deberes();
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
 
   List<int> tareas = [1, 2, 3, 4]; //futura lista de tareas del socio
 
