@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-/*
-import 'filePicker.dart';
-*/
+
+import 'imagePicker.dart';
+
 
 // ignore: must_be_immutable
 class Tarea extends StatelessWidget {
@@ -28,9 +28,9 @@ class Tarea extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         /*onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FilePickerDemo()));
-        },*/
-        onPressed: () {},
+              MaterialPageRoute(builder: (context) => imagePicker()));
+        },
+        */
         child: Text("Contestar",
             textAlign: TextAlign.center,
             style: style.copyWith(
