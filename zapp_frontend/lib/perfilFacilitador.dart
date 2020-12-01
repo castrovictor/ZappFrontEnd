@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Perfil extends StatelessWidget {
-  Perfil();
+class PerfilFacilitador extends StatelessWidget {
+  PerfilFacilitador();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -16,10 +16,10 @@ class Perfil extends StatelessWidget {
               children: <Widget>[
                 CircleAvatar(
                   radius: 80,
-                  backgroundImage: AssetImage('assets/persona.png'),
+                  backgroundImage: AssetImage('assets/facilitador.png'),
                 ),
                 Text(
-                  'Perfil de usuario',
+                  'Perfil del Facilitador',
                   style: TextStyle(
                     fontFamily: 'SourceSansPro',
                     fontSize: 25,
@@ -83,7 +83,7 @@ class Perfil extends StatelessWidget {
                         color: Colors.teal[900],
                       ),
                       title: Text(
-                        'Numero de telefono',
+                        'Número de teléfono',
                         style:
                             TextStyle(fontFamily: 'BalooBhai', fontSize: 20.0),
                       ),

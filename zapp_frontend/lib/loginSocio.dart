@@ -37,18 +37,19 @@ class LoginSocio extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('LoginSocio'),
-      ),
-      body: Center(
-        child: Padding(
+        appBar: AppBar(
+          title: Text('LoginSocio'),
+        ),
+        body: Center(
+          child: Padding(
             padding: const EdgeInsets.all(36.0),
-            child: Column(
-                /*
+            child: SingleChildScrollView(
+                child: Column(
+                    /*
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
               */
-                children: <Widget>[
+                    children: <Widget>[
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.9,
                     height: MediaQuery.of(context).size.height * 0.04,
@@ -90,7 +91,7 @@ class LoginSocio extends StatelessWidget {
                   ),
                   loginButton,
                 ])),
-      ),
-    );
+          ),
+        ));
   }
 }

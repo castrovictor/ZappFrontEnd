@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-/*
-import 'filePicker.dart';
-*/
+
+import 'imagePicker.dart';
+
 
 // ignore: must_be_immutable
 class Tarea extends StatelessWidget {
@@ -28,9 +28,10 @@ class Tarea extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         /*onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => FilePickerDemo()));
-        },*/
-        child: Text("Adjuntar",
+              MaterialPageRoute(builder: (context) => imagePicker()));
+        },
+        */
+        child: Text("Contestar",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -53,15 +54,20 @@ class Tarea extends StatelessWidget {
                         child: Text(title,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontSize: 20.0,
+                                fontSize: 40.0,
                                 fontWeight: FontWeight.bold)),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.02,
+                        height: MediaQuery.of(context).size.height * 0.05,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
-                      Icon(iconData, size: 60.0),
+                      Icon(iconData, size: 100.0),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        //child: const ColoredBox(color: Colors.amber),
+                      ),
                       Expanded(
                         child: Text(description,
                             style: TextStyle(
