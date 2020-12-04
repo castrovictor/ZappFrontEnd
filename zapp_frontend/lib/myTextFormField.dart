@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:date_field/date_field.dart';
 import 'package:zapp_frontend/perfil.dart';
 import 'perfil.dart';
@@ -9,6 +10,7 @@ class MyTextFormField extends StatelessWidget {
   final Function validator;
   final Function onSaved;
   final bool isPassword;
+  final bool isNumber;
   final bool isEmail;
 
   MyTextFormField({
@@ -17,6 +19,7 @@ class MyTextFormField extends StatelessWidget {
     this.validator,
     this.onSaved,
     this.isPassword = false,
+    this.isNumber = false,
     this.isEmail = false,
   });
 
@@ -50,8 +53,11 @@ class MyTextFormField extends StatelessWidget {
                 obscureText: isPassword ? true : false,
                 validator: validator,
                 onSaved: onSaved,
-                keyboardType:
-                    isEmail ? TextInputType.emailAddress : TextInputType.text,
+                keyboardType: isNumber
+                    ? TextInputType.number
+                    : isEmail
+                        ? TextInputType.emailAddress
+                        : TextInputType.text,
               ),
             ]));
   }

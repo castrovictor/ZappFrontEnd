@@ -84,7 +84,7 @@ class MenuVoluntario extends StatelessWidget {
           ],
         ),
 
-        /*  child: RaisedButton(
+        /*child: RaisedButton(
           child: Text('Volver al login'),
           onPressed: () {
             Navigator.pop(context);

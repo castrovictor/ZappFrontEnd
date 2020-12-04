@@ -6,10 +6,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 
-const Map<String, String> header = {
-  'Content-type': 'application/json',
-  'Accept': 'application/json',
-};
+import 'package:keyboard_visibility/keyboard_visibility.dart';
+
+@protected
+void initState() {
+  initState();
+
+  KeyboardVisibilityNotification().addNewListener(
+    onChange: (bool visible) {
+      print(visible);
+    },
+  );
+}
 
 class LoginVoluntario extends StatefulWidget {
   LoginVoluntario({Key key, this.title}) : super(key: key);
