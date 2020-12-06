@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
-
-import 'imagePicker.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+//import 'imagePicker.dart';
 
 // ignore: must_be_immutable
-class Tarea extends StatelessWidget {
+
+class Tarea extends StatefulWidget{
+  @override
+  _Tarea createState() => _Tarea();
+}
+
+
+class _Tarea extends Statel<Tarea> {
   Tarea({this.iconData, this.title, this.description});
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  File _image;
+
+  void _getImage() async {
+    PickedFile pickedFile = await ImagePicker.getImage(source: ImageSource.gallery);
+
+    file = File(pickedFile.path);
+  }
 
   /// icon data
   final IconData iconData;
@@ -26,11 +41,8 @@ class Tarea extends StatelessWidget {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        /*onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => imagePicker()));
-        },
-        */
+        onPressed: () {},
+        
         child: Text("Contestar",
             textAlign: TextAlign.center,
             style: style.copyWith(
@@ -74,6 +86,21 @@ class Tarea extends StatelessWidget {
                               fontFamily: 'Montserrat',
                               fontSize: 20.0,
                             )),
+                      ),
+                      Expanded(
+                        body: file == null? Center(
+                          child: Text(
+                            'AÑADIR',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 20.0,
+                            )),
+                          )
+                        ): Image.file(file),
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: pickImage,
+                          child: Icon(Icons.camera_alt, size: 25),
+                        )
                       ),
                       //adjuntar,
                     ]))));
