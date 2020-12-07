@@ -91,11 +91,11 @@ class Deberes extends StatelessWidget {
                             iconData: Icons.sports_bar_rounded,
                             title: "Tarea " + i.toString(),
                             onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
+                              /*  Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tarea(
                                       iconData: Icons.sports_bar_rounded,
                                       title: "Tarea " + i.toString(),
-                                      description: "Descripion")));
+                                      description: "Descripion")));*/
                             },
                           )
                       ]))

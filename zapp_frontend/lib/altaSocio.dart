@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
-import 'perfil2.dart';
 import 'myTextFormField.dart';
 import 'model.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class AltaSocio extends StatefulWidget {
   AltaSocio();
@@ -209,63 +208,3 @@ class _AltaSocio extends State<AltaSocio> {
                             ]))))));
   }
 }
-
-/*
-      obscureText: false,
-      style: style,
-      decoration: InputDecoration(
-          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          hintText: "Nombre",
-          border:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-    )
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      SizedBox(
-                          child: Text(
-                        "Apellidos:",
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 20.0,
-                        ),
-                      )),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.01,
-                      ),
-                      apellidos,
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      SizedBox(
-                        child: Text(
-                        "Contraseña:",
-                        style: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontSize: 20.0,
-                        ),
-                      )),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.01,
-                      ),
-                      DateTimeField(
-                selectedDate: selectedDate,
-                    onDateSelected: (DateTime date) {
-                      setState(() {
-                        selectedDate = date;
-                      });
-                    },
-                    lastDate: DateTime(2020),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.02,
-                      ),
-                      crear,
-                    ])))));
-  }
-}
-*/
