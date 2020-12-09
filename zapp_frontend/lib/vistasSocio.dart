@@ -14,16 +14,97 @@ import 'deberes.dart';
 import 'archivador.dart';
 import 'perfil.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
+String fechaCumple;
+String nombre;
+List<String> nombreActividades = new List<String>();
+List<String> descripcionActividades = new List<String>();
+List<String> nombreActividadesHechas = new List<String>();
+List<String> descripcionActividadesHechas = new List<String>();
+
+Future getJson(codigo) async {
+  String url = 'http://zapp.pythonanywhere.com/socio/';
+  url = url + codigo;
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  nombre = jsonResponse['User']['username'];
+  fechaCumple = jsonResponse['User']['fechaNacimiento'];
+  if (nombre == null) {
+    nombre = "Nombre";
+  }
+  if (fechaCumple == null) {
+    fechaCumple = "Cumpleaños";
+  }
+}
+
+Future getTareas(codigo) async {
+  String url = 'http://zapp.pythonanywhere.com/actividad/noentregadas/';
+  url = url + codigo;
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  print(jsonResponse);
+  if (jsonResponse.containsKey('Actividad')) {
+    for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
+      nombreActividades.add(jsonResponse['Actividad'][i]['nombre']);
+      descripcionActividades.add(jsonResponse['Actividad'][i]['descripcion']);
+    }
+  }
+}
+
+Future getTareasHechas(codigo) async {
+  String url = 'http://zapp.pythonanywhere.com/actividad/revisadas/';
+  url = url + codigo;
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  print(jsonResponse);
+  if (jsonResponse.containsKey('Actividad')) {
+    for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
+      nombreActividadesHechas.add(jsonResponse['Actividad'][i]['nombre']);
+      descripcionActividadesHechas
+          .add(jsonResponse['Actividad'][i]['descripcion']);
+    }
+  }
+}
+
 //Screens for each nav items.
 // ignore: non_constant_identifier_names
-List<Widget> _NavScreens() {
+List<Widget> _NavScreens(String codigo) {
+  getJson(codigo);
+  getTareas(codigo);
+  getTareasHechas(codigo);
   return [
-    Deberes(),
-    Archivador(),
-    Perfil(),
+    Deberes(tareas: nombreActividades),
+    Archivador(tareas: nombreActividadesHechas),
+    Perfil(userID: codigo, nombre: nombre, fechaNacimiento: fechaCumple),
   ];
 }
 
@@ -50,16 +131,23 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
   ];
 }
 
+// ignore: must_be_immutable
 class VistasSocio extends StatefulWidget {
-  VistasSocio({Key key}) : super(key: key);
+  final String userID; // receives the value
+
+  VistasSocio({Key key, this.userID}) : super(key: key);
 
   @override
   _VistasSocio createState() => _VistasSocio();
 }
 
 class _VistasSocio extends State<VistasSocio> {
+  /*_VistasSocio(this.codigo);
+  String codigo;*/
+
   @override
   Widget build(BuildContext context) {
+    print(widget.userID);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Socio'),
@@ -67,7 +155,7 @@ class _VistasSocio extends State<VistasSocio> {
         body: Center(
           child: PersistentTabView(
             controller: _controller,
-            screens: _NavScreens(),
+            screens: _NavScreens(widget.userID),
             items: _navBarsItems(),
             confineInSafeArea: true,
             backgroundColor: Colors.white,

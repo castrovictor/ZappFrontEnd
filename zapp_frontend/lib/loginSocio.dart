@@ -22,15 +22,83 @@ class _LoginSocio extends State<LoginSocio> {
   final _formKey = GlobalKey<FormState>();
   List<String> lista = [];
 
+  Future<http.Response> fetchData() async {
+   /* final response =
+    await http.get('http://zapp.pythonanywhere.com/loginSocio/');
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON.
+      return json.decode(response.body);
+    } else {
+      // If that response was not OK, throw an error.
+      throw Exception('Failed to load post');
+    }
+    */
+    if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+
+        http.Response response = await http.post(
+          'http://zapp.pythonanywhere.com/loginSocio/',
+          body: jsonEncode(<String, String>{
+            'idUser': codigo,
+          }),
+          headers: {
+            HttpHeaders.acceptHeader: 'application/json',
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        );
+
+        final jsonResponse = jsonDecode(response.body);
+
+        print(jsonDecode(response.body));
+
+        if (jsonResponse.containsKey("error")) {
+          print("Usuario no registrado");
+          Fluttertoast.showToast(
+              msg: "Codigo incorrecto",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.TOP,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0);
+        }
+        if (jsonResponse.containsKey("success")) {
+          print("Usuario de logea");
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => VistasSocio()));
+        }
+      }
+
+  }
   @override
   Widget build(BuildContext context) {
     const url = 'http://zapp.pythonanywhere.com/loginSocio/';
     final loginButton = Material(
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+     // borderRadius: BorderRadius.circular(30.0),
+    //  color: Color(0xff01A0C7),
+      child:
+          Container(
+              height: 120,
+              width: 40,
+              child: GestureDetector(
+
+                  onTap: () {
+
+
+
+                    this.fetchData();
+
+
+
+
+                  },
+
+
+                  child: Image.asset('assets/arrow.png')))
+        //minWidth: MediaQuery.of(context).size.width,
+       // padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        /*
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
@@ -63,16 +131,25 @@ class _LoginSocio extends State<LoginSocio> {
             }
             if (jsonResponse.containsKey("success")) {
               print("Usuario de logea");
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => VistasSocio()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VistasSocio(
+                            userID: codigo,
+                          )));
             }
           }
         },
+        */
+
+        /*
         child: Text("Entrar",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
+
+         */
+
     );
 
     return Scaffold(
@@ -143,7 +220,7 @@ class _LoginSocio extends State<LoginSocio> {
                   ),
                   SizedBox(
                       width: MediaQuery.of(context).size.width * 0.95,
-                      height: MediaQuery.of(context).size.height * 0.52,
+                      height: MediaQuery.of(context).size.height * 0.82,
                       child: ResponsiveGridList(
                         desiredItemWidth:
                             MediaQuery.of(context).size.height * 0.11,
@@ -158,11 +235,11 @@ class _LoginSocio extends State<LoginSocio> {
                                       codigo += 1.toString();
                                       print(codigo);
                                       setState(() {
-                                        lista.add('assets/sol.jpg');
+                                        lista.add('assets/star.png');
                                       });
                                     } else {}
                                   },
-                                  child: Image.asset('assets/sol.jpg'))),
+                                  child: Image.asset('assets/star.png'))),
                           Container(
                               height: 120,
                               width: 40,
@@ -170,6 +247,90 @@ class _LoginSocio extends State<LoginSocio> {
                                   onTap: () {
                                     if (lista.length < 4) {
                                       codigo += 2.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/tr.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/tr.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 3.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/Corazon.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/Corazon.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 4.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/rr.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/rr.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 5.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/cuadrado.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/cuadrado.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 6.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/circulo.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/circulo.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 7.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/oso.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/oso.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 8.toString();
                                       print(codigo);
                                       setState(() {
                                         lista.add('assets/luna.png');
@@ -183,98 +344,14 @@ class _LoginSocio extends State<LoginSocio> {
                               child: GestureDetector(
                                   onTap: () {
                                     if (lista.length < 4) {
-                                      codigo += 3.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 4.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 5.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 6.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 7.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 8.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
                                       codigo += 9.toString();
                                       print(codigo);
                                       setState(() {
-                                        lista.add('assets/sol.jpg');
+                                        lista.add('assets/rectangulo.jpg');
                                       });
                                     }
                                   },
-                                  child: Image.asset('assets/sol.jpg'))),
+                                  child: Image.asset('assets/rectangulo.jpg'))),
                           Container(
                               height: 120,
                               width: 40,
@@ -305,7 +382,11 @@ class _LoginSocio extends State<LoginSocio> {
                                       });
                                     }
                                   },
+
                                   child: Image.asset('assets/borrar.jpg'))),
+
+
+                          loginButton,
                         ],
                       )
                       /*children: [1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) {
@@ -322,7 +403,7 @@ class _LoginSocio extends State<LoginSocio> {
                     height: MediaQuery.of(context).size.height * 0.025,
                     //child: const ColoredBox(color: Colors.amber),
                   ),
-                  loginButton,
+
                 ])),
           ),
         )));

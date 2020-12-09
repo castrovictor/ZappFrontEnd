@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 
-class Perfil extends StatelessWidget {
-  Perfil();
+class Perfil extends StatefulWidget {
+  final String userID; // receives the value
+  final String nombre;
+  final String email;
+  final String fechaNacimiento;
+
+  Perfil({Key key, this.userID, this.nombre, this.email, this.fechaNacimiento})
+      : super(key: key);
+
+  @override
+  _Perfil createState() => _Perfil();
+}
+
+class _Perfil extends State<Perfil> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -53,7 +65,7 @@ class Perfil extends StatelessWidget {
                         size: 50.0,
                       ),
                       title: Text(
-                        'Nombre',
+                        widget.nombre,
                         style:
                             TextStyle(fontFamily: 'BalooBhai', fontSize: 25.0),
                       ),
@@ -69,7 +81,7 @@ class Perfil extends StatelessWidget {
                       size: 50.0,
                     ),
                     title: Text(
-                      'Edad',
+                      widget.fechaNacimiento,
                       style: TextStyle(fontSize: 30.0, fontFamily: 'Neucha'),
                     ),
                   ),

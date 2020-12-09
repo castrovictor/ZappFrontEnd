@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'myTextFormField.dart';
 import 'mandar.dart';
 
-
 class ListSearch extends StatefulWidget {
   ListSearchState createState() => ListSearchState();
 }
 
 class ListSearchState extends State<ListSearch> {
-
   TextEditingController _textController = TextEditingController();
   // String lista
   static List<String> mainDataList = [
@@ -53,7 +51,8 @@ class ListSearchState extends State<ListSearch> {
               children: newDataList.map((data) {
                 return ListTile(
                   title: Text(data),
-                  onTap: () => print(data),);
+                  onTap: () => print(data),
+                );
               }).toList(),
             ),
           )
@@ -71,8 +70,6 @@ class Biblioteca extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _textController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,35 +105,29 @@ class Biblioteca extends StatelessWidget {
         home: Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
-                title: Text('Búsqueda tareas'),
-
+              title: Text('Búsqueda tareas'),
             ),
             body: Center(
-             child: new SingleChildScrollView(
-                child: new Column(
-                    children: [
+                child: new SingleChildScrollView(
+                    child: new Column(children: [
+              Text(
+                'Biblioteca',
+                style: TextStyle(
+                  fontFamily: 'SourceSansPro',
+                  fontSize: 40,
+                  letterSpacing: 2.5,
+                ),
+              ),
+              CircleAvatar(
+                radius: 80,
+                backgroundImage: AssetImage('assets/biblio.jpg'),
+              ),
 
-                      Text(
-                        'Biblioteca',
-                        style: TextStyle(
-                          fontFamily: 'SourceSansPro',
-                          fontSize: 40,
-                          letterSpacing: 2.5,
-                        ),
-                      ),
-                      CircleAvatar(
-                        radius: 80,
-                        backgroundImage: AssetImage('assets/biblio.jpg'),
-                      ),
-
-                    //  ListSearch(),
-                  ]
-                )
-             ))
-          //backgroundColor: Colors.blue[300],
-          ));
+              //  ListSearch(),
+            ])))
+            //backgroundColor: Colors.blue[300],
+            ));
   }
- 
 }
 /*
   body: Center(

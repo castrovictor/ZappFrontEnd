@@ -5,17 +5,66 @@ import 'administrar.dart';
 import 'biblioteca.dart';
 import 'crearTarea.dart';
 import 'usuarios.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 String titulo;
+String nombre;
+String fechaCumple;
+List<String> usuarios = new List<String>();
+
+Future getJson(codigo) async {
+  String url = 'http://zapp.pythonanywhere.com/facilitador/';
+  url = url + codigo;
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  nombre = jsonResponse['User']['username'];
+  fechaCumple = jsonResponse['User']['fechaNacimiento'];
+  if (fechaCumple == null) {
+    fechaCumple = "Cumpleaños";
+  }
+}
+
+Future getUsuarios() async {
+  String url = 'http://zapp.pythonanywhere.com/socio/0';
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  print(jsonResponse);
+  print(usuarios.length);
+  for (int i = 0; i < jsonResponse['User'].length; i++) {
+    usuarios.add(jsonResponse['User'][i]['username']);
+  }
+  for (int i = 0; i < usuarios.length; i++) {
+    print(usuarios[i]);
+  }
+}
 
 //Screens for each nav items.
 // ignore: non_constant_identifier_names
 List<Widget> _NavScreens() {
+  getUsuarios();
   return [
     Administrar(),
     Biblioteca(),
-    Usuarios(),
+    Usuarios(usuariosList: usuarios),
     PerfilFacilitador(),
   ];
 }
@@ -50,7 +99,7 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
 }
 
 class VistasVoluntario extends StatefulWidget {
-  VistasVoluntario({Key key}) : super(key: key);
+  VistasVoluntario();
 
   @override
   _VistasVoluntario createState() => _VistasVoluntario();
