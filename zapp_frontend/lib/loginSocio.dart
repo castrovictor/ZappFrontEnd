@@ -158,11 +158,11 @@ class _LoginSocio extends State<LoginSocio> {
                                       codigo += 1.toString();
                                       print(codigo);
                                       setState(() {
-                                        lista.add('assets/sol.jpg');
+                                        lista.add('assets/star.png');
                                       });
                                     } else {}
                                   },
-                                  child: Image.asset('assets/sol.jpg'))),
+                                  child: Image.asset('assets/star.png'))),
                           Container(
                               height: 120,
                               width: 40,
@@ -170,6 +170,90 @@ class _LoginSocio extends State<LoginSocio> {
                                   onTap: () {
                                     if (lista.length < 4) {
                                       codigo += 2.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/tr.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/tr.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 3.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/Corazon.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/Corazon.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 4.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/rr.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/rr.png'))),
+                           Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 5.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/cuadrado.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/cuadrado.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 6.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/circulo.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/circulo.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 7.toString();
+                                      print(codigo);
+                                      setState(() {
+                                        lista.add('assets/oso.png');
+                                      });
+                                    }
+                                  },
+                                  child: Image.asset('assets/oso.png'))),
+                          Container(
+                              height: 120,
+                              width: 40,
+                              child: GestureDetector(
+                                  onTap: () {
+                                    if (lista.length < 4) {
+                                      codigo += 8.toString();
                                       print(codigo);
                                       setState(() {
                                         lista.add('assets/luna.png');
@@ -183,98 +267,14 @@ class _LoginSocio extends State<LoginSocio> {
                               child: GestureDetector(
                                   onTap: () {
                                     if (lista.length < 4) {
-                                      codigo += 3.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 4.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 5.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 6.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 7.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
-                                      codigo += 8.toString();
-                                      print(codigo);
-                                      setState(() {
-                                        lista.add('assets/sol.jpg');
-                                      });
-                                    }
-                                  },
-                                  child: Image.asset('assets/sol.jpg'))),
-                          Container(
-                              height: 120,
-                              width: 40,
-                              child: GestureDetector(
-                                  onTap: () {
-                                    if (lista.length < 4) {
                                       codigo += 9.toString();
                                       print(codigo);
                                       setState(() {
-                                        lista.add('assets/sol.jpg');
+                                        lista.add('assets/rectangulo.jpg');
                                       });
                                     }
                                   },
-                                  child: Image.asset('assets/sol.jpg'))),
+                                  child: Image.asset('assets/rectangulo.jpg'))),
                           Container(
                               height: 120,
                               width: 40,
