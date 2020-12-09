@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'mandado.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
@@ -55,6 +58,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     Map<String, Widget> widgets;
+    const url = 'https://pythoneverywhere/alta_socio';
 
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
     widgets = {
@@ -103,7 +107,23 @@ class _MyAppState extends State<MyApp> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
+          for (int i = 0; i < selectedItems.length; i++) {
+            http.Response response = await http.post(
+              url,
+              body: jsonEncode(<String, String>{
+                'nombre': nombre,
+                'descripcion': descripcion,
+                'idUsuario': '5',
+                'idProfesional': '1',
+                'categoria': '1',
+              }),
+              headers: {
+                HttpHeaders.acceptHeader: 'application/json',
+                HttpHeaders.contentTypeHeader: 'application/json',
+              },
+            );
+          }
           Navigator.push(
               context,
               MaterialPageRoute(
