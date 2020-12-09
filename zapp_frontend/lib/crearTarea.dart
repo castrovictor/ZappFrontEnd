@@ -27,8 +27,11 @@ class CrearTarea extends StatelessWidget {
             //      'nombre': model.nombre,
             //    }));
             print(nombre);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => MyApp(nombre: nombre)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MyApp(nombre: nombre, descripcion: descripcion)));
           }
         },
         child: Text("Crear",

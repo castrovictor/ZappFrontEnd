@@ -10,8 +10,9 @@ import 'package:searchable_dropdown/searchable_dropdown.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  MyApp({this.nombre});
+  MyApp({this.nombre, this.descripcion});
   final String nombre;
+  final String descripcion;
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -112,8 +113,8 @@ class _MyAppState extends State<MyApp> {
             http.Response response = await http.post(
               url,
               body: jsonEncode(<String, String>{
-                'nombre': nombre,
-                'descripcion': descripcion,
+                'nombre': widget.nombre,
+                'descripcion': widget.descripcion,
                 'idUsuario': '5',
                 'idProfesional': '1',
                 'categoria': '1',
