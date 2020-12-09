@@ -48,14 +48,12 @@ class TareaWidget extends StatelessWidget {
 
 // ignore: must_be_immutable
 class Deberes extends StatelessWidget {
-  Deberes();
+  Deberes({this.tareas});
+  final List<String> tareas;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
-
-  List<int> tareas = [1, 2, 3, 4]; //futura lista de tareas del socio
 
   @override
   Widget build(BuildContext context) {
-    List<int> tareas = [1, 2, 3, 4]; //futura lista de tareas del socio
     return Scaffold(
         /* appBar: AppBar(
           title: Text('Sub Page'),
@@ -86,10 +84,10 @@ class Deberes extends StatelessWidget {
                       ),
                       Expanded(
                           child: ListView(children: [
-                        for (var i in tareas)
+                        for (int i = 0; i < tareas.length; i++)
                           TareaWidget(
-                            iconData: Icons.sports_bar_rounded,
-                            title: "Tarea " + i.toString(),
+                            iconData: Icons.pending_actions_rounded,
+                            title: tareas[i],
                             onPressed: () {
                               /*  Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tarea(

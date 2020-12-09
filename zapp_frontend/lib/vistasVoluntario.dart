@@ -13,7 +13,7 @@ PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 String titulo;
 String nombre;
 String fechaCumple;
-List<String> usuarios = [];
+List<String> usuarios = new List<String>();
 
 Future getJson(codigo) async {
   String url = 'http://zapp.pythonanywhere.com/facilitador/';
@@ -48,9 +48,12 @@ Future getUsuarios() async {
 
   final jsonResponse = jsonDecode(response.body);
   print(jsonResponse);
+  print(usuarios.length);
   for (int i = 0; i < jsonResponse['User'].length; i++) {
-    print(jsonResponse['User'][i]['username']);
     usuarios.add(jsonResponse['User'][i]['username']);
+  }
+  for (int i = 0; i < usuarios.length; i++) {
+    print(usuarios[i]);
   }
 }
 

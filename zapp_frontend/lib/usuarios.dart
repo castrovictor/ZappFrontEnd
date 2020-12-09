@@ -1,25 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-List<String> mainDataList;
+List<String> mainDataList = new List<String>();
 
 class ListSearch extends StatefulWidget {
   ListSearch({this.usuarios});
   final List<String> usuarios;
-  ListSearchState createState() => ListSearchState();
+
+  ListSearchState createState() => ListSearchState(usuarios: usuarios);
 }
 
-void setUsers(List<String> usuarios) {
+/*void setUsers(List<String> usuarios) {
   for (int i = 0; i < usuarios.length; i++) {
+    print(usuarios.elementAt(i));
     mainDataList.add(usuarios.elementAt(i));
   }
-}
+}*/
 
 class ListSearchState extends State<ListSearch> {
+  ListSearchState({this.usuarios});
+  final List<String> usuarios;
+
+  void setUsers() {
+    for (int i = 0; i < usuarios.length; i++) {
+      print(usuarios[i]);
+      mainDataList.add(usuarios[i]);
+    }
+  }
+
   TextEditingController _textController = TextEditingController();
-  // String lista
-  // Copy Main List into New List.
-  List<String> newDataList = List.from(mainDataList);
+
+  List<String> newDataList = new List<String>();
 
   onItemChanged(String value) {
     setState(() {
@@ -31,6 +42,9 @@ class ListSearchState extends State<ListSearch> {
 
   @override
   Widget build(BuildContext context) {
+    // setUsers();
+    List<String> newDataList = List.from(widget.usuarios);
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Column(
@@ -65,6 +79,7 @@ class ListSearchState extends State<ListSearch> {
 class Usuarios extends StatelessWidget {
   Usuarios({this.usuariosList});
   final List<String> usuariosList;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
