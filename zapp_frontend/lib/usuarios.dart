@@ -1,34 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
+List<String> mainDataList;
+
 class ListSearch extends StatefulWidget {
+  ListSearch({this.usuarios});
+  final List<String> usuarios;
   ListSearchState createState() => ListSearchState();
+}
+
+void setUsers(List<String> usuarios) {
+  for (int i = 0; i < usuarios.length; i++) {
+    mainDataList.add(usuarios.elementAt(i));
+  }
 }
 
 class ListSearchState extends State<ListSearch> {
   TextEditingController _textController = TextEditingController();
   // String lista
-  static List<String> mainDataList = [
-    "Apple",
-    "Apricot",
-    "Banana",
-    "Blackberry",
-    "Coconut",
-    "Date",
-    "Fig",
-    "Gooseberry",
-    "Grapes",
-    "Lemon",
-    "Litchi",
-    "Mango",
-    "Orange",
-    "Papaya",
-    "Peach",
-    "Pineapple",
-    "Pomegranate",
-    "Starfruit"
-  ];
-
   // Copy Main List into New List.
   List<String> newDataList = List.from(mainDataList);
 
@@ -74,13 +63,14 @@ class ListSearchState extends State<ListSearch> {
 }
 
 class Usuarios extends StatelessWidget {
-  Usuarios();
+  Usuarios({this.usuariosList});
+  final List<String> usuariosList;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(title: Text('Búsqueda usuarios')),
-            body: Center(child: ListSearch())));
+            body: Center(child: ListSearch(usuarios: usuariosList))));
   }
 }

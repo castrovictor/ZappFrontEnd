@@ -14,16 +14,43 @@ import 'deberes.dart';
 import 'archivador.dart';
 import 'perfil.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
+String fechaCumple;
+String nombre;
+
+Future getJson(codigo) async {
+  String url = 'http://zapp.pythonanywhere.com/socio/';
+  url = url + codigo;
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  nombre = jsonResponse['User']['username'];
+  fechaCumple = jsonResponse['User']['fechaNacimiento'];
+  if (fechaCumple == null) {
+    fechaCumple = "Cumpleaños";
+  }
+}
+
 //Screens for each nav items.
 // ignore: non_constant_identifier_names
-List<Widget> _NavScreens() {
+List<Widget> _NavScreens(String codigo) {
+  getJson(codigo);
   return [
     Deberes(),
     Archivador(),
-    Perfil(),
+    Perfil(userID: codigo, nombre: nombre, fechaNacimiento: fechaCumple),
   ];
 }
 
@@ -50,16 +77,23 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
   ];
 }
 
+// ignore: must_be_immutable
 class VistasSocio extends StatefulWidget {
-  VistasSocio({Key key}) : super(key: key);
+  final String userID; // receives the value
+
+  VistasSocio({Key key, this.userID}) : super(key: key);
 
   @override
   _VistasSocio createState() => _VistasSocio();
 }
 
 class _VistasSocio extends State<VistasSocio> {
+  /*_VistasSocio(this.codigo);
+  String codigo;*/
+
   @override
   Widget build(BuildContext context) {
+    print(widget.userID);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Socio'),
@@ -67,7 +101,7 @@ class _VistasSocio extends State<VistasSocio> {
         body: Center(
           child: PersistentTabView(
             controller: _controller,
-            screens: _NavScreens(),
+            screens: _NavScreens(widget.userID),
             items: _navBarsItems(),
             confineInSafeArea: true,
             backgroundColor: Colors.white,
