@@ -62,7 +62,7 @@ Future getUsuarios() async {
 List<Widget> _NavScreens() {
   getUsuarios();
   return [
-    Administrar(),
+    Administrar(usuarios: usuarios),
     Biblioteca(),
     Usuarios(usuariosList: usuarios),
     PerfilFacilitador(),

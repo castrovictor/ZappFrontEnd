@@ -10,14 +10,17 @@ import 'package:searchable_dropdown/searchable_dropdown.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  MyApp({this.nombre, this.descripcion});
+  MyApp({this.nombre, this.descripcion, this.usuarios});
   final String nombre;
   final String descripcion;
+  final List<String> usuarios;
   @override
-  _MyAppState createState() => _MyAppState();
+  _MyAppState createState() => _MyAppState(usuarios: usuarios);
 }
 
 class _MyAppState extends State<MyApp> {
+  List<String> usuarios;
+  _MyAppState({this.usuarios});
   bool asTabs = false;
   String selectedValue;
   String preselectedValue = "dolor sit";
@@ -30,7 +33,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    String wordPair = "";
+    /*String wordPair = "";
     loremIpsum
         .toLowerCase()
         .replaceAll(",", "")
@@ -44,15 +47,14 @@ class _MyAppState extends State<MyApp> {
         if (items.indexWhere((item) {
               return (item.value == wordPair);
             }) ==
-            -1) {
-          items.add(DropdownMenuItem(
-            child: Text(wordPair),
-            value: wordPair,
-          ));
-        }
-        wordPair = "";
-      }
-    });
+            -1) {*/
+    for (int i = 0; i < usuarios.length; i++) {
+      items.add(DropdownMenuItem(
+        child: Text(usuarios[i]),
+        value: usuarios[i],
+      ));
+    }
+    ;
     super.initState();
   }
 
