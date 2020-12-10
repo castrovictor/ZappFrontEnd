@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'mandar.dart';
 import 'myTextFormField.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+
+
+
 class CrearTarea extends StatelessWidget {
+
   CrearTarea({this.usuarios, this.codigos});
   final List<String> usuarios;
   final List<String> codigos;
@@ -11,8 +17,70 @@ class CrearTarea extends StatelessWidget {
   String descripcion;
   final _formKey = GlobalKey<FormState>();
 
+
+
+/*
+
+(String filename, String url) async {
+  var request = http.MultipartRequest('POST', Uri.parse(url));
+  request.files.add(
+    http.MultipartFile(
+      'picture',
+      File(filename).readAsBytes().asStream(),
+      File(filename).lengthSync(),
+      filename: filename.split("/").last
+    )
+  );
+  var res = await request.send();
+}
+*/
+  
+
+    //Subir imágenes
+    //**************************************************************************************************** */
+ Future<String> uploadImage(filename, url) async {
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.files.add(await http.MultipartFile.fromPath('picture', filename));
+    var res = await request.send();
+    return res.reasonPhrase;
+  }
+  String state = "";
+  
+  //**************************************************************************************************** */
+  /*
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter File Upload Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(state)
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          var file = await ImagePicker.pickImage(source: ImageSource.gallery);
+          var res = await uploadImage(file.path, widget.url);
+          setState(() {
+            state = res;
+            print(res);
+          });
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+*/
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    //Botón crear
     final crear = Material(
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
@@ -39,18 +107,34 @@ class CrearTarea extends StatelessWidget {
                         usuarios: usuarios,
                         codigos: codigos)));
           }
-        },
+              //Onpressed IMAGEN FILEPICKER
+              //**************************************************************************************************** */
+              
+          var file = await ImagePicker.pickImage(source: ImageSource.gallery);
+          var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+              setState() {
+                  state = res;
+                 print(res);
+              }
+              
+              
+            //**************************************************************************************************** */
         child: Text("Crear",
             textAlign: TextAlign.center,
             style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
+                color: Colors.white, fontWeight: FontWeight.bold));
+        },
+    
+      )
     );
+
+
+
 
     return MaterialApp(
         home: Scaffold(
             //backgroundColor: Colors.blue[300],
-            body: Padding(
+      body: Padding(
       padding: const EdgeInsets.all(36.0),
       child: Center(
         child: Form(
@@ -146,13 +230,62 @@ class CrearTarea extends StatelessWidget {
                             style: TextStyle(
                                 fontFamily: 'BalooBhai', fontSize: 80.0),
                           ),
-                        )),
+                        )
+                      ),
+
+                                MaterialButton(
+                                            minWidth: MediaQuery.of(context).size.width,
+                                            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                                            onPressed: () async {
+                                              if (_formKey.currentState.validate()) {
+                                                _formKey.currentState.save();
+
+                                                //const url = 'https://pythoneverywhere/alta_socio';
+                                                //await http.post(url,
+                                                //    body: jsonEncode(<String, String>{
+                                                //      'nombre': model.nombre,
+                                                //    }));
+                                                print(nombre);
+                                                print(codigos.length);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => MyApp(
+                                                            nombre: nombre,
+                                                            descripcion: descripcion,
+                                                            usuarios: usuarios,
+                                                            codigos: codigos)));
+                                              }
+                                                  //Onpressed IMAGEN FILEPICKER
+                                                  //**************************************************************************************************** */
+                                                  
+                                              var file = await ImagePicker.pickImage(source: ImageSource.gallery);
+                                              var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+                                                  setState() {
+                                                      state = res;
+                                                    print(res);
+                                                  }
+                                                  
+                                                  
+                                                //**************************************************************************************************** */
+                                            child: Text("Crear",
+                                                textAlign: TextAlign.center,
+                                                style: style.copyWith(
+                                                    color: Colors.white, fontWeight: FontWeight.bold));
+                                            },
+                                        
+      ),
                     crear,
+                    
                     const SizedBox(height: 50)
+                    
                   ]),
             )),
-      ),
-    )));
+         ),
+       )
+        )
+    
+    );
   }
 }
 
