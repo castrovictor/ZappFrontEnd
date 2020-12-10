@@ -1,5 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'tarea.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+
+List<String> tareas = new List<String>();
+List<String> descripcionActividades = new List<String>();
 
 class TareaWidget extends StatelessWidget {
   TareaWidget({this.iconData, this.title, this.onPressed});
@@ -46,15 +53,62 @@ class TareaWidget extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
-class Archivador extends StatelessWidget {
-  Archivador({this.tareas});
-  final List<String> tareas;
+Future getTareasHechas(codigo) async {
+  String url = 'http://zapp.pythonanywhere.com/actividad/revisadas/';
+  url = url + codigo;
+  //print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+  //print(jsonResponse);
+
+  tareas.clear();
+
+  if (jsonResponse.containsKey('Actividad')) {
+    for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
+      tareas.add(jsonResponse['Actividad'][i]['nombre']);
+    }
+  }
+}
+
+class Archivador extends StatefulWidget {
+  Archivador({this.codigo});
+  final String codigo;
+  @override
+  _Deberes createState() => _Deberes();
+}
+
+class _Deberes extends State<Archivador> {
+  _Deberes();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
+
+  // var oneSec = const Duration(seconds: 1);
+  //_Deberes.periodic(oneSec, getTareas(widget.codigo));
 
   @override
   Widget build(BuildContext context) {
+    Timer(Duration(milliseconds: 500), () {
+      setState(() {
+        getTareasHechas(widget.codigo);
+      });
+    });
+    //var oneSec = const Duration(seconds: 1);
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      setState(() {
+        getTareasHechas(widget.codigo);
+      });
+    });
     return Scaffold(
+        /* appBar: AppBar(
+          title: Text('Sub Page'),
+          backgroundColor: Colors.redAccent,
+        ),*/
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(36.0),

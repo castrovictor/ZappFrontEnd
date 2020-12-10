@@ -1,3 +1,5 @@
+import 'dart:async';
+
 /// Flutter code sample for BottomNavigationBar
 
 // This example shows a [BottomNavigationBar] as it is used within a [Scaffold]
@@ -50,60 +52,12 @@ Future getJson(codigo) async {
   }
 }
 
-Future getTareas(codigo) async {
-  String url = 'http://zapp.pythonanywhere.com/actividad/noentregadas/';
-  url = url + codigo;
-  print(url);
-  http.Response response = await http.get(
-    url,
-    headers: {
-      HttpHeaders.acceptHeader: 'application/json',
-      HttpHeaders.contentTypeHeader: 'application/json',
-    },
-  );
-
-  final jsonResponse = jsonDecode(response.body);
-  print(jsonResponse);
-  if (jsonResponse.containsKey('Actividad')) {
-    for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
-      nombreActividades.add(jsonResponse['Actividad'][i]['nombre']);
-      descripcionActividades.add(jsonResponse['Actividad'][i]['descripcion']);
-    }
-  }
-}
-
-Future getTareasHechas(codigo) async {
-  String url = 'http://zapp.pythonanywhere.com/actividad/revisadas/';
-  url = url + codigo;
-  print(url);
-  http.Response response = await http.get(
-    url,
-    headers: {
-      HttpHeaders.acceptHeader: 'application/json',
-      HttpHeaders.contentTypeHeader: 'application/json',
-    },
-  );
-
-  final jsonResponse = jsonDecode(response.body);
-  print(jsonResponse);
-  if (jsonResponse.containsKey('Actividad')) {
-    for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
-      nombreActividadesHechas.add(jsonResponse['Actividad'][i]['nombre']);
-      descripcionActividadesHechas
-          .add(jsonResponse['Actividad'][i]['descripcion']);
-    }
-  }
-}
-
 //Screens for each nav items.
 // ignore: non_constant_identifier_names
 List<Widget> _NavScreens(String codigo) {
-  getJson(codigo);
-  getTareas(codigo);
-  getTareasHechas(codigo);
   return [
-    Deberes(tareas: nombreActividades),
-    Archivador(tareas: nombreActividadesHechas),
+    Deberes(codigo: codigo),
+    Archivador(codigo: codigo),
     Perfil(userID: codigo, nombre: nombre, fechaNacimiento: fechaCumple),
   ];
 }
