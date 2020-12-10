@@ -10,17 +10,20 @@ import 'package:searchable_dropdown/searchable_dropdown.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  MyApp({this.nombre, this.descripcion, this.usuarios});
+  MyApp({this.nombre, this.descripcion, this.usuarios, this.codigos});
   final String nombre;
   final String descripcion;
   final List<String> usuarios;
+  final List<String> codigos;
   @override
-  _MyAppState createState() => _MyAppState(usuarios: usuarios);
+  _MyAppState createState() =>
+      _MyAppState(usuarios: usuarios, codigos: codigos);
 }
 
 class _MyAppState extends State<MyApp> {
   List<String> usuarios;
-  _MyAppState({this.usuarios});
+  List<String> codigos;
+  _MyAppState({this.usuarios, this.codigos});
   bool asTabs = false;
   String selectedValue;
   String preselectedValue = "dolor sit";
@@ -48,10 +51,10 @@ class _MyAppState extends State<MyApp> {
               return (item.value == wordPair);
             }) ==
             -1) {*/
-    for (int i = 0; i < usuarios.length; i++) {
+    for (int i = 0; i < codigos.length; i++) {
       items.add(DropdownMenuItem(
         child: Text(usuarios[i]),
-        value: usuarios[i],
+        value: codigos[i],
       ));
     }
     ;
@@ -62,8 +65,44 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     Map<String, Widget> widgets;
     const url = 'https://pythoneverywhere/alta_socio';
-
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+    final mandar = Material(
+      borderRadius: BorderRadius.circular(30.0),
+      color: Color(0xff01A0C7),
+      child: MaterialButton(
+        minWidth: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        onPressed: () async {
+          for (int i = 0; i < selectedItems.length; i++) {
+            http.Response response = await http.post(
+              url,
+              body: jsonEncode(<String, String>{
+                'nombre': widget.nombre,
+                'descripcion': widget.descripcion,
+                'idUsuario': '5',
+                'idProfesional': '1',
+                'categoria': '1',
+              }),
+              headers: {
+                HttpHeaders.acceptHeader: 'application/json',
+                HttpHeaders.contentTypeHeader: 'application/json',
+              },
+            );
+          }
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TareaMandada(
+                      nombre: "hola", selectedItems: selectedItems)));
+        },
+        child: Text("Entrar",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+
     widgets = {
       "Socios a los que mandar la tarea:": SearchableDropdown.multiple(
         items: items,
@@ -103,42 +142,6 @@ class _MyAppState extends State<MyApp> {
         menuConstraints: BoxConstraints.tight(Size.fromHeight(350)),
       ),
     };
-
-    final mandar = Material(
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () async {
-          for (int i = 0; i < selectedItems.length; i++) {
-            http.Response response = await http.post(
-              url,
-              body: jsonEncode(<String, String>{
-                'nombre': widget.nombre,
-                'descripcion': widget.descripcion,
-                'idUsuario': '5',
-                'idProfesional': '1',
-                'categoria': '1',
-              }),
-              headers: {
-                HttpHeaders.acceptHeader: 'application/json',
-                HttpHeaders.contentTypeHeader: 'application/json',
-              },
-            );
-          }
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TareaMandada(
-                      nombre: "hola", selectedItems: selectedItems)));
-        },
-        child: Text("Entrar",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
 
     return MaterialApp(
         home: Scaffold(

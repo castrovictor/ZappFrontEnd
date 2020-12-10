@@ -3,8 +3,9 @@ import 'mandar.dart';
 import 'myTextFormField.dart';
 
 class CrearTarea extends StatelessWidget {
-  CrearTarea({this.usuarios});
+  CrearTarea({this.usuarios, this.codigos});
   final List<String> usuarios;
+  final List<String> codigos;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String nombre;
   String descripcion;
@@ -28,13 +29,15 @@ class CrearTarea extends StatelessWidget {
             //      'nombre': model.nombre,
             //    }));
             print(nombre);
+            print(codigos.length);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => MyApp(
                         nombre: nombre,
                         descripcion: descripcion,
-                        usuarios: usuarios)));
+                        usuarios: usuarios,
+                        codigos: codigos)));
           }
         },
         child: Text("Crear",

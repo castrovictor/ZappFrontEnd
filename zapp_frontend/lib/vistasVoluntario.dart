@@ -14,6 +14,7 @@ String titulo;
 String nombre;
 String fechaCumple;
 List<String> usuarios = new List<String>();
+List<String> codigos = new List<String>();
 
 Future getJson(codigo) async {
   String url = 'http://zapp.pythonanywhere.com/facilitador/';
@@ -51,9 +52,11 @@ Future getUsuarios() async {
   print(usuarios.length);
   for (int i = 0; i < jsonResponse['User'].length; i++) {
     usuarios.add(jsonResponse['User'][i]['username']);
+    codigos.add(jsonResponse['User'][i]['id'].toString());
   }
   for (int i = 0; i < usuarios.length; i++) {
     print(usuarios[i]);
+    //print(codigos[i]);
   }
 }
 
@@ -62,7 +65,7 @@ Future getUsuarios() async {
 List<Widget> _NavScreens() {
   getUsuarios();
   return [
-    Administrar(usuarios: usuarios),
+    Administrar(usuarios: usuarios, codigos: codigos),
     Biblioteca(),
     Usuarios(usuariosList: usuarios),
     PerfilFacilitador(),

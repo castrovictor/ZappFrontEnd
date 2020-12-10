@@ -5,7 +5,8 @@ import 'altaSocio.dart';
 
 // ignore: must_be_immutable
 class Administrar extends StatelessWidget {
-  Administrar({this.usuarios});
+  Administrar({this.usuarios, this.codigos});
+  final List<String> codigos;
   final List<String> usuarios;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
@@ -19,10 +20,12 @@ class Administrar extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
+          print(codigos.length);
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CrearTarea(usuarios: usuarios)));
+                  builder: (context) =>
+                      CrearTarea(usuarios: usuarios, codigos: codigos)));
         },
         child: Text("Crear Tarea",
             textAlign: TextAlign.center,
