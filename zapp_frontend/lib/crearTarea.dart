@@ -84,9 +84,14 @@ class CrearTarea extends StatelessWidget {
     final crear = Material(
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
+      
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+         child: Text("Crear",
+            textAlign: TextAlign.center,
+            style: style.copyWith(
+                color: Colors.white, fontWeight: FontWeight.bold)),
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
@@ -107,25 +112,19 @@ class CrearTarea extends StatelessWidget {
                         usuarios: usuarios,
                         codigos: codigos)));
           }
-              //Onpressed IMAGEN FILEPICKER
-              //**************************************************************************************************** */
-              
-          var file = await ImagePicker.pickImage(source: ImageSource.gallery);
-          var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
-              setState() {
-                  state = res;
-                 print(res);
-              }
-              
-              
+
+        
             //**************************************************************************************************** */
+            /*
         child: Text("Crear",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold));
+                */
         },
-    
+       
       )
+        
     );
 
 
@@ -197,10 +196,54 @@ class CrearTarea extends StatelessWidget {
                             vertical: 10.0, horizontal: 25.0),
                         child: ListTile(
                           //leading: Icon (icono al principio
-                          trailing: Icon(
-                            Icons.attach_file,
-                            color: Colors.teal[900],
+
+                          //BOTON ADJUNTAR IMAGEN
+                          trailing: IconButton( icon: Icon(Icons.attach_file) , onPressed:()
+                            async {
+                                              if (_formKey.currentState.validate()) {
+                                                _formKey.currentState.save();
+
+                                                //const url = 'https://pythoneverywhere/alta_socio';
+                                                //await http.post(url,
+                                                //    body: jsonEncode(<String, String>{
+                                                //      'nombre': model.nombre,
+                                                //    }));
+                                                print(nombre);
+                                                print(codigos.length);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) => MyApp(
+                                                            nombre: nombre,
+                                                            descripcion: descripcion,
+                                                            usuarios: usuarios,
+                                                            codigos: codigos)));
+                                              }
+                                                  //Onpressed IMAGEN FILEPICKER
+                                                  //**************************************************************************************************** */
+                                                  
+                                              var file = await ImagePicker.pickImage(source: ImageSource.gallery);
+                                              var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+                                                  setState() {
+                                                      state = res;
+                                                    print(res);
+                                                  }
+                                                  
+                                                  
+                                                //**************************************************************************************************** */
+                                            child: Text("Crear",
+                                                textAlign: TextAlign.center,
+                                                style: style.copyWith(
+                                                    color: Colors.white, fontWeight: FontWeight.bold));
+                                            }
+                            
+                            
+                            ,
                           ),
+
+
+
+
                           title: Text(
                             '  ',
                             style: TextStyle(
@@ -221,10 +264,13 @@ class CrearTarea extends StatelessWidget {
                             vertical: 10.0, horizontal: 25.0),
                         child: ListTile(
                           //leading: Icon (icono al principio
+
+                          
                           trailing: Icon(
                             Icons.assignment_ind_rounded,
                             color: Colors.teal[900],
                           ),
+                       
                           title: Text(
                             ' ',
                             style: TextStyle(
@@ -232,7 +278,7 @@ class CrearTarea extends StatelessWidget {
                           ),
                         )
                       ),
-
+                                  /*
                                 MaterialButton(
                                             minWidth: MediaQuery.of(context).size.width,
                                             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -274,7 +320,7 @@ class CrearTarea extends StatelessWidget {
                                                     color: Colors.white, fontWeight: FontWeight.bold));
                                             },
                                         
-      ),
+      ),*/
                     crear,
                     
                     const SizedBox(height: 50)
