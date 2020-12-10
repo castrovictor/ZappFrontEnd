@@ -1,4 +1,4 @@
-import 'dart:async';
+/*import 'dart:async';
 import 'tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,10 +9,10 @@ List<String> tareas = new List<String>();
 List<String> codigos = new List<String>();
 
 class TareaWidget extends StatelessWidget {
-  TareaWidget({this.iconData, this.title, this.onPressed});
+  TareaWidget({this.usuario, this.title, this.onPressed});
 
   /// icon data
-  final IconData iconData;
+  final String usuario;
 
   /// Title to show
   final String title;
@@ -45,17 +45,19 @@ class TareaWidget extends StatelessWidget {
                 SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: MediaQuery.of(context).size.height * 0.075,
-                    child: ColoredBox(
-                        color: Colors.lightBlue[50],
-                        child: Center(child: Icon(iconData, size: 40.0)))),
+                    child: Text(usuario,
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold)),
               ])),
     );
   }
 }
 
-Future getTareasHechas(codigo) async {
-  String url = 'http://zapp.pythonanywhere.com/actividad/revisadas/';
-  url = url + codigo;
+Future getTareas() async {
+  String url = 'http://zapp.pythonanywhere.com/actividad/noentregadas/';
+  url = url;
   //print(url);
   http.Response response = await http.get(
     url,
@@ -66,26 +68,25 @@ Future getTareasHechas(codigo) async {
   );
 
   final jsonResponse = jsonDecode(response.body);
-  //print(jsonResponse);
-
   tareas.clear();
-
+  codigos.clear();
   if (jsonResponse.containsKey('Actividad')) {
     for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
       tareas.add(jsonResponse['Actividad'][i]['nombre']);
       codigos.add(jsonResponse['Actividad'][i]['id'].toString());
+      //print(jsonResponse['Actividad'][i]['id'].toString());
     }
   }
 }
 
-class Archivador extends StatefulWidget {
-  Archivador({this.codigo});
+class Corregir extends StatefulWidget {
+  Corregir({this.codigo});
   final String codigo;
   @override
   _Deberes createState() => _Deberes();
 }
 
-class _Deberes extends State<Archivador> {
+class _Deberes extends State<Corregir> {
   _Deberes();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
 
@@ -96,13 +97,7 @@ class _Deberes extends State<Archivador> {
   Widget build(BuildContext context) {
     Timer(Duration(milliseconds: 500), () {
       setState(() {
-        getTareasHechas(widget.codigo);
-      });
-    });
-    //var oneSec = const Duration(seconds: 1);
-    Timer.periodic(Duration(seconds: 5), (timer) {
-      setState(() {
-        getTareasHechas(widget.codigo);
+        getTareas();
       });
     });
     return Scaffold(
@@ -120,7 +115,7 @@ class _Deberes extends State<Archivador> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text('Archivador',
+                          Text('Tareas para corregir',
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 50.0,
@@ -137,7 +132,7 @@ class _Deberes extends State<Archivador> {
                           child: ListView(children: [
                         for (int i = 0; i < tareas.length; i++)
                           TareaWidget(
-                            iconData: Icons.pending_actions_rounded,
+                            usuario: "usuario",
                             title: tareas[i],
                             onPressed: () async {
                               String url =
@@ -171,3 +166,4 @@ class _Deberes extends State<Archivador> {
                     ]))));
   }
 }
+*/

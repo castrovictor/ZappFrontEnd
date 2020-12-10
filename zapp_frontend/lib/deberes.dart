@@ -1,12 +1,12 @@
 import 'dart:async';
-
+import 'tarea.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
 List<String> tareas = new List<String>();
-List<String> descripcionActividades = new List<String>();
+List<String> codigos = new List<String>();
 
 class TareaWidget extends StatelessWidget {
   TareaWidget({this.iconData, this.title, this.onPressed});
@@ -66,13 +66,13 @@ Future getTareas(codigo) async {
   );
 
   final jsonResponse = jsonDecode(response.body);
-  //print(jsonResponse);
   tareas.clear();
-  descripcionActividades.clear();
+  codigos.clear();
   if (jsonResponse.containsKey('Actividad')) {
     for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
       tareas.add(jsonResponse['Actividad'][i]['nombre']);
-      descripcionActividades.add(jsonResponse['Actividad'][i]['descripcion']);
+      codigos.add(jsonResponse['Actividad'][i]['id'].toString());
+      //print(jsonResponse['Actividad'][i]['id'].toString());
     }
   }
 }
@@ -99,11 +99,11 @@ class _Deberes extends State<Deberes> {
       });
     });
     //var oneSec = const Duration(seconds: 1);
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    /*Timer.periodic(Duration(seconds: 10), (timer) {
       setState(() {
         getTareas(widget.codigo);
       });
-    });
+    });*/
     return Scaffold(
         /* appBar: AppBar(
           title: Text('Sub Page'),
@@ -138,12 +138,32 @@ class _Deberes extends State<Deberes> {
                           TareaWidget(
                             iconData: Icons.pending_actions_rounded,
                             title: tareas[i],
-                            onPressed: () {
-                              /*  Navigator.of(context).push(MaterialPageRoute(
+                            onPressed: () async {
+                              String url =
+                                  'http://zapp.pythonanywhere.com/actividad/';
+                              url = url + codigos[i];
+                              //print(url);
+                              http.Response response = await http.get(
+                                url,
+                                headers: {
+                                  HttpHeaders.acceptHeader: 'application/json',
+                                  HttpHeaders.contentTypeHeader:
+                                      'application/json',
+                                },
+                              );
+
+                              final jsonResponse = jsonDecode(response.body);
+                              print(jsonResponse);
+
+                              String nombre =
+                                  jsonResponse['Actividad']['nombre'];
+                              String descripcion =
+                                  jsonResponse['Actividad']['descripcion'];
+                              Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tarea(
-                                      iconData: Icons.sports_bar_rounded,
-                                      title: "Tarea " + i.toString(),
-                                      description: "Descripion")));*/
+                                      iconData: Icons.pending_actions_rounded,
+                                      title: nombre,
+                                      description: descripcion)));
                             },
                           )
                       ]))

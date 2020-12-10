@@ -55,6 +55,7 @@ Future getJson(codigo) async {
 //Screens for each nav items.
 // ignore: non_constant_identifier_names
 List<Widget> _NavScreens(String codigo) {
+  getJson(codigo);
   return [
     Deberes(codigo: codigo),
     Archivador(codigo: codigo),

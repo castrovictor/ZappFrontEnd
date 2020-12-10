@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 //import 'imagePicker.dart';
@@ -15,13 +15,9 @@ class Tarea extends StatefulWidget {
 }
 
 class _Tarea extends State<Tarea> {
-  _Tarea({this.iconData, this.title, this.description});
-  final IconData iconData;
-  final String title;
-  final String description;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-  File _image;
+  /*File _image;
   File file;
 
   void _getImage() async {
@@ -29,7 +25,7 @@ class _Tarea extends State<Tarea> {
         await ImagePicker.getImage(source: ImageSource.gallery);
 
     file = File(pickedFile.path);
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +57,7 @@ class _Tarea extends State<Tarea> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
-                        child: Text(title,
+                        child: Text(widget.title,
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 40.0,
@@ -72,20 +68,20 @@ class _Tarea extends State<Tarea> {
                         height: MediaQuery.of(context).size.height * 0.05,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
-                      Icon(iconData, size: 100.0),
+                      Icon(widget.iconData, size: 100.0),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.05,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
                       Expanded(
-                        child: Text(description,
+                        child: Text(widget.description,
                             style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 20.0,
                             )),
                       ),
-                      Expanded(
+                      /* Expanded(
                           child: file == null
                               ? Center(
                                   child: Text('AÑADIR',
@@ -97,7 +93,7 @@ class _Tarea extends State<Tarea> {
                       new FloatingActionButton(
                         onPressed: pickImage,
                         child: Icon(Icons.camera_alt, size: 25),
-                      ),
+                      ),*/
                       //adjuntar,
                     ]))));
   }
@@ -108,7 +104,6 @@ class _Tarea extends State<Tarea> {
     throw UnimplementedError();
   }
 }
-*/
 
 /* Lo que habia en GITHUB
 import 'package:flutter/material.dart';
