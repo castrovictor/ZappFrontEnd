@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
                   builder: (context) => TareaMandada(
                       nombre: "hola", selectedItems: selectedItems)));
         },
-        child: Text("Entrar",
+        child: Text("Mandar",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -149,8 +149,39 @@ class _MyAppState extends State<MyApp> {
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SafeArea(
-          child: Column(
-            children: widgets
+          child: Column(children: <Widget>[
+            Container(
+                child: Column(
+              children: widgets
+                  .map((k, v) {
+                    return (MapEntry(
+                        k,
+                        Center(
+                            child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: BorderSide(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                margin: EdgeInsets.all(20),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Text("$k:"),
+                                      v,
+                                    ],
+                                  ),
+                                )))));
+                  })
+                  .values
+                  .toList(),
+            )),
+            mandar
+          ]
+              /* children: widgets
                 .map((k, v) {
                   return (MapEntry(
                       k,
@@ -175,8 +206,8 @@ class _MyAppState extends State<MyApp> {
                               )))));
                 })
                 .values
-                .toList(),
-          ),
+                .toList(),*/
+              ),
         ),
       ),
     ));
