@@ -36,25 +36,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    /*String wordPair = "";
-    loremIpsum
-        .toLowerCase()
-        .replaceAll(",", "")
-        .replaceAll(".", "")
-        .split(" ")
-        .forEach((word) {
-      if (wordPair.isEmpty) {
-        wordPair = word + " ";
-      } else {
-        wordPair += word;
-        if (items.indexWhere((item) {
-              return (item.value == wordPair);
-            }) ==
-            -1) {*/
     for (int i = 0; i < codigos.length; i++) {
       items.add(DropdownMenuItem(
         child: Text(usuarios[i]),
-        value: codigos[i],
+        value: usuarios[i],
       ));
     }
     ;
@@ -64,7 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     Map<String, Widget> widgets;
-    const url = 'https://pythoneverywhere/alta_socio';
+    const url = 'http://zapp.pythonanywhere.com/crearActividad/';
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
     final mandar = Material(
@@ -74,21 +59,32 @@ class _MyAppState extends State<MyApp> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () async {
+          print(widget.nombre);
+          print(widget.descripcion);
           for (int i = 0; i < selectedItems.length; i++) {
+            print("se envia a");
+            print(codigos[selectedItems[i]].toString());
+            print(widget.nombre);
+            print(widget.descripcion);
             http.Response response = await http.post(
               url,
-              body: jsonEncode(<String, String>{
-                'nombre': widget.nombre,
-                'descripcion': widget.descripcion,
-                'idUsuario': '5',
-                'idProfesional': '1',
-                'categoria': '1',
+              body: jsonEncode(<String, dynamic>{
+                'actividad': {
+                  'nombre': widget.nombre,
+                  'descripcion': widget.descripcion,
+                  'idUsuario': codigos[selectedItems[i]],
+                  'idProfesional': '1',
+                  'categoria': '1',
+                }
               }),
               headers: {
                 HttpHeaders.acceptHeader: 'application/json',
                 HttpHeaders.contentTypeHeader: 'application/json',
               },
             );
+            final jsonResponse = jsonDecode(response.body);
+
+            print(jsonResponse);
           }
           Navigator.push(
               context,
@@ -127,14 +123,14 @@ class _MyAppState extends State<MyApp> {
                           Iterable<int>.generate(items.length).toList());
                     });
                   },
-                  child: Text("Select all")),
+                  child: Text("Todos")),
               RaisedButton(
                   onPressed: () {
                     setState(() {
                       selectedItems.clear();
                     });
                   },
-                  child: Text("Select none")),
+                  child: Text("Ninguno")),
             ],
           );
         },

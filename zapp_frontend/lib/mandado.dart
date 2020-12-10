@@ -19,7 +19,7 @@ class TareaMandada extends StatelessWidget {
                     children: <Widget>[
                       SizedBox(
                           child: Center(
-                        child: Text("Pagina archivador en obras",
+                        child: Text("Pagina mandado en obras",
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontSize: 20.0,
