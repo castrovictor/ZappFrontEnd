@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'mandar.dart';
 import 'myTextFormField.dart';
-
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-
-
-class CrearTarea extends StatelessWidget {
-
+class CrearTarea extends StatefulWidget {
   CrearTarea({this.usuarios, this.codigos});
-  final List<String> usuarios;
-  final List<String> codigos;
+  List<String> usuarios;
+  List<String> codigos;
+
+  @override
+  _CrearTarea createState() => _CrearTarea();
+}
+
+class _CrearTarea extends State<CrearTarea> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String nombre;
   String descripcion;
   final _formKey = GlobalKey<FormState>();
 
-
+  File _image;
+  final picker = ImagePicker();
 
 /*
 
@@ -34,18 +38,18 @@ class CrearTarea extends StatelessWidget {
   var res = await request.send();
 }
 */
-  
 
-    //Subir imágenes
-    //**************************************************************************************************** */
- Future<String> uploadImage(filename, url) async {
+  //Subir imágenes
+  //**************************************************************************************************** */
+  Future<String> uploadImage(filename, url) async {
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.files.add(await http.MultipartFile.fromPath('picture', filename));
     var res = await request.send();
     return res.reasonPhrase;
   }
+
   String state = "";
-  
+
   //**************************************************************************************************** */
   /*
   @override
@@ -76,44 +80,41 @@ class CrearTarea extends StatelessWidget {
     );
 */
 
-
   @override
   Widget build(BuildContext context) {
-
+    var file = null;
     //Botón crear
     final crear = Material(
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-         child: Text("Crear",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-        onPressed: () async {
-          if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
+        borderRadius: BorderRadius.circular(30.0),
+        color: Color(0xff01A0C7),
+        child: MaterialButton(
+          minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          child: Text("Crear",
+              textAlign: TextAlign.center,
+              style: style.copyWith(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
+          onPressed: () async {
+            if (_formKey.currentState.validate()) {
+              _formKey.currentState.save();
 
-            //const url = 'https://pythoneverywhere/alta_socio';
-            //await http.post(url,
-            //    body: jsonEncode(<String, String>{
-            //      'nombre': model.nombre,
-            //    }));
-            print(nombre);
-            print(codigos.length);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => MyApp(
-                        nombre: nombre,
-                        descripcion: descripcion,
-                        usuarios: usuarios,
-                        codigos: codigos)));
-          }
+              //const url = 'https://pythoneverywhere/alta_socio';
+              //await http.post(url,
+              //    body: jsonEncode(<String, String>{
+              //      'nombre': model.nombre,
+              //    }));
+              print(nombre);
+              print(widget.codigos.length);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MyApp(
+                          nombre: nombre,
+                          descripcion: descripcion,
+                          usuarios: widget.usuarios,
+                          codigos: widget.codigos)));
+            }
 
-        
             //**************************************************************************************************** */
             /*
         child: Text("Crear",
@@ -121,19 +122,13 @@ class CrearTarea extends StatelessWidget {
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold));
                 */
-        },
-       
-      )
-        
-    );
-
-
-
+          },
+        ));
 
     return MaterialApp(
         home: Scaffold(
             //backgroundColor: Colors.blue[300],
-      body: Padding(
+            body: Padding(
       padding: const EdgeInsets.all(36.0),
       child: Center(
         child: Form(
@@ -198,51 +193,55 @@ class CrearTarea extends StatelessWidget {
                           //leading: Icon (icono al principio
 
                           //BOTON ADJUNTAR IMAGEN
-                          trailing: IconButton( icon: Icon(Icons.attach_file) , onPressed:()
-                            async {
-                                              if (_formKey.currentState.validate()) {
-                                                _formKey.currentState.save();
+                          trailing: IconButton(
+                            icon: Icon(Icons.attach_file),
+                            onPressed: () async {
+                              /*_imgFromCamera() async {
+                                                  File image = await ImagePicker.pickImage(
+                                                    source: ImageSource.camera, imageQuality: 50
+                                                  );
 
-                                                //const url = 'https://pythoneverywhere/alta_socio';
-                                                //await http.post(url,
-                                                //    body: jsonEncode(<String, String>{
-                                                //      'nombre': model.nombre,
-                                                //    }));
-                                                print(nombre);
-                                                print(codigos.length);
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) => MyApp(
-                                                            nombre: nombre,
-                                                            descripcion: descripcion,
-                                                            usuarios: usuarios,
-                                                            codigos: codigos)));
-                                              }
-                                                  //Onpressed IMAGEN FILEPICKER
-                                                  //**************************************************************************************************** */
-                                                  
-                                              var file = await ImagePicker.pickImage(source: ImageSource.gallery);
-                                              var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
-                                                  setState() {
+                                                  setState(() {
+                                                    _image = image;
+                                                  });
+                                                }
+
+                                                _imgFromGallery() async {
+                                                  File image = await  ImagePicker.pickImage(
+                                                      source: ImageSource.gallery, imageQuality: 50
+                                                  );
+
+                                                  setState(() {
+                                                    _image = image;
+                                                  });
+                                                }
+                                  */
+
+                              // file = await ImagePicker.pickImage(source: ImageSource.gallery);
+                              /*
+                                            file = await picker.getImage(source: ImageSource.gallery);
+                                            var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+                                                //  setState() {
                                                       state = res;
                                                     print(res);
-                                                  }
-                                                  
-                                                  
-                                                //**************************************************************************************************** */
-                                            child: Text("Crear",
-                                                textAlign: TextAlign.center,
-                                                style: style.copyWith(
-                                                    color: Colors.white, fontWeight: FontWeight.bold));
-                                            }
-                            
-                            
-                            ,
+                                                    print('COJO IMAGEN');
+                                         //         }
+                                         */
+                              final pickedFile = await picker.getImage(
+                                  source: ImageSource.gallery);
+
+                              print(pickedFile);
+                              if (pickedFile != null) {
+                                _image = File(pickedFile.path);
+                                print('COGIDO');
+                                print(_image);
+                              } else {
+                                print('No image selected.');
+                              }
+
+                              //**************************************************************************************************** */
+                            },
                           ),
-
-
-
 
                           title: Text(
                             '  ',
@@ -250,6 +249,18 @@ class CrearTarea extends StatelessWidget {
                                 fontFamily: 'BalooBhai', fontSize: 20.0),
                           ),
                         )),
+                    // print(_image) ;
+                    CircleAvatar(
+                        //Imprimir imagen
+                        radius: 55,
+                        backgroundColor: Color(0xffFDCF09),
+                        child: _image == null
+                            //  ? Text('No image selected.')
+                            ? Text('No image selected.')
+                            : Image.file(_image)
+                      
+                        ),
+
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -265,20 +276,18 @@ class CrearTarea extends StatelessWidget {
                         child: ListTile(
                           //leading: Icon (icono al principio
 
-                          
                           trailing: Icon(
                             Icons.assignment_ind_rounded,
                             color: Colors.teal[900],
                           ),
-                       
+
                           title: Text(
                             ' ',
                             style: TextStyle(
                                 fontFamily: 'BalooBhai', fontSize: 80.0),
                           ),
-                        )
-                      ),
-                                  /*
+                        )),
+                    /*
                                 MaterialButton(
                                             minWidth: MediaQuery.of(context).size.width,
                                             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
@@ -322,16 +331,12 @@ class CrearTarea extends StatelessWidget {
                                         
       ),*/
                     crear,
-                    
+
                     const SizedBox(height: 50)
-                    
                   ]),
             )),
-         ),
-       )
-        )
-    
-    );
+      ),
+    )));
   }
 }
 
