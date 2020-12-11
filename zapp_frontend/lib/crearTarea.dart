@@ -4,6 +4,11 @@ import 'myTextFormField.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+
+import 'package:flutter/widgets.dart';
+import 'filepickerdemo.dart';
+import 'package:flutter/widgets.dart';
 
 class CrearTarea extends StatefulWidget {
   CrearTarea({this.usuarios, this.codigos});
@@ -20,7 +25,7 @@ class _CrearTarea extends State<CrearTarea> {
   String nombre;
   String descripcion;
   final _formKey = GlobalKey<FormState>();
-
+  //*******************************+IMAGENES */
   File _image;
   final picker = ImagePicker();
 
@@ -31,6 +36,13 @@ class _CrearTarea extends State<CrearTarea> {
       _image = File(pickedFile.path);
     });
   }
+    //*****************IMAGENES**************************************/ */
+
+    //*************************************ARCHIVOS********************** */
+    List<File> files ;
+    //****************************************ARCHIVOS******************* */
+    
+
 
   //Subir imágenes
   //**************************************************************************************************** */
@@ -44,34 +56,7 @@ class _CrearTarea extends State<CrearTarea> {
   String state = "";
 
   //**************************************************************************************************** */
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Flutter File Upload Example'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(state)
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          var file = await ImagePicker.pickImage(source: ImageSource.gallery);
-          var res = await uploadImage(file.path, widget.url);
-          setState(() {
-            state = res;
-            print(res);
-          });
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-*/
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -189,27 +174,9 @@ class _CrearTarea extends State<CrearTarea> {
                           trailing: IconButton(
                             icon: Icon(Icons.attach_file),
                             onPressed: () async {
-                              /*_imgFromCamera() async {
-                                                  File image = await ImagePicker.pickImage(
-                                                    source: ImageSource.camera, imageQuality: 50
-                                                  );
-
-                                                  setState(() {
-                                                    _image = image;
-                                                  });
-                                                }
-
-                                                _imgFromGallery() async {
-                                                  File image = await  ImagePicker.pickImage(
-                                                      source: ImageSource.gallery, imageQuality: 50
-                                                  );
-
-                                                  setState(() {
-                                                    _image = image;
-                                                  });
-                                                }
-                                  */
-
+                                /*
+                              //Para añadir IMAGEN
+                              //*************************************IMAGENN***************************************** */
                               // file = await ImagePicker.pickImage(source: ImageSource.gallery);
                               /*
                                             file = await picker.getImage(source: ImageSource.gallery);
@@ -220,6 +187,8 @@ class _CrearTarea extends State<CrearTarea> {
                                                     print('COJO IMAGEN');
                                          //         }
                                          */
+
+                                //Lo que sirve si queremos imageeeen
                               final pickedFile = await picker.getImage(
                                   source: ImageSource.gallery);
 
@@ -231,8 +200,39 @@ class _CrearTarea extends State<CrearTarea> {
                               } else {
                                 print('No image selected.');
                               }
-
+                              */
+                              //*************************************IMAGENN***************************************** */
                               //**************************************************************************************************** */
+
+                             //***************************************ARCHIVOOOOOO**********************************************////
+  
+                                  /*
+                                    FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+                                    if(result != null) {
+                                             files = result.paths.map((path) => File(path)).toList();
+                                              PlatformFile file = result.files.first;
+   
+                                                  print(file.name);
+                                                  print(file.bytes);
+                                                  print(file.size);
+                                                  print(file.extension);
+                                                  print(file.path);
+                                    } else {
+                                      // User canceled the picker
+                                    }
+                                      */
+                                  //return new FilePickerDemo() ;
+
+                                  FilePickerResult result = await FilePicker.platform.pickFiles();
+
+                                              if(result != null) {
+                                                File file = File(result.files.single.path);
+                                              } else {
+                                                // User canceled the picker
+                                              }
+                              //***************************************ARCHIVOOOOOO**********************************************////
+
                             },
                           ),
 

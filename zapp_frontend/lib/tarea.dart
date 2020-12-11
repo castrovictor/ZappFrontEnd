@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'chat.dart';
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
 
 class Tarea extends StatefulWidget {
-  Tarea({this.iconData, this.title, this.description});
+  Tarea({this.iconData, this.title, this.description, this.idTarea});
   final IconData iconData;
   final String title;
   final String description;
+  final String idTarea;
   @override
   _Tarea createState() => _Tarea();
 }
@@ -29,15 +31,23 @@ class _Tarea extends State<Tarea> {
 
   @override
   Widget build(BuildContext context) {
-    final adjuntar = Material(
+    final chat = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
-        child: Text("Contestar",
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Chat(
+                        nombre: widget.title,
+                        idActividad: widget.idTarea,
+                      )));
+        },
+        child: Text("Chat de tarea",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -81,6 +91,15 @@ class _Tarea extends State<Tarea> {
                               fontSize: 20.0,
                             )),
                       ),
+                      Expanded(
+                        child: Text(
+                            'Sube tu solución o pregunta duda en el chat de tarea',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 20.0,
+                            )),
+                      ),
+
                       /* Expanded(
                           child: file == null
                               ? Center(
