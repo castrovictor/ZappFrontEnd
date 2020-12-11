@@ -15,6 +15,7 @@ class CrearTarea extends StatefulWidget {
 }
 
 class _CrearTarea extends State<CrearTarea> {
+
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String nombre;
   String descripcion;
@@ -23,21 +24,13 @@ class _CrearTarea extends State<CrearTarea> {
   File _image;
   final picker = ImagePicker();
 
-/*
+    Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
-(String filename, String url) async {
-  var request = http.MultipartRequest('POST', Uri.parse(url));
-  request.files.add(
-    http.MultipartFile(
-      'picture',
-      File(filename).readAsBytes().asStream(),
-      File(filename).lengthSync(),
-      filename: filename.split("/").last
-    )
-  );
-  var res = await request.send();
-}
-*/
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
 
   //Subir imágenes
   //**************************************************************************************************** */
@@ -250,6 +243,23 @@ class _CrearTarea extends State<CrearTarea> {
                           ),
                         )),
                     // print(_image) ;
+                    InkWell(
+                                    onTap: getImage,
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.black,
+                                      radius: 40.0,
+                                      child: CircleAvatar(
+                                        radius: 39.0,
+                                        child: CircleAvatar(
+                                          child: (_image != null)
+                                          ? Image.file(_image)
+                                          : Text('   Añadir  \n     imagen')
+                                        ),
+                                        backgroundColor: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                    /*
                     CircleAvatar(
                         //Imprimir imagen
                         radius: 55,
@@ -258,9 +268,31 @@ class _CrearTarea extends State<CrearTarea> {
                             //  ? Text('No image selected.')
                             ? Text('No image selected.')
                             : Image.file(_image)
-                      
+                        /*
+                              child: file != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.file(
+                                       _image,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    )
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius: BorderRadius.circular(50)),
+                                      width: 100,
+                                      height: 100,
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.grey[800],
+                                      ),
+                                    ),
+                                 */
                         ),
-
+                    */
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
