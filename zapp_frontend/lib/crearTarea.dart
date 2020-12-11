@@ -40,6 +40,7 @@ class _CrearTarea extends State<CrearTarea> {
 
     //*************************************ARCHIVOS********************** */
     List<File> files ;
+    File file ;
     //****************************************ARCHIVOS******************* */
     
 
@@ -223,14 +224,46 @@ class _CrearTarea extends State<CrearTarea> {
                                     }
                                       */
                                   //return new FilePickerDemo() ;
+                                
 
+                                // ****************UN SOLO ARCHIVO************************//
+
+                                  /*
                                   FilePickerResult result = await FilePicker.platform.pickFiles();
 
                                               if(result != null) {
-                                                File file = File(result.files.single.path);
+                                                 file = File(result.files.single.path);
+                                                 print('Archivo cargado  : '+file.toString()) ;
                                               } else {
                                                 // User canceled the picker
                                               }
+                                  */
+                                    /*
+                                                   if(result != null) {
+                                                            PlatformFile file = result.files.first;
+                                                            
+                                                            print(file.name);
+                                                            print(file.bytes);
+                                                            print(file.size);
+                                                            print(file.extension);
+                                                            print(file.path);
+                                                    } else {
+                                                            // User canceled the picker
+                                                    }
+
+                                      */
+                                //************************************************************ */
+                                //*******************************VARIOS ARCHIVOS ****************************** */
+
+                                FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+                                              if(result != null) {
+                                                //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                               files = result.paths.map((path) => File(path)).toList();
+                                              } else {
+                                                // User canceled the picker
+                                              }
+                                  
                               //***************************************ARCHIVOOOOOO**********************************************////
 
                             },
@@ -251,6 +284,7 @@ class _CrearTarea extends State<CrearTarea> {
                                       child: CircleAvatar(
                                         radius: 39.0,
                                         child: CircleAvatar(
+                                          
                                           child: (_image != null)
                                           ? Image.file(_image)
                                           : Text('   Añadir  \n     imagen')
@@ -259,15 +293,16 @@ class _CrearTarea extends State<CrearTarea> {
                                       ),
                                     ),
                                   ),
-                    /*
+                    
                     CircleAvatar(
                         //Imprimir imagen
                         radius: 55,
                         backgroundColor: Color(0xffFDCF09),
-                        child: _image == null
+                        child:files == null
                             //  ? Text('No image selected.')
-                            ? Text('No image selected.')
-                            : Image.file(_image)
+                            ? Text('No file selected.')
+                          //  : Image.file(files.first)
+                        :Text(files.first.toString())
                         /*
                               child: file != null
                                   ? ClipRRect(
@@ -290,9 +325,9 @@ class _CrearTarea extends State<CrearTarea> {
                                         color: Colors.grey[800],
                                       ),
                                     ),
-                                 */
+                                */
                         ),
-                    */
+                    
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
