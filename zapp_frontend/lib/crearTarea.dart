@@ -23,7 +23,6 @@ class CrearTarea extends StatefulWidget {
 }
 
 class _CrearTarea extends State<CrearTarea> {
-
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   String nombre;
   String descripcion;
@@ -32,22 +31,21 @@ class _CrearTarea extends State<CrearTarea> {
   File _image;
   final picker = ImagePicker();
 
-    Future getImage() async {
+  Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       _image = File(pickedFile.path);
     });
   }
-    //*****************IMAGENES**************************************/ */
+  //*****************IMAGENES**************************************/ */
 
-    //*************************************ARCHIVOS********************** */
-    List<File> files ;
-    File file ;
-    //****************************************ARCHIVOS******************* */
-    
-    MyPDFList pdf ;
+  //*************************************ARCHIVOS********************** */
+  List<File> files;
+  File file;
+  //****************************************ARCHIVOS******************* */
 
+  MyPDFList pdf;
 
   //Subir imágenes
   //**************************************************************************************************** */
@@ -61,7 +59,6 @@ class _CrearTarea extends State<CrearTarea> {
   String state = "";
 
   //**************************************************************************************************** */
- 
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +75,6 @@ class _CrearTarea extends State<CrearTarea> {
               style: style.copyWith(
                   color: Colors.white, fontWeight: FontWeight.bold)),
           onPressed: () async {
-
-
-
-
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
 
@@ -102,13 +95,13 @@ class _CrearTarea extends State<CrearTarea> {
                           codigos: widget.codigos)));
             }
 
-                  var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
-                                                                      //  setState() {
-                                                                            state = res;
-                                                                          print(res);
-                                                                          print('COJO IMAGEN');
-                                                              //         }
-
+            var res = await uploadImage(
+                file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+            //  setState() {
+            state = res;
+            print(res);
+            print('COJO IMAGEN');
+            //         }
 
             //**************************************************************************************************** */
             /*
@@ -181,65 +174,60 @@ class _CrearTarea extends State<CrearTarea> {
                       ),
                     ),
 
-                       Card(
-                                   color: Colors.white,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 25.0),
+                    Card(
+                        color: Colors.white,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 25.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              /*FUNCIONA PARA UN ARCHIVO*/
+                              files == null
+                                  //  ? Text('No image selected.')
+                                  ? Text('No file selected.')
+                                  //  : Image.file(files.first)
+                                  : // ListView(
+                                  Card(
+                                      child: ListTile(
+                                      title:
+                                          Text(files[0].path.split('/').last),
+                                      leading: Icon(Icons.picture_as_pdf),
+                                      trailing: IconButton(
+                                          icon: Icon(Icons.delete),
 
+                                          //Borrar archivo
+                                          onPressed: () async {
+                                            //    Future<int> deleteFile() async {
+                                            try {
+                                              //files[0] = await _localFile;
 
-                                    child: Column(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: <Widget>[
-                                                  
-                                                      /*FUNCIONA PARA UN ARCHIVO*/
-                                                    files == null
-                                                      //  ? Text('No image selected.')
-                                                      ? Text('No file selected.')
-                                                    //  : Image.file(files.first)
-                                                  : // ListView(
-                                                    Card(
-                                                                      child:ListTile(
-                                                                        title: Text(files[0].path.split('/').last),
-                                                                        leading: Icon(Icons.picture_as_pdf),
-                                                                         trailing: IconButton(
-                                                                             icon: Icon(Icons.delete),
+                                              //await files[0].delete();
+                                              files[0].delete();
+                                              print('Deleted');
+                                              setState(() {});
+                                            } catch (e) {
+                                              print('Couldnt delete');
+                                              setState(() {});
+                                              return 0;
+                                            }
 
-                                                                             //Borrar archivo
-                                                                                     onPressed: () async {
+                                            //    file[0]=null ;
+                                          }),
+                                      // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return ViewPDF(
+                                              pathPDF:
+                                                  files[0].path.toString());
+                                          //open viewPDF page on click
+                                        }));
+                                      },
+                                    )),
 
-
-                                                                                   //    Future<int> deleteFile() async {
-                                                                                              try {
-                                                                                               //files[0] = await _localFile;
-
-                                                                                                //await files[0].delete();
-                                                                                               files[0].delete();
-                                                                                                print('Deleted');
-                                                                                                setState(() {}) ;
-                                                                                              } catch (e) {
-                                                                                                  print('Couldnt delete');
-                                                                                                   setState(() {}) ;
-                                                                                                return 0;
-                                                                                              }
-                                                                                            
-                                                                                      //    file[0]=null ;
-                                                                                     }
-                                                                         ),
-                                                                       // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
-                                                                        onTap: (){
-                                                                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                                            return ViewPDF(pathPDF:files[0].path.toString());
-                                                                            //open viewPDF page on click
-                                                                          }));
-                                                                        },
-                                                                      
-                                                                      )
-                                                    ),
-                                             
-                                                    
-                                                  
-                                          /****************************VARIOS ARCHIVOS NO FUNCIONA*************** */
-                                          /*
+                              /****************************VARIOS ARCHIVOS NO FUNCIONA*************** */
+                              /*
                                                       //  ? Text('No image selected.')
                                                       ? Text('No file selected.')
                                                     //  : Image.file(files.first)
@@ -273,8 +261,8 @@ class _CrearTarea extends State<CrearTarea> {
 
                                                 */
 
-                                               //   ),
-                                                  /*
+                              //   ),
+                              /*
                                                                         
                                                   files == null? Text("Searching Files"):
                                                           ListView.builder(  //if file/folder list is grabbed, then show here
@@ -298,14 +286,14 @@ class _CrearTarea extends State<CrearTarea> {
 
                                                   */
 
-                                              ListTile(
-                                                //leading: Icon (icono al principio
+                              ListTile(
+                                //leading: Icon (icono al principio
 
-                                                //BOTON ADJUNTAR IMAGEN
-                                                trailing: IconButton(
-                                                  icon: Icon(Icons.attach_file),
-                                                  onPressed: () async {
-                                                      /*
+                                //BOTON ADJUNTAR IMAGEN
+                                trailing: IconButton(
+                                  icon: Icon(Icons.attach_file),
+                                  onPressed: () async {
+                                    /*
                                                     //Para añadir IMAGEN
                                                     //*************************************IMAGENN***************************************** */
                                                     // file = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -332,12 +320,12 @@ class _CrearTarea extends State<CrearTarea> {
                                                       print('No image selected.');
                                                     }
                                                     */
-                                                    //*************************************IMAGENN***************************************** */
-                                                    //**************************************************************************************************** */
+                                    //*************************************IMAGENN***************************************** */
+                                    //**************************************************************************************************** */
 
-                                                  //***************************************ARCHIVOOOOOO**********************************************////
-                        
-                                                        /*
+                                    //***************************************ARCHIVOOOOOO**********************************************////
+
+                                    /*
                                                           FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
                                                           if(result != null) {
@@ -353,12 +341,11 @@ class _CrearTarea extends State<CrearTarea> {
                                                             // User canceled the picker
                                                           }
                                                             */
-                                                        //return new FilePickerDemo() ;
-                                                      
+                                    //return new FilePickerDemo() ;
 
-                                                      // ****************UN SOLO ARCHIVO************************//
+                                    // ****************UN SOLO ARCHIVO************************//
 
-                                                        /*
+                                    /*
                                                         FilePickerResult result = await FilePicker.platform.pickFiles();
 
                                                                     if(result != null) {
@@ -368,7 +355,7 @@ class _CrearTarea extends State<CrearTarea> {
                                                                       // User canceled the picker
                                                                     }
                                                         */
-                                                          /*
+                                    /*
                                                                         if(result != null) {
                                                                                   PlatformFile file = result.files.first;
                                                                                   
@@ -382,35 +369,37 @@ class _CrearTarea extends State<CrearTarea> {
                                                                           }
 
                                                             */
-                                                      //************************************************************ */
-                                                      //*******************************VARIOS ARCHIVOS ****************************** */
-                                                      
-                                                      FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                                    //************************************************************ */
+                                    //*******************************VARIOS ARCHIVOS ****************************** */
 
-                                                                    if(result != null) {
-                                                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
-                                                                    files = result.paths.map((path) => File(path)).toList();
-                                                                  print('IMPRIMO URL'+files.first.toString());
-                                                                    } else {
-                                                                      // User canceled the picker
-                                                                    }
-                                                            setState(() {}) ;
+                                    FilePickerResult result = await FilePicker
+                                        .platform
+                                        .pickFiles(allowMultiple: true);
 
-                                                          
-                                                        
-                                                    //***************************************ARCHIVOOOOOO**********************************************////
+                                    if (result != null) {
+                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                      files = result.paths
+                                          .map((path) => File(path))
+                                          .toList();
+                                      print('IMPRIMO URL' +
+                                          files.first.toString());
+                                    } else {
+                                      // User canceled the picker
+                                    }
+                                    setState(() {});
 
-                                                  },
-                                                ),
+                                    //***************************************ARCHIVOOOOOO**********************************************////
+                                  },
+                                ),
 
-                                                title: Text(
-                                                  '  ',
-                                                  style: TextStyle(
-                                                      fontFamily: 'BalooBhai', fontSize: 20.0),
-                                                ),
-                                              ),
+                                title: Text(
+                                  '  ',
+                                  style: TextStyle(
+                                      fontFamily: 'BalooBhai', fontSize: 20.0),
+                                ),
+                              ),
 
-                            /*
+                              /*
                              files == null? Text("Searching Files"):
                                     ListView.builder(  //if file/folder list is grabbed, then show here
                                         itemCount: files?.length ?? 0,
@@ -431,10 +420,8 @@ class _CrearTarea extends State<CrearTarea> {
                                         },
                                     ),
                         */
-                      
-                      ])
-                  ),
-              /*
+                            ])),
+                    /*
                             files == null? Text("Searching Files"):
                                   ListView.builder(  //if file/folder list is grabbed, then show here
                                       itemCount: files?.length ?? 0,
@@ -456,7 +443,7 @@ class _CrearTarea extends State<CrearTarea> {
                                   )
                             ),
                         */
-                      /*
+                    /*
                       new Column(
                                 children: <Widget>[
                                   new Expanded(
@@ -482,24 +469,22 @@ class _CrearTarea extends State<CrearTarea> {
                             ),
                             */
                     // print(_image) ;
-                   
+
                     InkWell(
-                                    onTap: getImage,
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.black,
-                                      radius: 40.0,
-                                      child: CircleAvatar(
-                                        radius: 39.0,
-                                        child: CircleAvatar(
-                                          
-                                          child: (_image != null)
-                                          ? Image.file(_image)
-                                          : Text('   Añadir  \n     imagen')
-                                        ),
-                                        backgroundColor: Colors.white,
-                                      ),
-                                    ),
-                     ),
+                      onTap: getImage,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        radius: 40.0,
+                        child: CircleAvatar(
+                          radius: 39.0,
+                          child: CircleAvatar(
+                              child: (_image != null)
+                                  ? Image.file(_image)
+                                  : Text('   Añadir  \n     imagen')),
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
                     /*
                   ListView(
                         //Imprimir imagen

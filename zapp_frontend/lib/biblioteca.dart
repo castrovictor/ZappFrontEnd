@@ -51,16 +51,18 @@ class TareaWidget extends StatelessWidget {
                         child: Center(
                           child: Text(usuario,
                               style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold)),
+                                fontFamily: 'Montserrat',
+                                fontSize: 20.0,
+                              )),
+                          //fontWeight: FontWeight.bold)),
                         ))),
               ])),
     );
   }
 }
 
-Future getTareas() async {
+Future getTareas(
+    List<String> usuariosList, List<String> codigosUsuarios) async {
   String url = 'http://zapp.pythonanywhere.com/actividad/0';
   //print(url);
   http.Response response = await http.get(
@@ -74,18 +76,23 @@ Future getTareas() async {
   final jsonResponse = jsonDecode(response.body);
   tareas.clear();
   codigos.clear();
+  String codAux;
   if (jsonResponse.containsKey('Actividad')) {
     for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
       tareas.add(jsonResponse['Actividad'][i]['nombre']);
       codigos.add(jsonResponse['Actividad'][i]['id'].toString());
-      usuarios.add(jsonResponse['Actividad'][i]['idUsuario'].toString());
-      //print(jsonResponse['Actividad'][i]['id'].toString());
+      codAux = jsonResponse['Actividad'][i]['idUsuario'].toString();
+      usuarios.add(usuariosList[codigosUsuarios.indexOf(codAux)]);
+      //usuarios.add(jsonResponse['Actividad'][i]['idUsuario'].toString());
     }
   }
 }
 
+// ignore: must_be_immutable
 class Biblioteca extends StatefulWidget {
-  Biblioteca();
+  Biblioteca({this.usuariosList, this.codigosUsuarios});
+  List<String> usuariosList;
+  List<String> codigosUsuarios;
 
   @override
   _Deberes createState() => _Deberes();
@@ -102,7 +109,7 @@ class _Deberes extends State<Biblioteca> {
   Widget build(BuildContext context) {
     Timer(Duration(milliseconds: 500), () {
       setState(() {
-        getTareas();
+        getTareas(widget.usuariosList, widget.codigosUsuarios);
       });
     });
     //var oneSec = const Duration(seconds: 1);

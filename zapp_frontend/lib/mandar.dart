@@ -4,17 +4,25 @@ import 'mandado.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-  MyApp({this.nombre, this.descripcion, this.usuarios, this.codigos});
+  MyApp(
+      {this.nombre,
+      this.descripcion,
+      this.usuarios,
+      this.codigos,
+      this.imagen});
   final String nombre;
   final String descripcion;
   final List<String> usuarios;
   final List<String> codigos;
+  final File imagen;
   @override
   _MyAppState createState() =>
       _MyAppState(usuarios: usuarios, codigos: codigos);
@@ -75,6 +83,7 @@ class _MyAppState extends State<MyApp> {
                   'idUsuario': codigos[selectedItems[i]],
                   'idProfesional': '1',
                   'categoria': '1',
+                  'imagen': widget.imagen.toString(),
                 }
               }),
               headers: {
@@ -83,14 +92,15 @@ class _MyAppState extends State<MyApp> {
               },
             );
             final jsonResponse = jsonDecode(response.body);
+            print(widget.imagen);
 
             print(jsonResponse);
           }
-          Navigator.push(
+          /*Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => TareaMandada(
-                      nombre: "hola", selectedItems: selectedItems)));
+                      nombre: "hola", selectedItems: selectedItems)));*/
         },
         child: Text("Mandar",
             textAlign: TextAlign.center,
