@@ -10,6 +10,9 @@ import 'package:flutter/widgets.dart';
 import 'filepickerdemo.dart';
 import 'package:flutter/widgets.dart';
 
+
+import 'pdf.dart';
+
 class CrearTarea extends StatefulWidget {
   CrearTarea({this.usuarios, this.codigos});
   List<String> usuarios;
@@ -43,6 +46,7 @@ class _CrearTarea extends State<CrearTarea> {
     File file ;
     //****************************************ARCHIVOS******************* */
     
+    MyPDFList pdf ;
 
 
   //Subir imágenes
@@ -168,113 +172,151 @@ class _CrearTarea extends State<CrearTarea> {
                         color: Colors.white,
                         margin: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 25.0),
-                        child: ListTile(
-                          //leading: Icon (icono al principio
 
-                          //BOTON ADJUNTAR IMAGEN
-                          trailing: IconButton(
-                            icon: Icon(Icons.attach_file),
-                            onPressed: () async {
-                                /*
-                              //Para añadir IMAGEN
-                              //*************************************IMAGENN***************************************** */
-                              // file = await ImagePicker.pickImage(source: ImageSource.gallery);
-                              /*
-                                            file = await picker.getImage(source: ImageSource.gallery);
-                                            var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
-                                                //  setState() {
-                                                      state = res;
-                                                    print(res);
-                                                    print('COJO IMAGEN');
-                                         //         }
-                                         */
 
-                                //Lo que sirve si queremos imageeeen
-                              final pickedFile = await picker.getImage(
-                                  source: ImageSource.gallery);
+                      child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
 
-                              print(pickedFile);
-                              if (pickedFile != null) {
-                                _image = File(pickedFile.path);
-                                print('COGIDO');
-                                print(_image);
-                              } else {
-                                print('No image selected.');
-                              }
-                              */
-                              //*************************************IMAGENN***************************************** */
-                              //**************************************************************************************************** */
 
-                             //***************************************ARCHIVOOOOOO**********************************************////
-  
-                                  /*
-                                    FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
-                                    if(result != null) {
-                                             files = result.paths.map((path) => File(path)).toList();
-                                              PlatformFile file = result.files.first;
-   
-                                                  print(file.name);
-                                                  print(file.bytes);
-                                                  print(file.size);
-                                                  print(file.extension);
-                                                  print(file.path);
-                                    } else {
-                                      // User canceled the picker
-                                    }
+
+
+                                ListTile(
+                                  //leading: Icon (icono al principio
+
+                                  //BOTON ADJUNTAR IMAGEN
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.attach_file),
+                                    onPressed: () async {
+                                        /*
+                                      //Para añadir IMAGEN
+                                      //*************************************IMAGENN***************************************** */
+                                      // file = await ImagePicker.pickImage(source: ImageSource.gallery);
+                                      /*
+                                                    file = await picker.getImage(source: ImageSource.gallery);
+                                                    var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+                                                        //  setState() {
+                                                              state = res;
+                                                            print(res);
+                                                            print('COJO IMAGEN');
+                                                //         }
+                                                */
+
+                                        //Lo que sirve si queremos imageeeen
+                                      final pickedFile = await picker.getImage(
+                                          source: ImageSource.gallery);
+
+                                      print(pickedFile);
+                                      if (pickedFile != null) {
+                                        _image = File(pickedFile.path);
+                                        print('COGIDO');
+                                        print(_image);
+                                      } else {
+                                        print('No image selected.');
+                                      }
                                       */
-                                  //return new FilePickerDemo() ;
-                                
+                                      //*************************************IMAGENN***************************************** */
+                                      //**************************************************************************************************** */
 
-                                // ****************UN SOLO ARCHIVO************************//
+                                    //***************************************ARCHIVOOOOOO**********************************************////
+          
+                                          /*
+                                            FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
-                                  /*
-                                  FilePickerResult result = await FilePicker.platform.pickFiles();
+                                            if(result != null) {
+                                                    files = result.paths.map((path) => File(path)).toList();
+                                                      PlatformFile file = result.files.first;
+          
+                                                          print(file.name);
+                                                          print(file.bytes);
+                                                          print(file.size);
+                                                          print(file.extension);
+                                                          print(file.path);
+                                            } else {
+                                              // User canceled the picker
+                                            }
+                                              */
+                                          //return new FilePickerDemo() ;
+                                        
 
-                                              if(result != null) {
-                                                 file = File(result.files.single.path);
-                                                 print('Archivo cargado  : '+file.toString()) ;
-                                              } else {
-                                                // User canceled the picker
-                                              }
-                                  */
-                                    /*
-                                                   if(result != null) {
-                                                            PlatformFile file = result.files.first;
-                                                            
-                                                            print(file.name);
-                                                            print(file.bytes);
-                                                            print(file.size);
-                                                            print(file.extension);
-                                                            print(file.path);
-                                                    } else {
-                                                            // User canceled the picker
-                                                    }
+                                        // ****************UN SOLO ARCHIVO************************//
 
-                                      */
-                                //************************************************************ */
-                                //*******************************VARIOS ARCHIVOS ****************************** */
+                                          /*
+                                          FilePickerResult result = await FilePicker.platform.pickFiles();
 
-                                FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                                                      if(result != null) {
+                                                        file = File(result.files.single.path);
+                                                        print('Archivo cargado  : '+file.toString()) ;
+                                                      } else {
+                                                        // User canceled the picker
+                                                      }
+                                          */
+                                            /*
+                                                          if(result != null) {
+                                                                    PlatformFile file = result.files.first;
+                                                                    
+                                                                    print(file.name);
+                                                                    print(file.bytes);
+                                                                    print(file.size);
+                                                                    print(file.extension);
+                                                                    print(file.path);
+                                                            } else {
+                                                                    // User canceled the picker
+                                                            }
 
-                                              if(result != null) {
-                                                //   List<File> files = result.paths.map((path) => File(path)).toList();
-                                               files = result.paths.map((path) => File(path)).toList();
-                                              } else {
-                                                // User canceled the picker
-                                              }
-                                  
-                              //***************************************ARCHIVOOOOOO**********************************************////
+                                              */
+                                        //************************************************************ */
+                                        //*******************************VARIOS ARCHIVOS ****************************** */
+                                        
+                                        FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
 
-                            },
-                          ),
+                                                      if(result != null) {
+                                                        //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                                      files = result.paths.map((path) => File(path)).toList();
+                                                      } else {
+                                                        // User canceled the picker
+                                                      }
 
-                          title: Text(
-                            '  ',
-                            style: TextStyle(
-                                fontFamily: 'BalooBhai', fontSize: 20.0),
-                          ),
-                        )),
+
+                                            
+                                          
+                                      //***************************************ARCHIVOOOOOO**********************************************////
+
+                                    },
+                                  ),
+
+                                  title: Text(
+                                    '  ',
+                                    style: TextStyle(
+                                        fontFamily: 'BalooBhai', fontSize: 20.0),
+                                  ),
+                                ),
+
+                              files == null? Text("Searching Files"):
+                                    ListView.builder(  //if file/folder list is grabbed, then show here
+                                        itemCount: files?.length ?? 0,
+                                        itemBuilder: (context, index) {
+                                              return Card(
+                                                child:ListTile(
+                                                  title: Text(files[index].path.split('/').last),
+                                                  leading: Icon(Icons.picture_as_pdf),
+                                                  trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                  onTap: (){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                      return ViewPDF(pathPDF:files[index].path.toString());
+                                                      //open viewPDF page on click
+                                                    }));
+                                                  },
+                                                )
+                                              );
+                                        },
+                                    )
+                      
+                      
+                      
+                      ])
+                  ),
                     // print(_image) ;
                     InkWell(
                                     onTap: getImage,
@@ -294,15 +336,50 @@ class _CrearTarea extends State<CrearTarea> {
                                     ),
                                   ),
                     
-                    CircleAvatar(
+                  ListView(
                         //Imprimir imagen
-                        radius: 55,
-                        backgroundColor: Color(0xffFDCF09),
-                        child:files == null
+                     //   radius: 55,
+                    //    backgroundColor: Color(0xffFDCF09),
+                        files == null? Text("Searching Files"):
+                                    ListView.builder(  //if file/folder list is grabbed, then show here
+                                        itemCount: files?.length ?? 0,
+                                        //Size of each child
+                                      //    itemExtent: 100,
+                                        itemBuilder: (context, index) {
+                                          return   Card(
+                                                  child: ListTile(
+                                                    leading: FlutterLogo(size: 56.0),
+                                                    title: Text('Two-line ListTile'),
+                                                    subtitle: Text('Here is a second line'),
+                                                    trailing: Icon(Icons.more_vert),
+                                                  )
+                                          );
+                                                /*
+                                              return Card(
+                                                // height: 100.0,
+                                                child:ListTile(
+                                                  
+                                                  title: Text(files[index].path.split('/').last),
+                                                  leading: Icon(Icons.picture_as_pdf),
+                                                  trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                  //Ver el pdf
+                                                  onTap: (){
+                                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                      return ViewPDF(pathPDF:files[index].path.toString());
+                                                      //open viewPDF page on click
+                                                    }));
+                                                  },
+                                                )
+                                              );
+                                                */
+                                        },
+                                    )
+                          /*files == null
                             //  ? Text('No image selected.')
                             ? Text('No file selected.')
                           //  : Image.file(files.first)
                         :Text(files.first.toString())
+                        */
                         /*
                               child: file != null
                                   ? ClipRRect(
