@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'chat.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:dash_chat/dash_chat.dart';
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
@@ -19,16 +28,6 @@ class Tarea extends StatefulWidget {
 class _Tarea extends State<Tarea> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-  /*File _image;
-  File file;
-
-  void _getImage() async {
-    PickedFile pickedFile =
-        await ImagePicker.getImage(source: ImageSource.gallery);
-
-    file = File(pickedFile.path);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     final chat = Material(
@@ -39,13 +38,31 @@ class _Tarea extends State<Tarea> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
+          
+            Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
+                  
+          /*
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.purple,
+            ),
+            home: Chat(),
+          );
+        */
+          /*
           Navigator.push(
               context,
-              MaterialPageRoute(
+              MaterialPageRoute( /*
                   builder: (context) => Chat(
                         nombre: widget.title,
                         idActividad: widget.idTarea,
-                      )));
+                      )));*/
+                      Chat() ;
+              )
+              */
         },
         child: Text("Chat de tarea",
             textAlign: TextAlign.center,
@@ -113,7 +130,7 @@ class _Tarea extends State<Tarea> {
                         onPressed: pickImage,
                         child: Icon(Icons.camera_alt, size: 25),
                       ),*/
-                      //adjuntar,
+                      chat,
                     ]))));
   }
 
