@@ -19,16 +19,6 @@ class Tarea extends StatefulWidget {
 class _Tarea extends State<Tarea> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
-  /*File _image;
-  File file;
-
-  void _getImage() async {
-    PickedFile pickedFile =
-        await ImagePicker.getImage(source: ImageSource.gallery);
-
-    file = File(pickedFile.path);
-  }*/
-
   @override
   Widget build(BuildContext context) {
     final chat = Material(
@@ -113,7 +103,7 @@ class _Tarea extends State<Tarea> {
                         onPressed: pickImage,
                         child: Icon(Icons.camera_alt, size: 25),
                       ),*/
-                      //adjuntar,
+                      chat,
                     ]))));
   }
 
