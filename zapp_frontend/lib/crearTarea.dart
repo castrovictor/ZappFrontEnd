@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'filepickerdemo.dart';
 import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
 
 import 'pdf.dart';
 
@@ -91,9 +92,16 @@ class _CrearTarea extends State<CrearTarea> {
                           nombre: nombre,
                           descripcion: descripcion,
                           usuarios: widget.usuarios,
-                          codigos: widget.codigos,
-                          imagen: _image)));
+                          codigos: widget.codigos)));
             }
+
+            var res = await uploadImage(
+                file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+            //  setState() {
+            state = res;
+            print(res);
+            print('COJO IMAGEN');
+            //         }
 
             //**************************************************************************************************** */
             /*
@@ -196,8 +204,10 @@ class _CrearTarea extends State<CrearTarea> {
                                               //await files[0].delete();
                                               files[0].delete();
                                               print('Deleted');
+                                              setState(() {});
                                             } catch (e) {
                                               print('Couldnt delete');
+                                              setState(() {});
                                               return 0;
                                             }
 
@@ -221,6 +231,7 @@ class _CrearTarea extends State<CrearTarea> {
                                                       //  ? Text('No image selected.')
                                                       ? Text('No file selected.')
                                                     //  : Image.file(files.first)
+
                                                   :
                                                   Expanded(
                                                     child: SizedBox(
@@ -244,8 +255,10 @@ class _CrearTarea extends State<CrearTarea> {
                                                                     );
                                                               },
                                                           ),
+
                                                     ),
                                                   )
+
                                                 */
 
                               //   ),
@@ -270,6 +283,7 @@ class _CrearTarea extends State<CrearTarea> {
                                                                     );
                                                               },
                                                           ),
+
                                                   */
 
                               ListTile(
@@ -292,9 +306,11 @@ class _CrearTarea extends State<CrearTarea> {
                                                                           print('COJO IMAGEN');
                                                               //         }
                                                               */
+
                                                       //Lo que sirve si queremos imageeeen
                                                     final pickedFile = await picker.getImage(
                                                         source: ImageSource.gallery);
+
                                                     print(pickedFile);
                                                     if (pickedFile != null) {
                                                       _image = File(pickedFile.path);
@@ -311,6 +327,7 @@ class _CrearTarea extends State<CrearTarea> {
 
                                     /*
                                                           FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
                                                           if(result != null) {
                                                                   files = result.paths.map((path) => File(path)).toList();
                                                                     PlatformFile file = result.files.first;
@@ -330,6 +347,7 @@ class _CrearTarea extends State<CrearTarea> {
 
                                     /*
                                                         FilePickerResult result = await FilePicker.platform.pickFiles();
+
                                                                     if(result != null) {
                                                                       file = File(result.files.single.path);
                                                                       print('Archivo cargado  : '+file.toString()) ;
@@ -349,6 +367,7 @@ class _CrearTarea extends State<CrearTarea> {
                                                                           } else {
                                                                                   // User canceled the picker
                                                                           }
+
                                                             */
                                     //************************************************************ */
                                     //*******************************VARIOS ARCHIVOS ****************************** */
@@ -362,9 +381,12 @@ class _CrearTarea extends State<CrearTarea> {
                                       files = result.paths
                                           .map((path) => File(path))
                                           .toList();
+                                      print('IMPRIMO URL' +
+                                          files.first.toString());
                                     } else {
                                       // User canceled the picker
                                     }
+                                    setState(() {});
 
                                     //***************************************ARCHIVOOOOOO**********************************************////
                                   },
@@ -566,6 +588,7 @@ class _CrearTarea extends State<CrearTarea> {
                                             onPressed: () async {
                                               if (_formKey.currentState.validate()) {
                                                 _formKey.currentState.save();
+
                                                 //const url = 'https://pythoneverywhere/alta_socio';
                                                 //await http.post(url,
                                                 //    body: jsonEncode(<String, String>{
@@ -613,9 +636,11 @@ class _CrearTarea extends State<CrearTarea> {
 
 /*import 'package:flutter/material.dart';
 import 'perfil.dart';
+
 class CrearTarea extends StatelessWidget {
   CrearTarea();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -646,6 +671,7 @@ class CrearTarea extends StatelessWidget {
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
+
                       Card(
                         color: Colors.white,
                         margin: EdgeInsets.symmetric(
@@ -658,6 +684,7 @@ class CrearTarea extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -666,18 +693,21 @@ class CrearTarea extends StatelessWidget {
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
+
                       Card(
                           color: Colors.white,
                           margin: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 25.0),
                           child: ListTile(
                             //leading: Icon (icono al principio
+
                             title: Text(
                               '  ',
                               style: TextStyle(
                                   fontFamily: 'BalooBhai', fontSize: 80.0),
                             ),
                           )),
+
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
