@@ -168,132 +168,235 @@ class _CrearTarea extends State<CrearTarea> {
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
-                    Card(
-                        color: Colors.white,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 25.0),
+
+                       Card(
+                                   color: Colors.white,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 25.0),
 
 
-                      child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
+                                    child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                  
+                                                      /*FUNCIONA PARA UN ARCHIVO*/
+                                                    files == null
+                                                      //  ? Text('No image selected.')
+                                                      ? Text('No file selected.')
+                                                    //  : Image.file(files.first)
+                                                  : // ListView(
+                                                    Card(
+                                                                      child:ListTile(
+                                                                        title: Text(files[0].path.split('/').last),
+                                                                        leading: Icon(Icons.picture_as_pdf),
+                                                                         trailing: IconButton(
+                                                                             icon: Icon(Icons.delete),
+
+                                                                             //Borrar archivo
+                                                                                     onPressed: () async {
 
 
+                                                                                   //    Future<int> deleteFile() async {
+                                                                                              try {
+                                                                                               //files[0] = await _localFile;
 
+                                                                                                //await files[0].delete();
+                                                                                               files[0].delete();
+                                                                                                print('Deleted');
+                                                                                              } catch (e) {
+                                                                                                  print('Couldnt delete');
+                                                                                                return 0;
+                                                                                              }
+                                                                                            
+                                                                                      //    file[0]=null ;
+                                                                                     }
+                                                                         ),
+                                                                       // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                                        onTap: (){
+                                                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                                            return ViewPDF(pathPDF:files[0].path.toString());
+                                                                            //open viewPDF page on click
+                                                                          }));
+                                                                        },
+                                                                      
+                                                                      )
+                                                    ),
+                                             
+                                                    
+                                                  
+                                          /****************************VARIOS ARCHIVOS NO FUNCIONA*************** */
+                                          /*
+                                                      //  ? Text('No image selected.')
+                                                      ? Text('No file selected.')
+                                                    //  : Image.file(files.first)
 
+                                                  :
+                                                  Expanded(
+                                                    child: SizedBox(
+                                                        height: 200.0,
+                                                        child: new ListView.builder(  //if file/folder list is grabbed, then show here
+                                                               scrollDirection: Axis.horizontal,
+                                                              itemCount: files?.length ?? 0,
+                                                              itemBuilder: (context, index) {
+                                                                    Card(
+                                                                      child:ListTile(
+                                                                        title: Text(files[index].path.split('/').last),
+                                                                        leading: Icon(Icons.picture_as_pdf),
+                                                                        trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                                        onTap: (){
+                                                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                                            return ViewPDF(pathPDF:files[index].path.toString());
+                                                                            //open viewPDF page on click
+                                                                          }));
+                                                                        },
+                                                                      )
+                                                                    );
+                                                              },
+                                                          ),
 
-                                ListTile(
-                                  //leading: Icon (icono al principio
+                                                    ),
+                                                  )
 
-                                  //BOTON ADJUNTAR IMAGEN
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.attach_file),
-                                    onPressed: () async {
-                                        /*
-                                      //Para añadir IMAGEN
-                                      //*************************************IMAGENN***************************************** */
-                                      // file = await ImagePicker.pickImage(source: ImageSource.gallery);
-                                      /*
-                                                    file = await picker.getImage(source: ImageSource.gallery);
-                                                    var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
-                                                        //  setState() {
-                                                              state = res;
-                                                            print(res);
-                                                            print('COJO IMAGEN');
-                                                //         }
                                                 */
 
-                                        //Lo que sirve si queremos imageeeen
-                                      final pickedFile = await picker.getImage(
-                                          source: ImageSource.gallery);
+                                               //   ),
+                                                  /*
+                                                                        
+                                                  files == null? Text("Searching Files"):
+                                                          ListView.builder(  //if file/folder list is grabbed, then show here
+                                                              itemCount: files?.length ?? 0,
+                                                              itemBuilder: (context, index) {
+                                                                    return Card(
+                                                                      child:ListTile(
+                                                                        title: Text(files[index].path.split('/').last),
+                                                                        leading: Icon(Icons.picture_as_pdf),
+                                                                        trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                                        onTap: (){
+                                                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                                            return ViewPDF(pathPDF:files[index].path.toString());
+                                                                            //open viewPDF page on click
+                                                                          }));
+                                                                        },
+                                                                      )
+                                                                    );
+                                                              },
+                                                          ),
 
-                                      print(pickedFile);
-                                      if (pickedFile != null) {
-                                        _image = File(pickedFile.path);
-                                        print('COGIDO');
-                                        print(_image);
-                                      } else {
-                                        print('No image selected.');
-                                      }
-                                      */
-                                      //*************************************IMAGENN***************************************** */
-                                      //**************************************************************************************************** */
+                                                  */
 
-                                    //***************************************ARCHIVOOOOOO**********************************************////
-          
-                                          /*
-                                            FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                                              ListTile(
+                                                //leading: Icon (icono al principio
 
-                                            if(result != null) {
-                                                    files = result.paths.map((path) => File(path)).toList();
-                                                      PlatformFile file = result.files.first;
-          
-                                                          print(file.name);
-                                                          print(file.bytes);
-                                                          print(file.size);
-                                                          print(file.extension);
-                                                          print(file.path);
-                                            } else {
-                                              // User canceled the picker
-                                            }
-                                              */
-                                          //return new FilePickerDemo() ;
-                                        
+                                                //BOTON ADJUNTAR IMAGEN
+                                                trailing: IconButton(
+                                                  icon: Icon(Icons.attach_file),
+                                                  onPressed: () async {
+                                                      /*
+                                                    //Para añadir IMAGEN
+                                                    //*************************************IMAGENN***************************************** */
+                                                    // file = await ImagePicker.pickImage(source: ImageSource.gallery);
+                                                    /*
+                                                                  file = await picker.getImage(source: ImageSource.gallery);
+                                                                  var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+                                                                      //  setState() {
+                                                                            state = res;
+                                                                          print(res);
+                                                                          print('COJO IMAGEN');
+                                                              //         }
+                                                              */
 
-                                        // ****************UN SOLO ARCHIVO************************//
+                                                      //Lo que sirve si queremos imageeeen
+                                                    final pickedFile = await picker.getImage(
+                                                        source: ImageSource.gallery);
 
-                                          /*
-                                          FilePickerResult result = await FilePicker.platform.pickFiles();
+                                                    print(pickedFile);
+                                                    if (pickedFile != null) {
+                                                      _image = File(pickedFile.path);
+                                                      print('COGIDO');
+                                                      print(_image);
+                                                    } else {
+                                                      print('No image selected.');
+                                                    }
+                                                    */
+                                                    //*************************************IMAGENN***************************************** */
+                                                    //**************************************************************************************************** */
 
-                                                      if(result != null) {
-                                                        file = File(result.files.single.path);
-                                                        print('Archivo cargado  : '+file.toString()) ;
-                                                      } else {
-                                                        // User canceled the picker
-                                                      }
-                                          */
-                                            /*
+                                                  //***************************************ARCHIVOOOOOO**********************************************////
+                        
+                                                        /*
+                                                          FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
                                                           if(result != null) {
+                                                                  files = result.paths.map((path) => File(path)).toList();
                                                                     PlatformFile file = result.files.first;
-                                                                    
-                                                                    print(file.name);
-                                                                    print(file.bytes);
-                                                                    print(file.size);
-                                                                    print(file.extension);
-                                                                    print(file.path);
-                                                            } else {
-                                                                    // User canceled the picker
-                                                            }
+                        
+                                                                        print(file.name);
+                                                                        print(file.bytes);
+                                                                        print(file.size);
+                                                                        print(file.extension);
+                                                                        print(file.path);
+                                                          } else {
+                                                            // User canceled the picker
+                                                          }
+                                                            */
+                                                        //return new FilePickerDemo() ;
+                                                      
 
-                                              */
-                                        //************************************************************ */
-                                        //*******************************VARIOS ARCHIVOS ****************************** */
-                                        
-                                        FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+                                                      // ****************UN SOLO ARCHIVO************************//
 
-                                                      if(result != null) {
-                                                        //   List<File> files = result.paths.map((path) => File(path)).toList();
-                                                      files = result.paths.map((path) => File(path)).toList();
-                                                      } else {
-                                                        // User canceled the picker
-                                                      }
+                                                        /*
+                                                        FilePickerResult result = await FilePicker.platform.pickFiles();
+
+                                                                    if(result != null) {
+                                                                      file = File(result.files.single.path);
+                                                                      print('Archivo cargado  : '+file.toString()) ;
+                                                                    } else {
+                                                                      // User canceled the picker
+                                                                    }
+                                                        */
+                                                          /*
+                                                                        if(result != null) {
+                                                                                  PlatformFile file = result.files.first;
+                                                                                  
+                                                                                  print(file.name);
+                                                                                  print(file.bytes);
+                                                                                  print(file.size);
+                                                                                  print(file.extension);
+                                                                                  print(file.path);
+                                                                          } else {
+                                                                                  // User canceled the picker
+                                                                          }
+
+                                                            */
+                                                      //************************************************************ */
+                                                      //*******************************VARIOS ARCHIVOS ****************************** */
+                                                      
+                                                      FilePickerResult result = await FilePicker.platform.pickFiles(allowMultiple: true);
+
+                                                                    if(result != null) {
+                                                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                                                    files = result.paths.map((path) => File(path)).toList();
+                                                                    } else {
+                                                                      // User canceled the picker
+                                                                    }
 
 
-                                            
-                                          
-                                      //***************************************ARCHIVOOOOOO**********************************************////
+                                                          
+                                                        
+                                                    //***************************************ARCHIVOOOOOO**********************************************////
 
-                                    },
-                                  ),
+                                                  },
+                                                ),
 
-                                  title: Text(
-                                    '  ',
-                                    style: TextStyle(
-                                        fontFamily: 'BalooBhai', fontSize: 20.0),
-                                  ),
-                                ),
+                                                title: Text(
+                                                  '  ',
+                                                  style: TextStyle(
+                                                      fontFamily: 'BalooBhai', fontSize: 20.0),
+                                                ),
+                                              ),
 
-                              files == null? Text("Searching Files"):
+                            /*
+                             files == null? Text("Searching Files"):
                                     ListView.builder(  //if file/folder list is grabbed, then show here
                                         itemCount: files?.length ?? 0,
                                         itemBuilder: (context, index) {
@@ -311,13 +414,60 @@ class _CrearTarea extends State<CrearTarea> {
                                                 )
                                               );
                                         },
-                                    )
-                      
-                      
+                                    ),
+                        */
                       
                       ])
                   ),
+              /*
+                            files == null? Text("Searching Files"):
+                                  ListView.builder(  //if file/folder list is grabbed, then show here
+                                      itemCount: files?.length ?? 0,
+                                      itemBuilder: (context, index) {
+                                            return Card(
+                                              child:ListTile(
+                                                title: Text(files[index].path.split('/').last),
+                                                leading: Icon(Icons.picture_as_pdf),
+                                                trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                onTap: (){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                    return ViewPDF(pathPDF:files[index].path.toString());
+                                                    //open viewPDF page on click
+                                                  }));
+                                                },
+                                              )
+                                            );
+                                      },
+                                  )
+                            ),
+                        */
+                      /*
+                      new Column(
+                                children: <Widget>[
+                                  new Expanded(
+                                      child: new ListView.builder( itemCount: files?.length ?? 0,
+                                      itemBuilder: (context, index) {
+                                            return Card(
+                                              child:ListTile(
+                                                title: Text(files[index].path.split('/').last),
+                                                leading: Icon(Icons.picture_as_pdf),
+                                                trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                                onTap: (){
+                                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                    return ViewPDF(pathPDF:files[index].path.toString());
+                                                    //open viewPDF page on click
+                                                  }));
+                                                },
+                                              )
+                                            );
+                                      },
+                                  )
+                                  ),
+                                ],
+                            ),
+                            */
                     // print(_image) ;
+                   
                     InkWell(
                                     onTap: getImage,
                                     child: CircleAvatar(
@@ -334,13 +484,13 @@ class _CrearTarea extends State<CrearTarea> {
                                         backgroundColor: Colors.white,
                                       ),
                                     ),
-                                  ),
-                    
+                     ),
+                    /*
                   ListView(
                         //Imprimir imagen
                      //   radius: 55,
                     //    backgroundColor: Color(0xffFDCF09),
-                        files == null? Text("Searching Files"):
+                       child: files == null? Text("Searching Files"):
                                     ListView.builder(  //if file/folder list is grabbed, then show here
                                         itemCount: files?.length ?? 0,
                                         //Size of each child
@@ -403,8 +553,8 @@ class _CrearTarea extends State<CrearTarea> {
                                       ),
                                     ),
                                 */
-                        ),
-                    
+                     ),
+                    */
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
