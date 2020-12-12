@@ -9,7 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'filepickerdemo.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:http/http.dart' as http;
 
 import 'pdf.dart';
 
@@ -78,6 +78,10 @@ class _CrearTarea extends State<CrearTarea> {
               style: style.copyWith(
                   color: Colors.white, fontWeight: FontWeight.bold)),
           onPressed: () async {
+
+
+
+
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
 
@@ -97,6 +101,14 @@ class _CrearTarea extends State<CrearTarea> {
                           usuarios: widget.usuarios,
                           codigos: widget.codigos)));
             }
+
+                  var res = await uploadImage(file.path, "http://zapp.pythonanywhere.com/crearActividad/");
+                                                                      //  setState() {
+                                                                            state = res;
+                                                                          print(res);
+                                                                          print('COJO IMAGEN');
+                                                              //         }
+
 
             //**************************************************************************************************** */
             /*
@@ -203,8 +215,10 @@ class _CrearTarea extends State<CrearTarea> {
                                                                                                 //await files[0].delete();
                                                                                                files[0].delete();
                                                                                                 print('Deleted');
+                                                                                                setState(() {}) ;
                                                                                               } catch (e) {
                                                                                                   print('Couldnt delete');
+                                                                                                   setState(() {}) ;
                                                                                                 return 0;
                                                                                               }
                                                                                             
@@ -376,10 +390,11 @@ class _CrearTarea extends State<CrearTarea> {
                                                                     if(result != null) {
                                                                       //   List<File> files = result.paths.map((path) => File(path)).toList();
                                                                     files = result.paths.map((path) => File(path)).toList();
+                                                                  print('IMPRIMO URL'+files.first.toString());
                                                                     } else {
                                                                       // User canceled the picker
                                                                     }
-
+                                                            setState(() {}) ;
 
                                                           
                                                         
