@@ -62,6 +62,9 @@ class _CrearTarea extends State<CrearTarea> {
 
   @override
   Widget build(BuildContext context) {
+    double radius = 40;
+    double iconSize = 40;
+    double distance = 10;
     var file = null;
     //Botón crear
     final crear = Material(
@@ -483,18 +486,55 @@ class _CrearTarea extends State<CrearTarea> {
                     InkWell(
                       onTap: getImage,
                       child: CircleAvatar(
-                        backgroundColor: Colors.black,
+                        backgroundColor: Colors.white,
                         radius: 40.0,
-                        child: CircleAvatar(
-                          radius: 39.0,
+                        
                           child: CircleAvatar(
                               child: (_image != null)
                                   ? Image.file(_image)
-                                  : Text('   Añadir  \n     imagen')),
-                          backgroundColor: Colors.white,
-                        ),
+                                  : Image.asset('assets/gal.png'),
+                                  backgroundColor: Colors.white,
+                                  radius: 40.0,
+                               ),
+                        //  backgroundColor: Colors.white,
+
+
+                        
                       ),
                     ),
+                      Positioned(
+                           top: -(radius + iconSize + distance),
+                          right: 0,
+                          bottom: radius,
+                          left: 0,
+                          child:  IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () async {
+                                    setState(() {});
+                                            try {
+                                          
+                                              await _image.delete();
+                                             // files=null ;
+                                              print('Deleted image');
+                                              print('IMPRIMO image' +_image.toString());
+                                             // setState(() {});
+
+                                            } catch (e) {
+
+                                              _image=null ;
+                                              print('Couldnt delete image');
+                                              print('IMPRIMO image' +
+                                              _image.toString());
+                                          
+                                            }
+
+                                  }
+                            /*Icon(
+                            Icons.delete_forever,
+                            color: Colors.grey,
+                            size: iconSize,
+                            */
+                  )),
                     /*
                   ListView(
                         //Imprimir imagen
