@@ -75,6 +75,7 @@ class _CrearTarea extends State<CrearTarea> {
               style: style.copyWith(
                   color: Colors.white, fontWeight: FontWeight.bold)),
           onPressed: () async {
+
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
 
@@ -179,15 +180,17 @@ class _CrearTarea extends State<CrearTarea> {
                         margin: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 25.0),
                         child: Column(
+
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               /*FUNCIONA PARA UN ARCHIVO*/
                               files == null
                                   //  ? Text('No image selected.')
-                                  ? Text('No file selected.')
+                                  ? Text('')
                                   //  : Image.file(files.first)
                                   : // ListView(
                                   Card(
+                                      
                                       child: ListTile(
                                       title:
                                           Text(files[0].path.split('/').last),
@@ -197,19 +200,25 @@ class _CrearTarea extends State<CrearTarea> {
 
                                           //Borrar archivo
                                           onPressed: () async {
-                                            //    Future<int> deleteFile() async {
+                                           //  setState(() {});
+                                            setState(() {});
                                             try {
-                                              //files[0] = await _localFile;
-
-                                              //await files[0].delete();
-                                              files[0].delete();
+                                          
+                                              await files.first.delete();
+                                             // files=null ;
                                               print('Deleted');
-                                              setState(() {});
+                                              print('IMPRIMO URL' +files.first.toString());
+                                             // setState(() {});
+
                                             } catch (e) {
+
+                                              files=null ;
                                               print('Couldnt delete');
-                                              setState(() {});
-                                              return 0;
+                                              print('IMPRIMO URL' +
+                                              files.first.toString());
+                                          
                                             }
+                                         //   setState(() {});
 
                                             //    file[0]=null ;
                                           }),
@@ -224,8 +233,9 @@ class _CrearTarea extends State<CrearTarea> {
                                           //open viewPDF page on click
                                         }));
                                       },
-                                    )),
-
+                                    )
+                              ),
+                             
                               /****************************VARIOS ARCHIVOS NO FUNCIONA*************** */
                               /*
                                                       //  ? Text('No image selected.')
@@ -419,7 +429,7 @@ class _CrearTarea extends State<CrearTarea> {
                                               );
                                         },
                                     ),
-                        */
+                        */    
                             ])),
                     /*
                             files == null? Text("Searching Files"):

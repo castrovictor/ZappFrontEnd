@@ -5,12 +5,12 @@ import 'chat.dart';
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:dash_chat/dash_chat.dart';
+//import 'package:dash_chat/dash_chat.dart';
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
@@ -38,11 +38,11 @@ class _Tarea extends State<Tarea> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          
+          /*
             Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()));
-                  
+               //   MaterialPageRoute(builder: (context) => WelcomeScreen()));
+               */   
           /*
           return MaterialApp(
             title: 'Flutter Demo',
@@ -52,17 +52,16 @@ class _Tarea extends State<Tarea> {
             home: Chat(),
           );
         */
-          /*
+          
           Navigator.push(
               context,
-              MaterialPageRoute( /*
+              MaterialPageRoute( 
                   builder: (context) => Chat(
-                        nombre: widget.title,
-                        idActividad: widget.idTarea,
-                      )));*/
-                      Chat() ;
-              )
-              */
+                        contenido: widget.title,
+                        idmensaje: widget.idTarea   ))
+                );
+            
+              
         },
         child: Text("Chat de tarea",
             textAlign: TextAlign.center,
