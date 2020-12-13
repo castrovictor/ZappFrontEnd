@@ -42,7 +42,7 @@ class _Tarea extends State<Tarea> {
             Navigator.push(
                   context,
                //   MaterialPageRoute(builder: (context) => WelcomeScreen()));
-               */   
+               */
           /*
           return MaterialApp(
             title: 'Flutter Demo',
@@ -52,16 +52,12 @@ class _Tarea extends State<Tarea> {
             home: Chat(),
           );
         */
-          
+
           Navigator.push(
               context,
-              MaterialPageRoute( 
-                  builder: (context) => Chat(
-                        contenido: widget.title,
-                        idmensaje: widget.idTarea   ))
-                );
-            
-              
+              MaterialPageRoute(
+                  builder: (context) =>
+                      Chat(nombre: widget.title, idActividad: widget.idTarea)));
         },
         child: Text("Chat de tarea",
             textAlign: TextAlign.center,
