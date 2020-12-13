@@ -149,6 +149,7 @@ class _Chat extends State<Chat> {
     setState(() {
       _image = File(pickedFile.path);
     });
+      setState(() {});
 
   }
   //*****************IMAGENES**************************************/ */
@@ -167,12 +168,14 @@ class _Chat extends State<Chat> {
 
 // This funcion will helps you to pick a Video File
   _pickVideo() async {
+      setState(() {});
       PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
       _video = File(pickedFile.path); 
       _videoPlayerController = VideoPlayerController.file(_video)..initialize().then((_) {
         setState(() { });
         _videoPlayerController.play();
       });
+        setState(() {});
 }
 
   //Subir imágenes
@@ -445,7 +448,7 @@ class _Chat extends State<Chat> {
                                                                                           _video.toString());
                                                                                       
                                                                                         }
-
+                                                                                setState(() {});
                                                                               }
                                                                         /*Icon(
                                                                         Icons.delete_forever,
@@ -454,7 +457,7 @@ class _Chat extends State<Chat> {
                                                                         */
                                                               )),
                                                             
-                        
+                                       
 
                 
                 ],
