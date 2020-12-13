@@ -128,10 +128,12 @@ class _Chat extends State<Chat> {
 
     file = File(pickedFile.path);
   }*/
-
+  final TextEditingController textEditingController = TextEditingController();
   Widget buildInput() {
-   
-
+  
+      if (textEditingController.text != '') {
+             textEditingController.clear();
+          }
     return Container(
       child: Row(
         children: <Widget>[
@@ -160,11 +162,12 @@ class _Chat extends State<Chat> {
           ),
 
           // Edit text
+         
           Flexible(
             child: Container(
           //      width: 100.00,
             child: TextField(
-               
+                  controller: textEditingController,
                    decoration: InputDecoration.collapsed(
                   hintText: 'Type your message...',
                   hintStyle: TextStyle(color: Colors.blue),
@@ -172,6 +175,7 @@ class _Chat extends State<Chat> {
                  onSubmitted: (value) {
 
                      mensaje = value;
+                      textEditingController.clear();
                  }
               /*
                 child: MyTextFormField(
@@ -213,6 +217,7 @@ class _Chat extends State<Chat> {
                 });
                 _formKey.currentState.reset();
               }
+               _formKey.currentState.reset();
             },
                 color: Colors.blueGrey,
               ),
@@ -220,7 +225,12 @@ class _Chat extends State<Chat> {
             color: Colors.white,
           ),
         ],
+     
+     
       ),
+
+
+
       width: double.infinity,
       height: 50.0,
       decoration: BoxDecoration(
