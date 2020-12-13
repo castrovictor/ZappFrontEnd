@@ -143,11 +143,13 @@ class _Chat extends State<Chat> {
   final picker = ImagePicker();
 
   Future getImage() async {
+    
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       _image = File(pickedFile.path);
     });
+
   }
   //*****************IMAGENES**************************************/ */
 
@@ -198,8 +200,10 @@ class _Chat extends State<Chat> {
   
       return showDialog<void>(
         context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
+  builder: (context) {
+    String contentText = "Content of Dialog";
+    return StatefulBuilder(
+      builder: (context, setState) {
           return AlertDialog(
             title: Text('Adjuntar archivo'),
             content: SingleChildScrollView(
@@ -209,7 +213,7 @@ class _Chat extends State<Chat> {
                 children: <Widget>[
 
 
-
+                    Text(contentText),
                     Card(
                         color: Colors.white,
                         margin: EdgeInsets.symmetric(
@@ -237,6 +241,9 @@ class _Chat extends State<Chat> {
                                           onPressed: () async {
                                            //  setState(() {});
                                             setState(() {});
+                                             setState(() {
+                  contentText = "Changed Content of Dialog";
+                });
                                             try {
                                           
                                               await files.first.delete();
@@ -260,7 +267,9 @@ class _Chat extends State<Chat> {
                                       // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
                                       onTap: () {
                                            setState(() {});
-
+                                             setState(() {
+                                        contentText = "Changed Content of Dialog";
+                                    });
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
@@ -284,7 +293,9 @@ class _Chat extends State<Chat> {
                                   onPressed: () async {
                                    
                                        setState(() {});
-
+                                        setState(() {
+                                                          contentText = "Changed Content of Dialog";
+                                                        });
                                  
                                     //*******************************VARIOS ARCHIVOS ****************************** */
 
@@ -325,6 +336,7 @@ class _Chat extends State<Chat> {
                         radius: 40.0,
                         
                           child: CircleAvatar(
+                            
                               child: (_image != null)
                                   ? Image.file(_image)
                                   : Image.asset('assets/gal.png'),
@@ -460,6 +472,7 @@ class _Chat extends State<Chat> {
                 },
               ),
             ],
+          );}
           );
         },
       );
