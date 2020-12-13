@@ -10,7 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'filepickerdemo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:video_player/video_player.dart';
 import 'pdf.dart';
 
 class CrearTarea extends StatefulWidget {
@@ -45,7 +45,19 @@ class _CrearTarea extends State<CrearTarea> {
   File file;
   //****************************************ARCHIVOS******************* */
 
-  MyPDFList pdf;
+  /******************************************VIDEOO****************************** */
+  File _video;
+  VideoPlayerController _videoPlayerController;
+
+// This funcion will helps you to pick a Video File
+  _pickVideo() async {
+      PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
+      _video = File(pickedFile.path); 
+      _videoPlayerController = VideoPlayerController.file(_video)..initialize().then((_) {
+        setState(() { });
+        _videoPlayerController.play();
+      });
+}
 
   //Subir imágenes
   //**************************************************************************************************** */
@@ -535,6 +547,24 @@ class _CrearTarea extends State<CrearTarea> {
                             size: iconSize,
                             */
                   )),
+
+                  /**************************************VIDEO********************************** */
+                  if(_video != null) 
+                                  _videoPlayerController.value.initialized
+                              ? AspectRatio(
+                                  aspectRatio: _videoPlayerController.value.aspectRatio,
+                                  child: VideoPlayer(_videoPlayerController),
+                              )
+                              : Container()
+                          else
+                              Text("Click on Pick Video to select video", style: TextStyle(fontSize: 18.0),),
+                          RaisedButton(
+                              onPressed: () {
+                                  _pickVideo();
+                              },
+                       child: Text("Pick Video From Gallery"),
+                    ),
+                        /**************************************VIDEO********************************** */
                     /*
                   ListView(
                         //Imprimir imagen
