@@ -188,11 +188,14 @@ class _Chat extends State<Chat> {
   @override
   Widget build(BuildContext context) {
 
-
+     double radius = 40;
+    double iconSize = 40;
+    double distance = 10;
+    var file = null;
     Future<void> _showMyDialog() async {
          setState(() {});
 
-
+  
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -200,7 +203,9 @@ class _Chat extends State<Chat> {
           return AlertDialog(
             title: Text('Adjuntar archivo'),
             content: SingleChildScrollView(
-              child: ListBody(
+        //      child: ListBody(
+          child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
 
@@ -254,6 +259,8 @@ class _Chat extends State<Chat> {
                                           }),
                                       // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
                                       onTap: () {
+                                           setState(() {});
+
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
@@ -276,6 +283,7 @@ class _Chat extends State<Chat> {
                                   icon: Icon(Icons.attach_file),
                                   onPressed: () async {
                                    
+                                       setState(() {});
 
                                  
                                     //*******************************VARIOS ARCHIVOS ****************************** */
@@ -308,8 +316,133 @@ class _Chat extends State<Chat> {
                               ),
 
                             ])),
+                    /***********************************************************************************IMAGEN*******************************+ */
+                    
+                    InkWell(
+                      onTap: getImage,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 40.0,
+                        
+                          child: CircleAvatar(
+                              child: (_image != null)
+                                  ? Image.file(_image)
+                                  : Image.asset('assets/gal.png'),
+                                  backgroundColor: Colors.white,
+                                  radius: 50.0,
+                               ),
+                        //  backgroundColor: Colors.white,
+
+
+                        
+                      ),
+                    ),
+                     Positioned(
+                           top: -(radius + iconSize + distance),
+                          right: 0,
+                          bottom: radius,
+                          left: 0,
+                          child:  IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () async {
+                                    setState(() {});
+                                            try {
+                                          
+                                              await _image.delete();
+                                             // files=null ;
+                                              print('Deleted image');
+                                              print('IMPRIMO image' +_image.toString());
+                                             // setState(() {});
+
+                                            } catch (e) {
+
+                                              _image=null ;
+                                              print('Couldnt delete image');
+                                              print('IMPRIMO image' +
+                                              _image.toString());
+                                          
+                                            }
+                                          setState(() {});
+                                  }
+                            /*Icon(
+                            Icons.delete_forever,
+                            color: Colors.grey,
+                            size: iconSize,
+                            */  
+                          )
+                  ),
 
                     
+                    /***********************************************************************************IMAGEN*******************************+ */
+
+
+
+                                            _video==null
+
+                                                ?
+                                                        InkWell(
+                                                              onTap:  _pickVideo,
+                                                          child: CircleAvatar(
+                                                            backgroundColor: Colors.white,
+                                                            radius: 40.0,
+                                                            
+                                                              child: 
+                                                                        CircleAvatar(
+                                                                        child: Image.asset('assets/23.webp'),
+                                                                            backgroundColor: Colors.white,
+                                                                            radius: 30.0,
+                                                                        ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                                                ),
+                                                          )
+
+                                          :
+
+                                                       _videoPlayerController.value.initialized
+                                                      ? AspectRatio(
+                                                          aspectRatio: _videoPlayerController.value.aspectRatio,
+                                                          child: VideoPlayer(_videoPlayerController),
+                                                      )
+                                                      : Container(),
+                                                      
+                                                       Positioned(
+                                                                      top: -(radius + iconSize + distance),
+                                                                      right: 0,
+                                                                      bottom: radius,
+                                                                      left: 0,
+                                                                      child:  IconButton(
+                                                                              icon: Icon(Icons.delete),
+                                                                              onPressed: () async {
+                                                                                setState(() {});
+                                                                                        try {
+                                                                                      
+                                                                                          await _video.delete();
+                                                                                        // files=null ;
+                                                                                          print('Deleted video');
+                                                                                          print('IMPRIMO video' +_video.toString());
+                                                                                        // setState(() {});
+
+                                                                                        } catch (e) {
+
+                                                                                          _video=null ;
+                                                                                          print('Couldnt delete video');
+                                                                                          print('IMPRIMO video' +
+                                                                                          _video.toString());
+                                                                                      
+                                                                                        }
+
+                                                                              }
+                                                                        /*Icon(
+                                                                        Icons.delete_forever,
+                                                                        color: Colors.grey,
+                                                                        size: iconSize,
+                                                                        */
+                                                              )),
+                                                            
+                        
 
                 
                 ],
@@ -319,9 +452,11 @@ class _Chat extends State<Chat> {
               TextButton(
                 child: Text('Aceptar'),
                 onPressed: () {
+                          setState(() {});
                   //aqui deberia hacer las cosas de meter en la lista la cosa que se haya elegido y tal
                   //y un set state
                   Navigator.of(context).pop();
+                        setState(() {});
                 },
               ),
             ],
