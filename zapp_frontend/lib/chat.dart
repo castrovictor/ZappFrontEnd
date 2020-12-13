@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'tarea.dart';
-
-import 'dart:convert';
+import 'myTextFormField.dart';
 
 //import 'imagePicker.dart';
 
@@ -13,14 +12,23 @@ import 'dart:convert';
 
 List<String> mensajes = new List<String>();
 List<String> codigos = new List<String>();
+List<bool> tutor = new List<bool>();
+
 class MensajeWidget extends StatelessWidget {
-  MensajeWidget({this.iconData, this.title, this.onPressed, this.file,this.fimage, this.tutor});
+  MensajeWidget(
+      {this.iconData,
+      this.title,
+      this.onPressed,
+      this.file,
+      this.fimage,
+      this.tutor});
 
   /// icon data
   final IconData iconData;
-  final File file ;
+  final File file;
   final File fimage;
-  final bool tutor ;
+  final bool tutor;
+
   /// Title to show
   final String title;
 
@@ -41,71 +49,74 @@ class MensajeWidget extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: MediaQuery.of(context).size.height * 0.075,
                     child: ColoredBox(
-                        color: Colors.lightBlue[50],
-                        child: Center(
-                            //poner mensaje dependiendo de si es de tutor
-                            //Distinguir si el contenido es nulll 
-                          child: Text(title,
-                              style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold)),
-                        ))),
-                        //
+                      color: Colors.lightBlue[50],
+                      // child: Center(
+                      //poner mensaje dependiendo de si es de tutor
+                      //Distinguir si el contenido es nulll
+                      child: Text(title,
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold)),
+                    )),
+                //
 
-
-
-                SizedBox(
+                /*   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.75,
                     height: MediaQuery.of(context).size.height * 0.075,
                     child: ColoredBox(
                         color: Colors.lightBlue[50],
                         //
-                        child: Center(child: Icon(iconData, size: 40.0)))),
-
-
+                        child: Center(child: Icon(iconData, size: 40.0)))),*/
               ])),
     );
   }
 }
-Future getMensajes(codigo) async {
-  String url = 'http://zapp.pythonanywhere.com/mensaje/noentregadas/';
-  url = url + codigo;
+
+Future getMensajes(idActividad) async {
+  String url = 'http://zapp.pythonanywhere.com/actividad/adjuntar/';
+  url = url + idActividad;
   //print(url);
-  http.Response response = await http.get(
+  /*http.Response response = await http.get(
     url,
     headers: {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.contentTypeHeader: 'application/json',
     },
-  );
+  );*/
 
-  final jsonResponse = jsonDecode(response.body);
+  //final jsonResponse = jsonDecode(response.body);
   mensajes.clear();
-  codigos.clear();
-  if (jsonResponse.containsKey('Mensaje')) {
-    for (int i = 0; i < jsonResponse['Mensaje'].length; i++) {
-      mensajes.add(jsonResponse['Mensaje'][i]['contenido']);
-      codigos.add(jsonResponse['Mensaje'][i]['id'].toString());
-      //print(jsonResponse['mensaje'][i]['id'].toString());
-    }
-  }
+  tutor.clear();
+  mensajes.add("hola");
+  tutor.add(true);
+  mensajes.add("que tal");
+  tutor.add(false);
+
+  /*if (jsonResponse.containsKey('Adjuntado')) {
+    for (int i = 0; i < jsonResponse['Adjuntado'].length; i++) {
+      mensajes.add(jsonResponse['Adjuntado'][i]['comentario']);
+      if (jsonResponse['Adjuntado'][i]['is_staff']) {
+        tutor.add('true');
+      } else {
+        tutor.add('false');
+      }
+    }*/
 }
+
 class Chat extends StatefulWidget {
+  Chat({this.nombre, this.idActividad});
+  final String nombre;
+  final String idActividad;
 
-
-
-  Chat({this.contenido, this.idmensaje});
-  final String contenido;
-  final String idmensaje;
   @override
   _Chat createState() => _Chat();
-
-
 }
 
 class _Chat extends State<Chat> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+  final _formKey = GlobalKey<FormState>();
+  String mensaje;
 
   /*File _image;
   File file;
@@ -119,13 +130,67 @@ class _Chat extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(milliseconds: 500), () {
-      setState(() {
-        getMensajes(widget.idmensaje);
-      });
-    });
+    final enviarMensaje = Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Color(0xff01A0C7),
+        child: MaterialButton(
+            minWidth: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                setState(() {
+                  mensajes.add(mensaje);
+                  tutor.add(true);
+                });
+                _formKey.currentState.reset();
+              }
+            }));
+    /*
+            if (_formKey.currentState.validate()) {
+              _formKey.currentState.save();
 
-    final chat = Material(
+              const url = 'http://zapp.pythonanywhere.com/actividad/adjuntar/';
+              http.Response response = await http.post(
+                url,
+                body: jsonEncode(<String, dynamic>{
+                  "adjutando": {
+                    'comentario': mensaje,
+                    'idActividad': widget.idActividad,
+                    'is_staff': 'false',
+                  }
+                }),
+                headers: {
+                  HttpHeaders.acceptHeader: 'application/json',
+                  HttpHeaders.contentTypeHeader: 'application/json',
+                },
+              );
+
+              final jsonResponse = jsonDecode(response.body);
+
+              print(response.body);
+
+              print(jsonResponse['id'].toString());
+            }*/
+    // }));
+
+    /*  Timer(Duration(milliseconds: 500), () {
+      setState(() {
+        mensajes.add("hola");
+        tutor.add(true);
+        mensajes.add("que tal");
+        tutor.add(false);
+        //getMensajes(widget.idActividad);
+      });
+    });*/
+    /* Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        getMensajes(widget.idActividad);
+      });
+    });*/
+
+    /*final chat = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
@@ -138,36 +203,32 @@ class _Chat extends State<Chat> {
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
-    );
+    );*/
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.contenido),
+          title: Text(widget.nombre),
           backgroundColor: Colors.green,
         ),
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(36.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                      
-                          child: ListView(children: [
-                        for (int i = 0; i < mensajes.length; i++)
-
-
-                            //*****CREA MENSAJE **************/
-                          MensajeWidget(
-
-                            
-                            iconData: Icons.pending_actions_rounded,
-                            title: mensajes[i],
-
-
-                            onPressed: () async {
-                              String url =
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                              child: ListView(children: [
+                            for (int i = 0; i < mensajes.length; i++)
+                              //*****CREA MENSAJE **************/
+                              MensajeWidget(
+                                iconData: Icons.pending_actions_rounded,
+                                title: mensajes[i],
+                                tutor: tutor[i],
+                                onPressed: () async {
+                                  /*String url =
                                   'http://zapp.pythonanywhere.com/mensaje/';
                               url = url + codigos[i];
                               //print(url);
@@ -191,16 +252,21 @@ class _Chat extends State<Chat> {
                                   builder: (context) => Tarea(
                                       iconData: Icons.pending_actions_rounded,
                                       title: contenido,
-                                      description: descripcion)));
-                            },
-                          
-                          
+                                      description: descripcion)))*/
+                                },
+                              )
+
                             /******************************/
-
-                          )
-
-                      ]))
-                    ]))));
+                          ])),
+                          MyTextFormField(
+                            hintText: 'Escribe mensaje',
+                            text: 'Escribe una respuesta',
+                            onSaved: (String value) {
+                              mensaje = value;
+                            },
+                          ),
+                          enviarMensaje,
+                        ])))));
   }
 
   @override
