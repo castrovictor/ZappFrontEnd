@@ -506,7 +506,7 @@ class _CrearTarea extends State<CrearTarea> {
                                   ? Image.file(_image)
                                   : Image.asset('assets/gal.png'),
                                   backgroundColor: Colors.white,
-                                  radius: 40.0,
+                                  radius: 50.0,
                                ),
                         //  backgroundColor: Colors.white,
 
@@ -549,6 +549,69 @@ class _CrearTarea extends State<CrearTarea> {
                   )),
 
                   /**************************************VIDEO********************************** */
+                 //  (() {
+                                            _video==null
+                                                ?
+                                                        InkWell(
+                                                              onTap:  _pickVideo,
+                                                          child: CircleAvatar(
+                                                            backgroundColor: Colors.white,
+                                                            radius: 40.0,
+                                                            
+                                                              child: 
+                                                                        CircleAvatar(
+                                                                        child: Image.asset('assets/23.webp'),
+                                                                            backgroundColor: Colors.white,
+                                                                            radius: 30.0,
+                                                                        ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                                                ),
+                                                          )
+
+                                          :
+
+                                                       _videoPlayerController.value.initialized
+                                                      ? AspectRatio(
+                                                          aspectRatio: _videoPlayerController.value.aspectRatio,
+                                                          child: VideoPlayer(_videoPlayerController),
+                                                      )
+                                                      : Container(),
+
+
+
+                                            
+                 //   }()),
+                    /*
+                    InkWell(
+                      onTap:  _pickVideo,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 40.0,
+                        
+                          child: _video!=null
+                             ?
+                                    CircleAvatar(
+                                    child: (_video != null)
+                                        ? {_videoPlayerController.value.initialized
+                                            ? AspectRatio(
+                                                aspectRatio: _videoPlayerController.value.aspectRatio,
+                                                child: VideoPlayer(_videoPlayerController),
+                                            )
+                                            : Container()}
+                                        : Image.asset('assets/23.webp'),
+                                        backgroundColor: Colors.white,
+                                        radius: 30.0,
+                                ),
+                        //  backgroundColor: Colors.white,
+
+
+                        
+                      )
+                    ),*/
+                    /*
                   if(_video != null) 
                                   _videoPlayerController.value.initialized
                               ? AspectRatio(
@@ -563,8 +626,8 @@ class _CrearTarea extends State<CrearTarea> {
                                   _pickVideo();
                               },
                        child: Text("Pick Video From Gallery"),
-                    ),
-                        /**************************************VIDEO********************************** */
+                   ),
+                      */  //**************************************VIDEO********************************** */
                     /*
                   ListView(
                         //Imprimir imagen
