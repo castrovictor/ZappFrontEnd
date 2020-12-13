@@ -130,6 +130,50 @@ class _Chat extends State<Chat> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Adjuntar archivo'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('imagen'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  //aqui deberia hacer las cosas de meter en la lista la cosa que se haya elegido y tal
+                  //y un set state
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    final adjuntar = Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Color(0xff01A0C7),
+        child: MaterialButton(
+            minWidth: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            onPressed: () async {
+              _showMyDialog();
+            },
+            child: Text("Adjuntar archivo",
+                textAlign: TextAlign.center,
+                style: style.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold))));
+
     final enviarMensaje = Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),
@@ -146,7 +190,12 @@ class _Chat extends State<Chat> {
                 });
                 _formKey.currentState.reset();
               }
-            }));
+            },
+            child: Text("Mandar mensaje",
+                textAlign: TextAlign.center,
+                style: style.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold))));
+
     /*
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
@@ -266,6 +315,7 @@ class _Chat extends State<Chat> {
                             },
                           ),
                           enviarMensaje,
+                          adjuntar,
                         ])))));
   }
 
