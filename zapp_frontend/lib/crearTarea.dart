@@ -551,6 +551,7 @@ class _CrearTarea extends State<CrearTarea> {
                   /**************************************VIDEO********************************** */
                  //  (() {
                                             _video==null
+
                                                 ?
                                                         InkWell(
                                                               onTap:  _pickVideo,
@@ -579,6 +580,39 @@ class _CrearTarea extends State<CrearTarea> {
                                                           child: VideoPlayer(_videoPlayerController),
                                                       )
                                                       : Container(),
+                                                       Positioned(
+                                                                      top: -(radius + iconSize + distance),
+                                                                      right: 0,
+                                                                      bottom: radius,
+                                                                      left: 0,
+                                                                      child:  IconButton(
+                                                                              icon: Icon(Icons.delete),
+                                                                              onPressed: () async {
+                                                                                setState(() {});
+                                                                                        try {
+                                                                                      
+                                                                                          await _video.delete();
+                                                                                        // files=null ;
+                                                                                          print('Deleted video');
+                                                                                          print('IMPRIMO video' +_video.toString());
+                                                                                        // setState(() {});
+
+                                                                                        } catch (e) {
+
+                                                                                          _video=null ;
+                                                                                          print('Couldnt delete video');
+                                                                                          print('IMPRIMO video' +
+                                                                                          _video.toString());
+                                                                                      
+                                                                                        }
+
+                                                                              }
+                                                                        /*Icon(
+                                                                        Icons.delete_forever,
+                                                                        color: Colors.grey,
+                                                                        size: iconSize,
+                                                                        */
+                                                              )),
 
 
 
