@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'tarea.dart';
 import 'myTextFormField.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
-// lista de tipos 
+
 List<String> mensajes = new List<String>();
 List<String> codigos = new List<String>();
 List<bool> tutor = new List<bool>();
@@ -118,19 +119,19 @@ class _Chat extends State<Chat> {
   final _formKey = GlobalKey<FormState>();
   String mensaje;
 
-  File _image;
+  /*File _image;
   File file;
 
-  void getImage() async {
+  void _getImage() async {
     PickedFile pickedFile =
         await ImagePicker.getImage(source: ImageSource.gallery);
 
     file = File(pickedFile.path);
-  }
+  }*/
 
+  Widget buildInput() {
+   
 
-  //Input abajo
-    Widget buildInput() {
     return Container(
       child: Row(
         children: <Widget>[
@@ -140,30 +141,47 @@ class _Chat extends State<Chat> {
               margin: EdgeInsets.symmetric(horizontal: 1.0),
               child: IconButton(
                 icon: Icon(Icons.image),
-                onPressed: getImage,
-               // color: primaryColor,
+             //   onPressed: getImage,
+              //  color: primaryColor,
               ),
             ),
             color: Colors.white,
           ),
-          /*
           Material(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 1.0),
               child: IconButton(
                 icon: Icon(Icons.face),
-                onPressed: getSticker,
-                color: primaryColor,
+             //   onPressed: getSticker,
+             //   color: primaryColor,
               ),
             ),
             color: Colors.white,
           ),
-      */
+
           // Edit text
-          /*
           Flexible(
             child: Container(
-              child: TextField(
+          //      width: 100.00,
+            child: TextField(
+               
+                   decoration: InputDecoration.collapsed(
+                  hintText: 'Type your message...',
+                  hintStyle: TextStyle(color: Colors.blue),
+                ),
+                 onSubmitted: (value) {
+
+                     mensaje = value;
+                 }
+              /*
+                child: MyTextFormField(
+                            hintText: 'Escribe mensaje',
+                            text: 'Escribe ',
+                            onSaved: (String value) {
+                              mensaje = value;
+                            },
+                    */
+                /*
                 onSubmitted: (value) {
                   onSendMessage(textEditingController.text, 0);
                 },
@@ -174,20 +192,29 @@ class _Chat extends State<Chat> {
                   hintStyle: TextStyle(color: greyColor),
                 ),
                 focusNode: focusNode,
+                */
               ),
             ),
           ),
-          */
-          
+        
           // Button send message
           Material(
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 8.0),
               child: IconButton(
                 icon: Icon(Icons.send),
-                onPressed: () => 
-                  //onSendMessage(textEditingController.text, 0),
-          //      color: primaryColor,
+            //    onPressed: () => onSendMessage(textEditingController.text, 0),
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                setState(() {
+                  mensajes.add(mensaje);
+                  tutor.add(true);
+                });
+                _formKey.currentState.reset();
+              }
+            },
+                color: Colors.blueGrey,
               ),
             ),
             color: Colors.white,
@@ -197,12 +224,32 @@ class _Chat extends State<Chat> {
       width: double.infinity,
       height: 50.0,
       decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: greyColor2, width: 0.5)),
+          border: Border(top: BorderSide(color: Colors.green, width: 0.5)),
           color: Colors.white),
+          // Button send message
+          /*
+          Material(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () => onSendMessage(textEditingController.text, 0),
+                color: primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
+
+          */
+        //  )
     );
+
   }
+
+
   @override
   Widget build(BuildContext context) {
+    /*
     final enviarMensaje = Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),
@@ -220,6 +267,9 @@ class _Chat extends State<Chat> {
                 _formKey.currentState.reset();
               }
             }));
+
+
+        */
     /*
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
@@ -331,14 +381,11 @@ class _Chat extends State<Chat> {
 
                             /******************************/
                           ])),
-                          MyTextFormField(
-                            hintText: 'Escribe mensaje',
-                            text: 'Escribe una respuesta',
-                            onSaved: (String value) {
-                              mensaje = value;
-                            },
-                          ),
-                          enviarMensaje,
+                         
+                        
+                        //  enviarMensaje,
+                          buildInput(),
+                     
                         ])))));
   }
 
