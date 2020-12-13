@@ -5,7 +5,15 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'tarea.dart';
 import 'myTextFormField.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'pdf.dart';
+
+import 'package:file_picker/file_picker.dart';
+
+import 'package:flutter/widgets.dart';
+import 'filepickerdemo.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:video_player/video_player.dart';
 
 //import 'imagePicker.dart';
 
@@ -128,138 +136,215 @@ class _Chat extends State<Chat> {
 
     file = File(pickedFile.path);
   }*/
-  final TextEditingController textEditingController = TextEditingController();
-  Widget buildInput() {
-  
-      if (textEditingController.text != '') {
-             textEditingController.clear();
-          }
-    return Container(
-      child: Row(
-        children: <Widget>[
-          // Button send image
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: Icon(Icons.image),
-             //   onPressed: getImage,
-              //  color: primaryColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: Icon(Icons.face),
-             //   onPressed: getSticker,
-             //   color: primaryColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
 
-          // Edit text
-         
-          Flexible(
-            child: Container(
-          //      width: 100.00,
-            child: TextField(
-                  controller: textEditingController,
-                   decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
-                  hintStyle: TextStyle(color: Colors.blue),
-                ),
-                 onSubmitted: (value) {
+/************************************************************************************************ */
+  //*******************************+IMAGENES */
+  File _image;
+  final picker = ImagePicker();
 
-                     mensaje = value;
-                      textEditingController.clear();
-                 }
-              /*
-                child: MyTextFormField(
-                            hintText: 'Escribe mensaje',
-                            text: 'Escribe ',
-                            onSaved: (String value) {
-                              mensaje = value;
-                            },
-                    */
-                /*
-                onSubmitted: (value) {
-                  onSendMessage(textEditingController.text, 0);
-                },
-                style: TextStyle(color: primaryColor, fontSize: 15.0),
-                controller: textEditingController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Type your message...',
-                  hintStyle: TextStyle(color: greyColor),
-                ),
-                focusNode: focusNode,
-                */
-              ),
-            ),
-          ),
-        
-          // Button send message
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 8.0),
-              child: IconButton(
-                icon: Icon(Icons.send),
-            //    onPressed: () => onSendMessage(textEditingController.text, 0),
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-                setState(() {
-                  mensajes.add(mensaje);
-                  tutor.add(true);
-                });
-                _formKey.currentState.reset();
-              }
-               _formKey.currentState.reset();
-            },
-                color: Colors.blueGrey,
-              ),
-            ),
-            color: Colors.white,
-          ),
-        ],
-     
-     
-      ),
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
-
-
-      width: double.infinity,
-      height: 50.0,
-      decoration: BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.green, width: 0.5)),
-          color: Colors.white),
-          // Button send message
-          /*
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 8.0),
-              child: IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () => onSendMessage(textEditingController.text, 0),
-                color: primaryColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
-
-          */
-        //  )
-    );
-
+    setState(() {
+      _image = File(pickedFile.path);
+    });
   }
+  //*****************IMAGENES**************************************/ */
+
+  //*************************************ARCHIVOS********************** */
+  List<File> files;
+  File file;
+  //****************************************ARCHIVOS******************* */
+
+  /******************************************VIDEOO****************************** */
+  File _video;
+  VideoPlayerController _videoPlayerController;
+
+
+/************************************************************************************************ */
+
+// This funcion will helps you to pick a Video File
+  _pickVideo() async {
+      PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
+      _video = File(pickedFile.path); 
+      _videoPlayerController = VideoPlayerController.file(_video)..initialize().then((_) {
+        setState(() { });
+        _videoPlayerController.play();
+      });
+}
+
+  //Subir imágenes
+  //**************************************************************************************************** */
+  Future<String> uploadImage(filename, url) async {
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.files.add(await http.MultipartFile.fromPath('picture', filename));
+    var res = await request.send();
+    return res.reasonPhrase;
+  }
+
+  String state = "";
 
 
   @override
   Widget build(BuildContext context) {
-    /*
+
+
+    Future<void> _showMyDialog() async {
+         setState(() {});
+
+
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Adjuntar archivo'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+
+
+
+                    Card(
+                        color: Colors.white,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 25.0),
+                        child: Column(
+
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              /*FUNCIONA PARA UN ARCHIVO*/
+                              files == null
+                                  //  ? Text('No image selected.')
+                                  ? Text('')
+                                  //  : Image.file(files.first)
+                                  : // ListView(
+                                  Card(
+                                      
+                                      child: ListTile(
+                                      title:
+                                          Text(files[0].path.split('/').last),
+                                      leading: Icon(Icons.picture_as_pdf),
+                                      trailing: IconButton(
+                                          icon: Icon(Icons.delete),
+
+                                          //Borrar archivo
+                                          onPressed: () async {
+                                           //  setState(() {});
+                                            setState(() {});
+                                            try {
+                                          
+                                              await files.first.delete();
+                                              files=null ;
+                                              print('Deleted');
+                                              print('IMPRIMO URL' +files.first.toString());
+                                              setState(() {});
+
+                                            } catch (e) {
+
+                                              files=null ;
+                                              print('Couldnt delete');
+                                              print('IMPRIMO URL' +
+                                              files.first.toString());
+                                          
+                                            }
+                                           setState(() {});
+
+                                            //    file[0]=null ;
+                                          }),
+                                      // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return ViewPDF(
+                                              pathPDF:
+                                                  files[0].path.toString());
+                                          //open viewPDF page on click
+                                        }));
+                                      },
+                                    )
+                              ),
+                             
+                            
+
+                              ListTile(
+                                //leading: Icon (icono al principio
+
+                                //BOTON ADJUNTAR IMAGEN
+                                trailing: IconButton(
+                                  icon: Icon(Icons.attach_file),
+                                  onPressed: () async {
+                                   
+
+                                 
+                                    //*******************************VARIOS ARCHIVOS ****************************** */
+
+                                    FilePickerResult result = await FilePicker
+                                        .platform
+                                        .pickFiles(allowMultiple: true);
+
+                                    if (result != null) {
+                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                      files = result.paths
+                                          .map((path) => File(path))
+                                          .toList();
+                                      print('IMPRIMO URL' +
+                                          files.first.toString());
+                                    } else {
+                                      // User canceled the picker
+                                    }
+                                    setState(() {});
+
+                                    //***************************************ARCHIVOOOOOO**********************************************////
+                                  },
+                                ),
+
+                                title: Text(
+                                  '  ',
+                                  style: TextStyle(
+                                      fontFamily: 'BalooBhai', fontSize: 20.0),
+                                ),
+                              ),
+
+                            ])),
+
+                    
+
+                
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  //aqui deberia hacer las cosas de meter en la lista la cosa que se haya elegido y tal
+                  //y un set state
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    final adjuntar = Material(
+        elevation: 5.0,
+        borderRadius: BorderRadius.circular(30.0),
+        color: Color(0xff01A0C7),
+        child: MaterialButton(
+            minWidth: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+            onPressed: () async {
+              _showMyDialog();
+            },
+            child: Text("Mandar adjunto",
+                textAlign: TextAlign.center,
+                style: style.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold))));
+
     final enviarMensaje = Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),
@@ -276,10 +361,12 @@ class _Chat extends State<Chat> {
                 });
                 _formKey.currentState.reset();
               }
-            }));
+            },
+            child: Text("Mandar mensaje",
+                textAlign: TextAlign.center,
+                style: style.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold))));
 
-
-        */
     /*
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
@@ -391,11 +478,15 @@ class _Chat extends State<Chat> {
 
                             /******************************/
                           ])),
-                         
-                        
-                        //  enviarMensaje,
-                          buildInput(),
-                     
+                          MyTextFormField(
+                            hintText: 'Escribe mensaje',
+                            text: 'Escribe una respuesta',
+                            onSaved: (String value) {
+                              mensaje = value;
+                            },
+                          ),
+                          enviarMensaje,
+                          adjuntar,
                         ])))));
   }
 
@@ -405,3 +496,4 @@ class _Chat extends State<Chat> {
     throw UnimplementedError();
   }
 }
+
