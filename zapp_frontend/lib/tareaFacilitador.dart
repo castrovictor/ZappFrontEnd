@@ -3,20 +3,21 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'chat.dart';
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:video_player/video_player.dart';
 //import 'package:dash_chat/dash_chat.dart';
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
+
+enum EstadoTarea { noEntregado, entregado, corregido }
 
 File _image;
 bool hayImagen = true;
@@ -31,6 +32,20 @@ class Tarea extends StatefulWidget {
   final String title;
   final String description;
   final String idTarea;
+
+  Future getTareas(codigo) async {
+    String url = 'http://zapp.pythonanywhere.com/actividad/';
+    url = url + idTarea;
+    http.Response response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+    final jsonResponse = jsonDecode(response.body);
+  }
+
   @override
   _Tarea createState() => _Tarea();
 }
@@ -56,6 +71,7 @@ class _Tarea extends State<Tarea> {
     if (hayFile) {}
   }
 
+  EstadoTarea _estado = EstadoTarea.noEntregado;
   @override
   Widget build(BuildContext context) {
     final chat = Material(
@@ -66,26 +82,11 @@ class _Tarea extends State<Tarea> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
-          /*
-            Navigator.push(
-                  context,
-               //   MaterialPageRoute(builder: (context) => WelcomeScreen()));
-               */
-          /*
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              primarySwatch: Colors.purple,
-            ),
-            home: Chat(),
-          );
-        */
-
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      Chat(nombre: widget.title, idActividad: widget.idTarea)));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Chat(
+          //             contenido: widget.title, idmensaje: widget.idTarea)));
         },
         child: Text("Chat de tarea",
             textAlign: TextAlign.center,
@@ -95,10 +96,6 @@ class _Tarea extends State<Tarea> {
     );
 
     return Scaffold(
-        /* appBar: AppBar(
-          title: Text('Sub Page'),
-          backgroundColor: Colors.redAccent,
-        ),*/
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(36.0),
@@ -107,29 +104,11 @@ class _Tarea extends State<Tarea> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Expanded(
-                        child: Text(widget.title,
+                        child: Text('Usuario',
                             style: TextStyle(
                                 fontFamily: 'Montserrat',
-                                fontSize: 40.0,
+                                fontSize: 30.0,
                                 fontWeight: FontWeight.bold)),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        //child: const ColoredBox(color: Colors.amber),
-                      ),
-                      Icon(widget.iconData, size: 100.0),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        //child: const ColoredBox(color: Colors.amber),
-                      ),
-                      Expanded(
-                        child: Text(widget.description,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
                       ),
                       Expanded(
                         child: Card(
@@ -174,8 +153,84 @@ class _Tarea extends State<Tarea> {
                         ),
                       ),
                       Expanded(
-                        child: Text(
-                            'Sube tu solución o pregunta duda en el chat de tarea',
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                TextButton(
+                                  child: const Text('Estado Tarea'),
+                                  onPressed: () {/* ... */},
+                                ),
+                                const SizedBox(width: 8),
+                                ListTile(
+                                  title: const Text('No entregada'),
+                                  leading: Radio(
+                                    value: EstadoTarea.noEntregado,
+                                    groupValue: _estado,
+                                    onChanged: (EstadoTarea value) {
+                                      setState(() {
+                                        _estado = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('Entregada'),
+                                  leading: Radio(
+                                    value: EstadoTarea.entregado,
+                                    groupValue: _estado,
+                                    onChanged: (EstadoTarea value) {
+                                      setState(() {
+                                        _estado = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('Corregida'),
+                                  leading: Radio(
+                                    value: EstadoTarea.corregido,
+                                    groupValue: _estado,
+                                    onChanged: (EstadoTarea value) {
+                                      setState(() {
+                                        _estado = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        //child: const ColoredBox(color: Colors.amber),
+                      ),
+                      Expanded(
+                        child: Text(widget.title,
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontSize: 40.0,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        //child: const ColoredBox(color: Colors.amber),
+                      ),
+                      Icon(widget.iconData, size: 100.0),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        //child: const ColoredBox(color: Colors.amber),
+                      ),
+                      Expanded(
+                        child: Text(widget.description,
                             style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 20.0,
@@ -205,114 +260,3 @@ class _Tarea extends State<Tarea> {
     throw UnimplementedError();
   }
 }
-
-/* Lo que habia en GITHUB
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-//import 'imagePicker.dart';
-
-// ignore: must_be_immutable
-
-class Tarea extends StatefulWidget{
-  @override
-  _Tarea createState() => _Tarea();
-}
-
-
-class _Tarea extends Statel<Tarea> {
-  Tarea({this.iconData, this.title, this.description});
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-
-  File _image;
-
-  void _getImage() async {
-    PickedFile pickedFile = await ImagePicker.getImage(source: ImageSource.gallery);
-
-    file = File(pickedFile.path);
-  }
-
-  /// icon data
-  final IconData iconData;
-
-  /// Title to show
-  final String title;
-
-  // Description to show
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    final adjuntar = Material(
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(30.0),
-      color: Color(0xff01A0C7),
-      child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {},
-        
-        child: Text("Contestar",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
-      ),
-    );
-
-    return Scaffold(
-        /* appBar: AppBar(
-          title: Text('Sub Page'),
-          backgroundColor: Colors.redAccent,
-        ),*/
-        body: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(36.0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(title,
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 40.0,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        //child: const ColoredBox(color: Colors.amber),
-                      ),
-                      Icon(iconData, size: 100.0),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        //child: const ColoredBox(color: Colors.amber),
-                      ),
-                      Expanded(
-                        child: Text(description,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                      ),
-                      Expanded(
-                        body: file == null? Center(
-                          child: Text(
-                            'AÑADIR',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                          )
-                        ): Image.file(file),
-                        floatingActionButton: FloatingActionButton(
-                          onPressed: pickImage,
-                          child: Icon(Icons.camera_alt, size: 25),
-                        )
-                      ),
-                      //adjuntar,
-                    ]))));
-  }
-}
-*/
