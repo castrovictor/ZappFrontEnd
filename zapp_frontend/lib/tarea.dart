@@ -55,9 +55,20 @@ class _Tarea extends State<Tarea> {
 
           Navigator.push(
               context,
+<<<<<<< Updated upstream
               MaterialPageRoute(
                   builder: (context) =>
                       Chat(nombre: widget.title, idActividad: widget.idTarea)));
+=======
+              MaterialPageRoute( 
+                  builder: (context) => Chat(
+                        nombre: widget.title,
+                        idActividad: widget.idTarea)
+                  )
+          );
+            
+              
+>>>>>>> Stashed changes
         },
         child: Text("Chat de tarea",
             textAlign: TextAlign.center,

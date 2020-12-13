@@ -9,7 +9,7 @@ import 'myTextFormField.dart';
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
-
+// lista de tipos 
 List<String> mensajes = new List<String>();
 List<String> codigos = new List<String>();
 List<bool> tutor = new List<bool>();
@@ -118,16 +118,89 @@ class _Chat extends State<Chat> {
   final _formKey = GlobalKey<FormState>();
   String mensaje;
 
-  /*File _image;
+  File _image;
   File file;
 
-  void _getImage() async {
+  void getImage() async {
     PickedFile pickedFile =
         await ImagePicker.getImage(source: ImageSource.gallery);
 
     file = File(pickedFile.path);
-  }*/
+  }
 
+
+  //Input abajo
+    Widget buildInput() {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          // Button send image
+          Material(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 1.0),
+              child: IconButton(
+                icon: Icon(Icons.image),
+                onPressed: getImage,
+               // color: primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
+          /*
+          Material(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 1.0),
+              child: IconButton(
+                icon: Icon(Icons.face),
+                onPressed: getSticker,
+                color: primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
+      */
+          // Edit text
+          /*
+          Flexible(
+            child: Container(
+              child: TextField(
+                onSubmitted: (value) {
+                  onSendMessage(textEditingController.text, 0);
+                },
+                style: TextStyle(color: primaryColor, fontSize: 15.0),
+                controller: textEditingController,
+                decoration: InputDecoration.collapsed(
+                  hintText: 'Type your message...',
+                  hintStyle: TextStyle(color: greyColor),
+                ),
+                focusNode: focusNode,
+              ),
+            ),
+          ),
+          */
+          
+          // Button send message
+          Material(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: Icon(Icons.send),
+                onPressed: () => 
+                  //onSendMessage(textEditingController.text, 0),
+          //      color: primaryColor,
+              ),
+            ),
+            color: Colors.white,
+          ),
+        ],
+      ),
+      width: double.infinity,
+      height: 50.0,
+      decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: greyColor2, width: 0.5)),
+          color: Colors.white),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final enviarMensaje = Material(
