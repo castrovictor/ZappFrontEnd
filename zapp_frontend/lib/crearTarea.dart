@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'filepickerdemo.dart';
 import 'package:flutter/widgets.dart';
@@ -13,10 +14,13 @@ import 'package:http/http.dart' as http;
 import 'package:video_player/video_player.dart';
 import 'pdf.dart';
 
+//List<String> grupos = new List<String>();
+
 class CrearTarea extends StatefulWidget {
-  CrearTarea({this.usuarios, this.codigos});
+  CrearTarea({this.usuarios, this.codigos, this.grupos});
   List<String> usuarios;
   List<String> codigos;
+  List<String> grupos;
 
   @override
   _CrearTarea createState() => _CrearTarea();
@@ -52,8 +56,10 @@ class _CrearTarea extends State<CrearTarea> {
 // This funcion will helps you to pick a Video File
   _pickVideo() async {
     PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
+    String new_path =
+        pickedFile.path.substring(0, pickedFile.path.length - 3) + 'mp4';
     _video = File(pickedFile.path);
-    print('url de video: ' + pickedFile.path);
+    print("url del video es:" + new_path + "pero " + pickedFile.path);
     _videoPlayerController = VideoPlayerController.file(_video)
       ..initialize().then((_) {
         setState(() {});
@@ -81,6 +87,30 @@ class _CrearTarea extends State<CrearTarea> {
     double distance = 10;
     var file = null;
     //Botón crear
+
+    /*Future getGrupos() async {
+      String url = 'http://zapp.pythonanywhere.com/grupos/';
+      print(url);
+      http.Response response = await http.get(
+        url,
+        headers: {
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      grupos.clear();
+      for (int i = 0; i < jsonResponse['grupos'].length; i++) {
+        grupos.add(jsonResponse['grupos'][i]);
+      }
+      for (int i = 0; i < grupos.length; i++) {
+        print(grupos[i]);
+        //print(codigos[i]);
+      }
+    }*/
+
     final crear = Material(
         borderRadius: BorderRadius.circular(30.0),
         color: Color(0xff01A0C7),
@@ -120,6 +150,8 @@ class _CrearTarea extends State<CrearTarea> {
               } else {
                 fichero = 'no';
               }
+              //getGrupos();
+              print(widget.grupos.length);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -130,7 +162,8 @@ class _CrearTarea extends State<CrearTarea> {
                           codigos: widget.codigos,
                           imagen: imagen,
                           video: video,
-                          file: fichero)));
+                          file: fichero,
+                          grupos: grupos)));
             }
 
             /*var res = await uploadImage(
