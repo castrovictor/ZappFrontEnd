@@ -83,14 +83,16 @@ class _Tareaf extends State<Tareaf> {
 
   @override
   void createVideo() {
+
     if (_controller == null) {
       // para el api
       //_controller = VideoPlayerController.network("")
       _controller = VideoPlayerController.asset("assets/videoplayback.mp4")
         ..addListener(listener)
-        ..setVolume(1.0)
+       // ..setVolume(1.0)
         ..initialize();
     } else {
+      
       if (_controller.value.isPlaying) {
         _controller.pause();
       } else {
@@ -102,9 +104,12 @@ class _Tareaf extends State<Tareaf> {
 
   @override
   void deactivate() {
+    
+    if(_controller!=null){
     _controller.setVolume(0.0);
     _controller.removeListener(listener);
     super.deactivate();
+    }
   }
 
   EstadoTareaf _estado = EstadoTareaf.noEntregado;
@@ -248,31 +253,58 @@ class _Tareaf extends State<Tareaf> {
                           //: Image.asset('assets/gal.png'),
                           ),
                       AspectRatio(
+
                         aspectRatio: 16 / 9,
-                        child: Container(
+                        child: (() { 
+
+
+                          if(_controller != null){
+
+
+                         new   Column(
+
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+
+                                    children: <Widget>[
+                                 VideoPlayer(_controller),
+                                 FloatingActionButton(
+                                        onPressed: () {
+                                              // Wrap the play or pause in a call to `setState`. This ensures the
+                                              // correct icon is shown
+                                              setState(() {
+                                                // If the video is playing, pause it.
+                                                if (_controller.value.isPlaying) {
+                                                  _controller.pause();
+                                                } else {
+                                                  // If the video is paused, play it.
+                                                  _controller.play();
+                                                }
+                                              });
+                                          },
+                                        child: Icon(
+                                                      _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                          ),
+                                  ),
+                              ]
+                         );
+                        }
+                        else  {
+                         return Container();
+
+                        }
+                        }())
+                        /* Container(
                           child: (_controller != null
                               ? VideoPlayer(_controller)
                               : Container()),
                         ),
+                          */
+
+
+
                       ),
-                      FloatingActionButton(
-                        onPressed: () {
-                              // Wrap the play or pause in a call to `setState`. This ensures the
-                              // correct icon is shown
-                              setState(() {
-                                // If the video is playing, pause it.
-                                if (_controller.value.isPlaying) {
-                                  _controller.pause();
-                                } else {
-                                  // If the video is paused, play it.
-                                  _controller.play();
-                                }
-                              });
-                              },
-                         child: Icon(
-                                      _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                         ),
-                      ),
+                     
                       // Expanded(
                       //   child: MaterialApp(
                       //     title: 'Video',
