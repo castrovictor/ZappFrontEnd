@@ -100,92 +100,38 @@ class MensajeWidget extends StatelessWidget {
 
   }
 
-  /*
-    Future<void> _showImage() async {
-       
   
-      return showDialog<void>(
-        context: context,
-        builder: (context) {
-          String contentText = "Content of Dialog";
-  
-          return StatefulBuilder(
-              
-            builder: (context, setState) {
-                return AlertDialog(
-                  title: Text('Adjuntar archivo'),
-                  content: SingleChildScrollView(
-              //      child: ListBody(
-                child: Column(
-
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-
-
-                          Text(contentText),
-                          Card(
-                              color: Colors.white,
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 25.0),
-                              child: Column(
-
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                
-                          /***********************************************************************************IMAGEN*******************************+ */
-                      InkWell(
-                          
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 40.0,
-                              
-                                child: CircleAvatar(
-                                  
-                                    child: (_image != null)
-                                        ? Image.file(_image)
-                                        : Image.asset('assets/gal.png'),
-                                        backgroundColor: Colors.white,
-                                        radius: 50.0,
-                                    ),
-                              //  backgroundColor: Colors.white,
-
-
-                              
-                            ),
-                          ),
-                         
-
-                
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Aceptar'),
-                onPressed: () {
-                          setState(() {
-                                
-
-
-                          });
-                  //aqui deberia hacer las cosas de meter en la lista la cosa que se haya elegido y tal
-                  //y un set state
-                  Navigator.of(context).pop();
-                        setState(() {});
-                },
-              ),
-            ],
-          );}
-          );
-        },
-      );
-    }
-*/
+   
  
   @override
   Widget build(BuildContext context) {
   //  getFile() ;
  //   getImage();
+      _showImageDialog() {
+          showDialog(
+              context: context,
+              
+              builder: (context) => new AlertDialog(
+                  //  title: new Text("Material Dialog"),
+                 //   content: new Text("Hey! I'm Coflutter!"),
+                    actions: <Widget>[
+                         Image.asset('assets/gal.png'),
+                    TextButton(
+                      child: Text('Aceptar'),
+                      onPressed: () {
+                              
+                        //aqui deberia hacer las cosas de meter en la lista la cosa que se haya elegido y tal
+                        //y un set state
+                        Navigator.of(context).pop();
+                        
+                },
+              ),
+            ],
+
+               ) ,
+          ) ;
+        }
+
     return InkWell(
       onTap: onPressed,
       child: Padding(
@@ -335,6 +281,7 @@ class MensajeWidget extends StatelessWidget {
                                            
                                       child:   InkWell(
                                                 onTap: () {
+                                                     _showImageDialog() ;
 
                                                 },
                                             child: CircleAvatar(
