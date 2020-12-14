@@ -4,12 +4,13 @@ import 'mandado.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
+import 'biblioteca.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:searchable_dropdown/searchable_dropdown.dart';
-
-void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   MyApp(
@@ -17,12 +18,16 @@ class MyApp extends StatefulWidget {
       this.descripcion,
       this.usuarios,
       this.codigos,
-      this.imagen});
+      this.imagen,
+      this.video,
+      this.file});
   final String nombre;
   final String descripcion;
   final List<String> usuarios;
   final List<String> codigos;
-  final File imagen;
+  final String imagen;
+  final String video;
+  final String file;
   @override
   _MyAppState createState() =>
       _MyAppState(usuarios: usuarios, codigos: codigos);
@@ -60,6 +65,33 @@ class _MyAppState extends State<MyApp> {
     const url = 'http://zapp.pythonanywhere.com/crearActividad/';
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+    Future<void> _showMyDialog(String nombre) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Nueva tarea creada'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text('Nombre de tarea: ' + nombre),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     final mandar = Material(
       borderRadius: BorderRadius.circular(30.0),
       color: Color(0xff01A0C7),
@@ -69,33 +101,201 @@ class _MyAppState extends State<MyApp> {
         onPressed: () async {
           print(widget.nombre);
           print(widget.descripcion);
+          print(widget.imagen);
+          var response;
           for (int i = 0; i < selectedItems.length; i++) {
             print("se envia a");
             print(codigos[selectedItems[i]].toString());
             print(widget.nombre);
-            print(widget.descripcion);
-            http.Response response = await http.post(
-              url,
-              body: jsonEncode(<String, dynamic>{
-                'actividad': {
-                  'nombre': widget.nombre,
-                  'descripcion': widget.descripcion,
-                  'idUsuario': codigos[selectedItems[i]],
-                  'idProfesional': '1',
-                  'categoria': '1',
-                  'imagen': widget.imagen.toString(),
-                }
-              }),
-              headers: {
-                HttpHeaders.acceptHeader: 'application/json',
-                HttpHeaders.contentTypeHeader: 'application/json',
-              },
-            );
-            final jsonResponse = jsonDecode(response.body);
-            print(widget.imagen);
+            var uri =
+                Uri.parse('http://zapp.pythonanywhere.com/crearActividad/');
 
-            print(jsonResponse);
+            if (widget.imagen == 'no' &&
+                widget.imagen == 'no' &&
+                widget.file == 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1";
+              /*  ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video.path,
+                    contentType: MediaType('application', 'undefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file.path,
+                    contentType: MediaType('application', 'undefined')));*/
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+            if (widget.imagen != 'no' &&
+                widget.video == 'no' &&
+                widget.file == 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1"
+                ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')));
+              /*  ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video.path,
+                    contentType: MediaType('application', 'undefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file.path,
+                    contentType: MediaType('application', 'undefined')));*/
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+
+            if (widget.imagen != 'no' &&
+                widget.video != 'no' &&
+                widget.file == 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1"
+                ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video,
+                    contentType: MediaType('application', 'undefined')));
+              /*  ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file.path,
+                    contentType: MediaType('application', 'undefined')));*/
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+
+            if (widget.imagen != 'no' &&
+                widget.video != 'no' &&
+                widget.file != 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1"
+                ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video,
+                    contentType: MediaType('application', 'undefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file,
+                    contentType: MediaType('application', 'undefined')));
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+
+            if (widget.imagen == 'no' &&
+                widget.video != 'no' &&
+                widget.file != 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1"
+                /* ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')))*/
+                ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video,
+                    contentType: MediaType('application', 'undefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file,
+                    contentType: MediaType('application', 'undefined')));
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+
+            if (widget.imagen == 'no' &&
+                widget.video == 'no' &&
+                widget.file != 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1"
+                /* ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')))
+                ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video,
+                    contentType: MediaType('application', 'undefined')))*/
+                ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file,
+                    contentType: MediaType('application', 'undefined')));
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+
+            if (widget.imagen != 'no' &&
+                widget.video == 'no' &&
+                widget.file != 'no') {
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['nombre'] = widget.nombre
+                ..fields['descripcion'] = widget.descripcion
+                ..fields['idUsuario'] = codigos[selectedItems[i]]
+                ..fields['idProfesional'] = "1"
+                ..fields['categoria'] = "1"
+                ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', widget.imagen,
+                    contentType: MediaType('application', 'udefined')))
+                /*  ..files.add(await http.MultipartFile.fromPath(
+                    'video', widget.video,
+                    contentType: MediaType('application', 'undefined')))*/
+                ..files.add(await http.MultipartFile.fromPath(
+                    'pdf', widget.file,
+                    contentType: MediaType('application', 'undefined')));
+              response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
+
+            /*   if (widget.imagen != 'no') {
+               var request2 = http.MultipartRequest('PUT', uri)
+               ..fields['idActividad'] = await response.stream.transform(utf8.decoder).join()['id'];
+               ..files.add(await http.MultipartFile.fromPath(
+                  'imagen', widget.imagen,
+                  contentType: MediaType('application', 'udefined')));
+            }
+            if (widget.imagen != 'no') {
+               var request2 = http.MultipartRequest('PUT', uri)
+               ..files.add(await http.MultipartFile.fromPath(
+                  'imagen', widget.imagen,
+                  contentType: MediaType('application', 'udefined')));
+            }
+            if (widget.imagen != 'no') {
+               var request2 = http.MultipartRequest('PUT', uri)
+               ..files.add(await http.MultipartFile.fromPath(
+                  'imagen', widget.imagen,
+                  contentType: MediaType('application', 'udefined')));
+            }
+            if (widget.imagen != 'no') {
+               var request2 = http.MultipartRequest('PUT', uri)
+               ..files.add(await http.MultipartFile.fromPath(
+                  'imagen', widget.imagen,
+                  contentType: MediaType('application', 'udefined')));
+            }*/
+
+            print(await response.stream.transform(utf8.decoder).join());
+
+            print(widget.imagen);
+            print(widget.video);
+            print(widget.file);
           }
+          _showMyDialog(widget.nombre);
           /*Navigator.push(
               context,
               MaterialPageRoute(
