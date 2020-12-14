@@ -22,30 +22,84 @@ import 'package:video_player/video_player.dart';
 List<String> mensajes = new List<String>();
 List<String> codigos = new List<String>();
 List<bool> tutor = new List<bool>();
+List<File> imgs = new List<File>();
+List<File> fs = new List<File>();
+List<File> vd = new List<File>();
+
+List<String> imagenes = new List<String>();
+List<String> videos = new List<String>();
+List<String> archivos = new List<String>();
+
 
 class MensajeWidget extends StatelessWidget {
   MensajeWidget(
       {this.iconData,
-      this.title,
+      this.texto,
       this.onPressed,
-      this.file,
-      this.fimage,
+      this.f,
+      this.i,
+      this.v,
       this.tutor});
 
   /// icon data
   final IconData iconData;
-  final File file;
-  final File fimage;
+  
+   List<File> files;
+   File fimage;
+   File fvideo ;
+
   final bool tutor;
 
-  /// Title to show
-  final String title;
 
+  /// texto to show
+  final String texto;
+  
+  final String f ;
+  final String i ;
+  final String v ;
+  
+
+  
+  
   /// Airport to show
   final VoidCallback onPressed;
 
+  final picker = ImagePicker();
+  //comprobar que f!=''
+  Future getFile() async {
+      if(f!=''){
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      FilePickerResult result = await FilePicker
+                                        .platform
+                                        .pickFiles(allowMultiple: true);
+
+                                    if (result != null) {
+                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                      files = result.paths
+                                          .map((path) => File(path)).toList();
+
+                                    }
+                                   
+      }
+
+  }
+    Future getImage() async {
+     
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+  //  setState(() {
+      fimage = File(pickedFile.path);
+ //     si=true ;
+   // });
+    //  setState(() {});
+     
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    getFile() ;
+    getImage();
     return InkWell(
       onTap: onPressed,
       child: Padding(
@@ -54,20 +108,169 @@ class MensajeWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    height: MediaQuery.of(context).size.height * 0.075,
-                    child: ColoredBox(
-                      color: Colors.lightBlue[50],
-                      // child: Center(
-                      //poner mensaje dependiendo de si es de tutor
-                      //Distinguir si el contenido es nulll
-                      child: Text(title,
-                          style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold)),
-                    )),
+
+
+
+                texto!='' ?
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.075,
+                            child: ColoredBox(
+                              color: Colors.lightBlue[50],
+                              // child: Center(
+                              //poner mensaje dependiendo de si es de tutor
+                              //Distinguir si el contenido es nulll
+                          
+                              child: Text(texto,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          )
+                :  /*
+                        f!='' ? 
+                                  /* (() {
+                                      (() {
+                                          getFile() ;
+                                          print("Cojo archivo");
+                                        }());
+                                        */
+                                   Card(
+                                        color: Colors.white,
+                                        margin: EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 25.0),
+                                        child: Column(
+
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              /*FUNCIONA PARA UN ARCHIVO*/
+                                                  
+                                                  Card(
+                                                      
+                                                      child: ListTile(
+                                                      title:
+                                                          Text(files[0].path.split('/').last),
+                                                      leading: Icon(Icons.picture_as_pdf),
+                                                    
+                                                      onTap: () {
+                                                          /*
+                                                          setState(() {});
+                                                            setState(() {
+                                                       // contentText = "Changed Content of Dialog";
+                                                    });*/
+                                                        Navigator.push(context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) {
+                                                          return ViewPDF(
+                                                              pathPDF:
+                                                                  files[0].path.toString());
+                                                          //open viewPDF page on click
+                                                        }));
+                                                      },
+                                                    )
+                                              ),
+                                            
+                                            
+
+                                              /*
+                                                    
+                                                title: Text(
+                                                  '  ',
+                                                  style: TextStyle(
+                                                      fontFamily: 'BalooBhai', fontSize: 20.0),
+                                                ),
+                                                
+
+                                              ),*/
+
+                                          
+                                            ]
+                                          )
+                                        )
+                                     //   }())
+                                        
+                        :
+                                    SizedBox(
+                                          width: MediaQuery.of(context).size.width * 0.75,
+                                          height: MediaQuery.of(context).size.height * 0.075,
+                                          child: ColoredBox(
+                                            color: Colors.lightBlue[50],
+                                            // child: Center(
+                                            //poner mensaje dependiendo de si es de tutor
+                                            //Distinguir si el contenido es nulll
+                                        
+                                            child: Text(texto,
+                                                style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold)
+                                            ),
+                                          )
+                                        )
+
+                                        /*
+                                              Text(texto,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold)
+                                      */
+                           //   )
+                                    */
+
+
+                            i!='' ? 
+                                  
+                                          InkWell(
+                                            
+                                      child:   InkWell(
+                                           
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 40.0,
+                                              
+                                                child: CircleAvatar(
+                                                  
+                                                    child:
+                                                         Image.file(fimage),
+                                                        backgroundColor: Colors.white,
+                                                        radius: 50.0,
+                                                    ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                            ),
+                                          )
+                                        )
+                            : InkWell(
+                                           
+                                      child:   InkWell(
+                                           
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 40.0,
+                                              
+                                                child: CircleAvatar(
+                                                  
+                                                    child:
+                                                         Image.asset('assets/gal.png'),
+                                                        backgroundColor: Colors.white,
+                                                        radius: 50.0,
+                                                    ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                            ),
+                                          )
+                                        )
+
+
+                                      
+                
                 //
 
                 /*   SizedBox(
@@ -77,7 +280,9 @@ class MensajeWidget extends StatelessWidget {
                         color: Colors.lightBlue[50],
                         //
                         child: Center(child: Icon(iconData, size: 40.0)))),*/
-              ])),
+              ]
+            )
+          ),
     );
   }
 }
@@ -126,7 +331,9 @@ class _Chat extends State<Chat> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   final _formKey = GlobalKey<FormState>();
   String mensaje;
-
+  bool si=false ;
+  bool sv=false ;
+  bool sf =false ;
   /*File _image;
   File file;
 
@@ -139,17 +346,21 @@ class _Chat extends State<Chat> {
 
 /************************************************************************************************ */
   //*******************************+IMAGENES */
-  File _image;
+
+
+  File _image ;
   final picker = ImagePicker();
 
   Future getImage() async {
-    
+     
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
       _image = File(pickedFile.path);
+      si=true ;
     });
       setState(() {});
+     
 
   }
   //*****************IMAGENES**************************************/ */
@@ -160,7 +371,7 @@ class _Chat extends State<Chat> {
   //****************************************ARCHIVOS******************* */
 
   /******************************************VIDEOO****************************** */
-  File _video;
+  File _video=null;
   VideoPlayerController _videoPlayerController;
 
 
@@ -172,10 +383,12 @@ class _Chat extends State<Chat> {
       PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
       _video = File(pickedFile.path); 
       _videoPlayerController = VideoPlayerController.file(_video)..initialize().then((_) {
-        setState(() { });
+        setState(() {sv=true ; });
         _videoPlayerController.play();
       });
+      sv=true ;
         setState(() {});
+      
 }
 
   //Subir imágenes
@@ -188,15 +401,19 @@ class _Chat extends State<Chat> {
   }
 
   String state = "";
-
+  
 
   @override
   Widget build(BuildContext context) {
 
-     double radius = 40;
+    double radius = 40;
     double iconSize = 40;
     double distance = 10;
-    var file = null;
+      sv=false ;
+      si=false ;
+      sv=false ;
+    
+
     Future<void> _showMyDialog() async {
          setState(() {});
 
@@ -205,13 +422,16 @@ class _Chat extends State<Chat> {
         context: context,
   builder: (context) {
     String contentText = "Content of Dialog";
+  
     return StatefulBuilder(
+        
       builder: (context, setState) {
           return AlertDialog(
             title: Text('Adjuntar archivo'),
             content: SingleChildScrollView(
         //      child: ListBody(
           child: Column(
+
                   mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
 
@@ -251,17 +471,18 @@ class _Chat extends State<Chat> {
                                           
                                               await files.first.delete();
                                               files=null ;
+                                              sf =false ;
                                               print('Deleted');
                                               print('IMPRIMO URL' +files.first.toString());
                                               setState(() {});
-
+                                            
                                             } catch (e) {
-
+                                              sf =false ;
                                               files=null ;
                                               print('Couldnt delete');
                                               print('IMPRIMO URL' +
                                               files.first.toString());
-                                          
+                                               
                                             }
                                            setState(() {});
 
@@ -309,13 +530,18 @@ class _Chat extends State<Chat> {
                                     if (result != null) {
                                       //   List<File> files = result.paths.map((path) => File(path)).toList();
                                       files = result.paths
-                                          .map((path) => File(path))
-                                          .toList();
+                                          .map((path) => File(path)).toList();
+
+
+                                      sf=true ;
+                                
+
                                       print('IMPRIMO URL' +
                                           files.first.toString());
                                     } else {
                                       // User canceled the picker
                                     }
+
                                     setState(() {});
 
                                     //***************************************ARCHIVOOOOOO**********************************************////
@@ -333,7 +559,16 @@ class _Chat extends State<Chat> {
                     /***********************************************************************************IMAGEN*******************************+ */
                     
                     InkWell(
-                      onTap: getImage,
+                      onTap: () async {
+                                           setState(() {}) ;
+                      },
+                 child:   InkWell(
+                       onTap: () async {
+                                           setState(() {}) ;
+                                           getImage();
+                                           si=true ;
+                                           setState(() {}) ;
+                                           },
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40.0,
@@ -351,7 +586,7 @@ class _Chat extends State<Chat> {
 
                         
                       ),
-                    ),
+                    )),
                      Positioned(
                            top: -(radius + iconSize + distance),
                           right: 0,
@@ -368,14 +603,15 @@ class _Chat extends State<Chat> {
                                               print('Deleted image');
                                               print('IMPRIMO image' +_image.toString());
                                              // setState(() {});
-
+                                              si=false ;
                                             } catch (e) {
 
                                               _image=null ;
                                               print('Couldnt delete image');
                                               print('IMPRIMO image' +
                                               _image.toString());
-                                          
+                                              si=false ;
+
                                             }
                                           setState(() {});
                                   }
@@ -431,7 +667,8 @@ class _Chat extends State<Chat> {
                                                                       child:  IconButton(
                                                                               icon: Icon(Icons.delete),
                                                                               onPressed: () async {
-                                                                                setState(() {});
+                                                                                sv=false ;
+                                                                                setState(() {     sv=false ;});
                                                                                         try {
                                                                                       
                                                                                           await _video.delete();
@@ -439,6 +676,7 @@ class _Chat extends State<Chat> {
                                                                                           print('Deleted video');
                                                                                           print('IMPRIMO video' +_video.toString());
                                                                                         // setState(() {});
+                                                                                        sv=false ;
 
                                                                                         } catch (e) {
 
@@ -446,7 +684,7 @@ class _Chat extends State<Chat> {
                                                                                           print('Couldnt delete video');
                                                                                           print('IMPRIMO video' +
                                                                                           _video.toString());
-                                                                                      
+                                                                                          sv=false ;
                                                                                         }
                                                                                 setState(() {});
                                                                               }
@@ -490,6 +728,29 @@ class _Chat extends State<Chat> {
             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
             onPressed: () async {
               _showMyDialog();
+             setState(() {
+                mensajes.add('');
+                tutor.add(true);
+              if(si==true){
+                  imagenes.add(_image.path);
+              }
+              else{
+                     imagenes.add('');
+                 
+                 
+              }
+               if(sv==true){
+                 videos.add(_video.path);
+              }else{
+                 videos.add('');
+              }
+                if(sf==true){
+                 archivos.add(files.first.path);
+              }else{
+                 archivos.add('');
+              }
+              });
+              
             },
             child: Text("Mandar adjunto",
                 textAlign: TextAlign.center,
@@ -506,9 +767,16 @@ class _Chat extends State<Chat> {
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
+
+
                 setState(() {
                   mensajes.add(mensaje);
                   tutor.add(true);
+                  imagenes.add('');
+                  videos.add('');
+                  archivos.add('');
+
+
                 });
                 _formKey.currentState.reset();
               }
@@ -594,9 +862,33 @@ class _Chat extends State<Chat> {
                               child: ListView(children: [
                             for (int i = 0; i < mensajes.length; i++)
                               //*****CREA MENSAJE **************/
+                                /* MensajeWidget(
+                                    {this.iconData,
+                                    this.texto,
+                                    this.onPressed,
+                                    this.file,
+                                    this.fimage,
+                                    this.fvideo,
+                                    this.tutor});
+                                      */
+                                      /*
+                               try{
+                                File f= fs[i];
+                               File f= imgs[i];
+                                File fvi: vd[i];
+                                }
+                                catch{
+                                  print('Exception caughtttttttttttt');
+                                }
+                              */
                               MensajeWidget(
                                 iconData: Icons.pending_actions_rounded,
-                                title: mensajes[i],
+                                texto: mensajes[i],
+                             
+                              i:  imagenes[i],
+                               v: videos[i],
+                              f: archivos[i],
+                                
                                 tutor: tutor[i],
                                 onPressed: () async {
                                   /*String url =
@@ -622,13 +914,15 @@ class _Chat extends State<Chat> {
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tarea(
                                       iconData: Icons.pending_actions_rounded,
-                                      title: contenido,
+                                      texto: contenido,
                                       description: descripcion)))*/
                                 },
                               )
 
                             /******************************/
-                          ])),
+                          ]
+                          )
+                          ),
                           MyTextFormField(
                             hintText: 'Escribe mensaje',
                             text: 'Escribe una respuesta',
