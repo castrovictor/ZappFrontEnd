@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -54,9 +56,9 @@ class MensajeWidget extends StatelessWidget {
   /// texto to show
   final String texto;
   
-  final String f ;
-  final String i ;
-  final String v ;
+   String f='' ;
+   String i ='';
+   String v ='';
   
 
   
@@ -67,8 +69,9 @@ class MensajeWidget extends StatelessWidget {
   final picker = ImagePicker();
   //comprobar que f!=''
   Future getFile() async {
+    /*
       if(f!=''){
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await .getImage(source: ImageSource.gallery);
       FilePickerResult result = await FilePicker
                                         .platform
                                         .pickFiles(allowMultiple: true);
@@ -81,6 +84,22 @@ class MensajeWidget extends StatelessWidget {
                                     }
                                    
       }
+      */
+       FilePickerResult result = await FilePicker
+                                        .platform
+                                        .pickFiles(allowMultiple: true);
+
+                                    if (result != null) {
+                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                      files = result.paths
+                                          .map((path) => File(path))
+                                          .toList();
+                                      print('IMPRIMO URL' +
+                                          files.first.toString());
+                                    } else {
+                                      // User canceled the picker
+                                    }
+                                  //  setState(() {});
 
   }
     Future getImage() async {
@@ -88,7 +107,7 @@ class MensajeWidget extends StatelessWidget {
 
          fimage = File(i);
      }
-     /*
+     
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
   //  setState(() {
@@ -96,7 +115,7 @@ class MensajeWidget extends StatelessWidget {
  //     si=true ;
    // });
     //  setState(() {});
-     */
+     
 
   }
 
@@ -115,6 +134,8 @@ class MensajeWidget extends StatelessWidget {
                   //  title: new Text("Material Dialog"),
                  //   content: new Text("Hey! I'm Coflutter!"),
                     actions: <Widget>[
+
+                        //Aquí mandamos al url de la imagen 
                          Image.asset('assets/gal.png'),
                     TextButton(
                       child: Text('Aceptar'),
@@ -140,11 +161,13 @@ class MensajeWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                    
+                  (() {
+                    print('IMPRIMO RUTA IMAGEN' +i);
+                    if(texto!=''){
 
-
-
-                texto!='' ?
-                        SizedBox(
+              
+                    return      SizedBox(
                             width: MediaQuery.of(context).size.width * 0.75,
                             height: MediaQuery.of(context).size.height * 0.075,
                             child: ColoredBox(
@@ -153,17 +176,187 @@ class MensajeWidget extends StatelessWidget {
                               //poner mensaje dependiendo de si es de tutor
                               //Distinguir si el contenido es nulll
                           
-                              child: Text(texto,
+                              child: Text('LLEGO'+texto,
                                   style: TextStyle(
                                       fontFamily: 'Montserrat',
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.bold)
                               ),
                             )
+                          );
+                      }
+                      else
+                         if(i!=''){
+                              /*
+                                          InkWell(
+                                            
+                                      child:   InkWell(
+                                           
+                                            chzild: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 40.0,
+                                              
+                                                child: CircleAvatar(
+                                                  
+                                                    child:
+                                                         Image.file(fimage),
+                                                        backgroundColor: Colors.white,
+                                                        radius: 50.0,
+                                                    ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                            ),
+                                          )
+                                        )*/
+                                        /*
+                            return InkWell(
+                                           
+                                      child:   InkWell(
+                                                onTap: () {
+                                                     _showImageDialog() ;
+
+                                                },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 40.0,
+                                              
+                                                child: CircleAvatar(
+                                                  
+                                                    child:
+                                                         Image.asset('assets/gal.png'),
+                                                        backgroundColor: Colors.white,
+                                                        radius: 50.0,
+                                                    ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                            ),
+                                          )
+                                        );
+
+                          */
+
+                    return      SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.075,
+                            child: ColoredBox(
+                              color: Colors.lightBlue[50],
+                              // child: Center(
+                              //poner mensaje dependiendo de si es de tutor
+                              //Distinguir si el contenido es nulll
+                          
+                              child: Text('IMAGEN '+texto,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          );
+
+                      }
+                        else if(f!=''){
+                         return Card(
+                                      child: ListTile(
+                                      title:
+                                          Text(files[0].path.split('/').last),
+                                      leading: Icon(Icons.picture_as_pdf),
+                                      
+                                      // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+                                      onTap: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return ViewPDF(
+                                              pathPDF:
+                                                  files[0].path.toString());
+                                          //open viewPDF page on click
+                                        }));
+                                      },
+                                    ));
+
+
+
+                      }
+                      else {
+
+
+                       return   SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.075,
+                            child: ColoredBox(
+                              color: Colors.lightBlue[50],
+                              // child: Center(
+                              //poner mensaje dependiendo de si es de tutor
+                              //Distinguir si el contenido es nulll
+                          
+                              child: Text('NADA',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          );
+
+
+                      }
+                      
+                   }()),
+                    
+                    /*
+                     SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            height: MediaQuery.of(context).size.height * 0.075,
+                            child: ColoredBox(
+                              color: Colors.lightBlue[50],
+                              // child: Center(
+                              //poner mensaje dependiendo de si es de tutor
+                              //Distinguir si el contenido es nulll
+                          
+                              child: Text('NADA',
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold)
+                              ),
+                            )
+                          ),
+                          */
+                  /*,
+                        InkWell(
+                                           
+                                      child:   InkWell(
+                                                onTap: () {
+                                                     _showImageDialog() ;
+
+                                                },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white,
+                                              radius: 40.0,
+                                              
+                                                child: CircleAvatar(
+                                                  
+                                                    child:
+                                                         Image.asset('assets/gal.png'),
+                                                        backgroundColor: Colors.white,
+                                                        radius: 50.0,
+                                                    ),
+                                              //  backgroundColor: Colors.white,
+
+
+                                              
+                                            ),
+                                          )
                           )
-                :  /*
+                          */
+
+                      /*
                         f!='' ? 
-                                  /* (() {
+                                  /* 
                                       (() {
                                           getFile() ;
                                           print("Cojo archivo");
@@ -253,55 +446,8 @@ class MensajeWidget extends StatelessWidget {
                                     */
 
 
-                            i!='' ? 
+                           
                                   
-                                          InkWell(
-                                            
-                                      child:   InkWell(
-                                           
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              radius: 40.0,
-                                              
-                                                child: CircleAvatar(
-                                                  
-                                                    child:
-                                                         Image.file(fimage),
-                                                        backgroundColor: Colors.white,
-                                                        radius: 50.0,
-                                                    ),
-                                              //  backgroundColor: Colors.white,
-
-
-                                              
-                                            ),
-                                          )
-                                        )
-                            : InkWell(
-                                           
-                                      child:   InkWell(
-                                                onTap: () {
-                                                     _showImageDialog() ;
-
-                                                },
-                                            child: CircleAvatar(
-                                              backgroundColor: Colors.white,
-                                              radius: 40.0,
-                                              
-                                                child: CircleAvatar(
-                                                  
-                                                    child:
-                                                         Image.asset('assets/gal.png'),
-                                                        backgroundColor: Colors.white,
-                                                        radius: 50.0,
-                                                    ),
-                                              //  backgroundColor: Colors.white,
-
-
-                                              
-                                            ),
-                                          )
-                                        )
 
 
                                       
@@ -379,15 +525,20 @@ class _Chat extends State<Chat> {
 
   Future getImage() async {
      
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
+ //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+File f = await ImagePicker.pickImage(source: ImageSource.gallery);   
+/*
     setState(() {
       _image = File(pickedFile.path);
       si=true ;
       
     });
       setState(() {});
-     
+     */
+    setState(() {
+     // _image = File(pickedFile.path);
+     _image=f ;
+    });
 
   }
   //*****************IMAGENES**************************************/ */
@@ -405,7 +556,9 @@ class _Chat extends State<Chat> {
 /************************************************************************************************ */
 
 // This funcion will helps you to pick a Video File
+
   _pickVideo() async {
+    /*
           sv=true ;
       setState(() {});
       PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
@@ -416,6 +569,17 @@ class _Chat extends State<Chat> {
       });
       sv=true ;
         setState(() {});
+        */
+         //PickedFile pickedFile = await picker.pickVideo(source: ImageSource.gallery);
+   File f =  await ImagePicker.pickVideo(source: ImageSource.gallery) ;
+    //_video = File(pickedFile.path);
+    _video=f ;
+    //print('url de video: ' + pickedFile.path);
+    _videoPlayerController = VideoPlayerController.file(_video)
+      ..initialize().then((_) {
+        setState(() {});
+        _videoPlayerController.play();
+      });
       
 }
 
