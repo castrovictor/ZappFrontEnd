@@ -5,9 +5,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'crearGrupo.dart';
-import 'grupo.dart';
 
-List<String> grupos = new List<String>();
+List<String> users = new List<String>();
 
 class TareaWidget extends StatelessWidget {
   TareaWidget({this.iconData, this.title, this.onPressed});
@@ -54,8 +53,9 @@ class TareaWidget extends StatelessWidget {
   }
 }
 
-Future getGrupos() async {
+Future getUsuarios(List<String> usuarios, String nombreGrupo) async {
   String url = 'http://zapp.pythonanywhere.com/grupos/';
+  url = url + nombreGrupo;
   print(url);
   http.Response response = await http.get(
     url,
@@ -66,10 +66,11 @@ Future getGrupos() async {
   );
 
   final jsonResponse = jsonDecode(response.body);
-//  print(jsonResponse);
-  grupos.clear();
-  for (int i = 0; i < jsonResponse['grupos'].length; i++) {
-    grupos.add(jsonResponse['grupos'][i]);
+  print(jsonResponse);
+  users.clear();
+  for (int i = 0; i < jsonResponse['usuarios'].length; i++) {
+    print(usuarios[jsonResponse['usuarios'][i]]);
+    users.add(usuarios[jsonResponse['usuarios'][i]]);
   }
   /*for (int i = 0; i < grupos.length; i++) {
     print(grupos[i]);
@@ -77,16 +78,16 @@ Future getGrupos() async {
   }*/
 }
 
-class Grupos extends StatefulWidget {
-  Grupos({this.usuarios, this.codigos, this.grupos});
+class Grupo extends StatefulWidget {
+  Grupo({this.usuarios, this.codigos, this.nombreGrupo});
   final List<String> usuarios;
   final List<String> codigos;
-  final List<String> grupos;
+  final String nombreGrupo;
   @override
   _Grupos createState() => _Grupos();
 }
 
-class _Grupos extends State<Grupos> {
+class _Grupos extends State<Grupo> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
 
   // var oneSec = const Duration(seconds: 1);
@@ -96,7 +97,7 @@ class _Grupos extends State<Grupos> {
   Widget build(BuildContext context) {
     Timer(Duration(milliseconds: 500), () {
       setState(() {
-        getGrupos();
+        getUsuarios(widget.usuarios, widget.nombreGrupo);
       });
     });
     //var oneSec = const Duration(seconds: 1);
@@ -156,21 +157,14 @@ class _Grupos extends State<Grupos> {
                         height: MediaQuery.of(context).size.height * 0.02,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
-                      crearGrupo,
+                      // crearGrupo,
                       Expanded(
                           child: ListView(children: [
-                        for (int i = 0; i < grupos.length; i++)
+                        for (int i = 0; i < users.length; i++)
                           TareaWidget(
-                            iconData: Icons.group,
-                            title: grupos[i],
-                            onPressed: () async {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Grupo(
-                                        nombreGrupo: grupos[i],
-                                        usuarios: widget.usuarios,
-                                        codigos: widget.codigos,
-                                      )));
-                            },
+                            iconData: Icons.person,
+                            title: users[i],
+                            onPressed: () async {},
                           )
                       ]))
                     ]))));

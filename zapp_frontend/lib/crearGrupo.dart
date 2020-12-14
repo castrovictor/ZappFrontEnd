@@ -50,10 +50,37 @@ class _MyAppState extends State<CrearGrupo> {
     super.initState();
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Nuevo grupo creado'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(''),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Aceptar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Map<String, Widget> widgets;
-    const url = 'http://zapp.pythonanywhere.com/crearActividad/';
+    const url = 'http://zapp.pythonanywhere.com/crearGrupo';
     TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
     final mandar = Material(
@@ -71,33 +98,22 @@ class _MyAppState extends State<CrearGrupo> {
             for (int i = 0; i < selectedItems.length; i++) {
               print(usuarios[selectedItems[i]]);
               print(codigos[selectedItems[i]].toString());
-              /*http.Response response = await http.post(
-              url,
-              body: jsonEncode(<String, dynamic>{
-                'actividad': {
-                  'nombre': widget.nombre,
-                  'descripcion': widget.descripcion,
-                  'idUsuario': codigos[selectedItems[i]],
-                  'idProfesional': '1',
-                  'categoria': '1',
-                  'imagen': widget.imagen.toString(),
-                }
-              }),
-              headers: {
-                HttpHeaders.acceptHeader: 'application/json',
-                HttpHeaders.contentTypeHeader: 'application/json',
-              },
-            );
-            final jsonResponse = jsonDecode(response.body);
-            print(widget.imagen);
+              http.Response response = await http.post(
+                url,
+                body: jsonEncode(<String, dynamic>{
+                  'nombre': nombre,
+                  'idUsuario': codigos[selectedItems[i]].toString()
+                }),
+                headers: {
+                  HttpHeaders.acceptHeader: 'application/json',
+                  HttpHeaders.contentTypeHeader: 'application/json',
+                },
+              );
+              final jsonResponse = jsonDecode(response.body);
 
-            print(jsonResponse);*/
+              print(jsonResponse);
             }
-            /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TareaMandada(
-                      nombre: "hola", selectedItems: selectedItems)));*/
+            _showMyDialog();
           }
         },
         child: Text("Crear grupo",

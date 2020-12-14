@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:zapp_frontend/chat.dart';
 import 'perfilFacilitador.dart';
 import 'administrar.dart';
 import 'biblioteca.dart';
@@ -14,6 +15,7 @@ String nombre;
 String fechaCumple;
 List<String> usuarios = new List<String>();
 List<String> codigos = new List<String>();
+List<String> grupos = new List<String>();
 
 Future getJson(codigo) async {
   String url = 'http://zapp.pythonanywhere.com/facilitador/';
@@ -35,8 +37,8 @@ Future getJson(codigo) async {
   }
 }
 
-Future getUsuarios() async {
-  String url = 'http://zapp.pythonanywhere.com/socio/0';
+Future getGrupos() async {
+  String url = 'http://zapp.pythonanywhere.com/grupos/';
   print(url);
   http.Response response = await http.get(
     url,
@@ -49,6 +51,33 @@ Future getUsuarios() async {
   final jsonResponse = jsonDecode(response.body);
   print(jsonResponse);
   print(usuarios.length);
+  grupos.clear();
+  for (int i = 0; i < jsonResponse['grupos'].length; i++) {
+    grupos.add(jsonResponse['grupos'][i]);
+  }
+  for (int i = 0; i < grupos.length; i++) {
+    print(grupos[i]);
+    //print(codigos[i]);
+  }
+}
+
+Future getUsuarios() async {
+  String url = 'http://zapp.pythonanywhere.com/socio/0';
+  print(url);
+  http.Response response = await http.get(
+    url,
+    headers: {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+    },
+  );
+
+  final jsonResponse = jsonDecode(response.body);
+
+  print(jsonResponse);
+  print(usuarios.length);
+  usuarios.clear();
+  codigos.clear();
   for (int i = 0; i < jsonResponse['User'].length; i++) {
     usuarios.add(jsonResponse['User'][i]['username']);
     codigos.add(jsonResponse['User'][i]['id'].toString());
@@ -63,8 +92,9 @@ Future getUsuarios() async {
 // ignore: non_constant_identifier_names
 List<Widget> _NavScreens() {
   getUsuarios();
+  getGrupos();
   return [
-    Administrar(usuarios: usuarios, codigos: codigos),
+    Administrar(usuarios: usuarios, codigos: codigos, grupos: grupos),
     Biblioteca(usuariosList: usuarios, codigosUsuarios: codigos),
     Usuarios(usuariosList: usuarios),
     PerfilFacilitador(),

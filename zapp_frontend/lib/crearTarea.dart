@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 
+import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'filepickerdemo.dart';
 import 'package:flutter/widgets.dart';
@@ -13,10 +14,13 @@ import 'package:http/http.dart' as http;
 import 'package:video_player/video_player.dart';
 import 'pdf.dart';
 
+//List<String> grupos = new List<String>();
+
 class CrearTarea extends StatefulWidget {
-  CrearTarea({this.usuarios, this.codigos});
+  CrearTarea({this.usuarios, this.codigos, this.grupos});
   List<String> usuarios;
   List<String> codigos;
+  List<String> grupos;
 
   @override
   _CrearTarea createState() => _CrearTarea();
@@ -51,13 +55,17 @@ class _CrearTarea extends State<CrearTarea> {
 
 // This funcion will helps you to pick a Video File
   _pickVideo() async {
-      PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
-      _video = File(pickedFile.path); 
-      _videoPlayerController = VideoPlayerController.file(_video)..initialize().then((_) {
-        setState(() { });
+    PickedFile pickedFile = await picker.getVideo(source: ImageSource.gallery);
+    String new_path =
+        pickedFile.path.substring(0, pickedFile.path.length - 3) + 'mp4';
+    _video = File(pickedFile.path);
+    print("url del video es:" + new_path + "pero " + pickedFile.path);
+    _videoPlayerController = VideoPlayerController.file(_video)
+      ..initialize().then((_) {
+        setState(() {});
         _videoPlayerController.play();
       });
-}
+  }
 
   //Subir imágenes
   //**************************************************************************************************** */
@@ -79,6 +87,30 @@ class _CrearTarea extends State<CrearTarea> {
     double distance = 10;
     var file = null;
     //Botón crear
+
+    /*Future getGrupos() async {
+      String url = 'http://zapp.pythonanywhere.com/grupos/';
+      print(url);
+      http.Response response = await http.get(
+        url,
+        headers: {
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+      grupos.clear();
+      for (int i = 0; i < jsonResponse['grupos'].length; i++) {
+        grupos.add(jsonResponse['grupos'][i]);
+      }
+      for (int i = 0; i < grupos.length; i++) {
+        print(grupos[i]);
+        //print(codigos[i]);
+      }
+    }*/
+
     final crear = Material(
         borderRadius: BorderRadius.circular(30.0),
         color: Color(0xff01A0C7),
@@ -90,7 +122,6 @@ class _CrearTarea extends State<CrearTarea> {
               style: style.copyWith(
                   color: Colors.white, fontWeight: FontWeight.bold)),
           onPressed: () async {
-
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
 
@@ -101,6 +132,26 @@ class _CrearTarea extends State<CrearTarea> {
               //    }));
               print(nombre);
               print(widget.codigos.length);
+              String imagen;
+              String fichero;
+              String video;
+              if (_image != null) {
+                imagen = _image.path;
+              } else {
+                imagen = 'no';
+              }
+              if (_video != null) {
+                video = _video.toString();
+              } else {
+                video = 'no';
+              }
+              if (file != null) {
+                fichero = file[0].path;
+              } else {
+                fichero = 'no';
+              }
+              //getGrupos();
+              print(widget.grupos.length);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -108,15 +159,19 @@ class _CrearTarea extends State<CrearTarea> {
                           nombre: nombre,
                           descripcion: descripcion,
                           usuarios: widget.usuarios,
-                          codigos: widget.codigos)));
+                          codigos: widget.codigos,
+                          imagen: imagen,
+                          video: video,
+                          file: fichero,
+                          grupos: grupos)));
             }
 
-            var res = await uploadImage(
+            /*var res = await uploadImage(
                 file.path, "http://zapp.pythonanywhere.com/crearActividad/");
             //  setState() {
             state = res;
             print(res);
-            print('COJO IMAGEN');
+            print('COJO IMAGEN');*/
             //         }
 
             //**************************************************************************************************** */
@@ -195,7 +250,6 @@ class _CrearTarea extends State<CrearTarea> {
                         margin: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 25.0),
                         child: Column(
-
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               /*FUNCIONA PARA UN ARCHIVO*/
@@ -205,7 +259,6 @@ class _CrearTarea extends State<CrearTarea> {
                                   //  : Image.file(files.first)
                                   : // ListView(
                                   Card(
-                                      
                                       child: ListTile(
                                       title:
                                           Text(files[0].path.split('/').last),
@@ -215,25 +268,23 @@ class _CrearTarea extends State<CrearTarea> {
 
                                           //Borrar archivo
                                           onPressed: () async {
-                                           //  setState(() {});
+                                            //  setState(() {});
                                             setState(() {});
                                             try {
-                                          
                                               await files.first.delete();
-                                             // files=null ;
+                                              // files=null ;
                                               print('Deleted');
-                                              print('IMPRIMO URL' +files.first.toString());
-                                             // setState(() {});
+                                              print('IMPRIMO URL' +
+                                                  files.first.toString());
+                                              // setState(() {});
 
                                             } catch (e) {
-
-                                              files=null ;
+                                              files = null;
                                               print('Couldnt delete');
                                               print('IMPRIMO URL' +
-                                              files.first.toString());
-                                          
+                                                  files.first.toString());
                                             }
-                                         //   setState(() {});
+                                            //   setState(() {});
 
                                             //    file[0]=null ;
                                           }),
@@ -248,9 +299,8 @@ class _CrearTarea extends State<CrearTarea> {
                                           //open viewPDF page on click
                                         }));
                                       },
-                                    )
-                              ),
-                             
+                                    )),
+
                               /****************************VARIOS ARCHIVOS NO FUNCIONA*************** */
                               /*
                                                       //  ? Text('No image selected.')
@@ -423,28 +473,6 @@ class _CrearTarea extends State<CrearTarea> {
                                       fontFamily: 'BalooBhai', fontSize: 20.0),
                                 ),
                               ),
-
-                              /*
-                             files == null? Text("Searching Files"):
-                                    ListView.builder(  //if file/folder list is grabbed, then show here
-                                        itemCount: files?.length ?? 0,
-                                        itemBuilder: (context, index) {
-                                              return Card(
-                                                child:ListTile(
-                                                  title: Text(files[index].path.split('/').last),
-                                                  leading: Icon(Icons.picture_as_pdf),
-                                                  trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
-                                                  onTap: (){
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                      return ViewPDF(pathPDF:files[index].path.toString());
-                                                      //open viewPDF page on click
-                                                    }));
-                                                  },
-                                                )
-                                              );
-                                        },
-                                    ),
-                        */    
                             ])),
                     /*
                             files == null? Text("Searching Files"):
@@ -500,238 +528,99 @@ class _CrearTarea extends State<CrearTarea> {
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40.0,
-                        
-                          child: CircleAvatar(
-                              child: (_image != null)
-                                  ? Image.file(_image)
-                                  : Image.asset('assets/gal.png'),
-                                  backgroundColor: Colors.white,
-                                  radius: 50.0,
-                               ),
+
+                        child: CircleAvatar(
+                          child: (_image != null)
+                              ? Image.file(_image)
+                              : Image.asset('assets/gal.png'),
+                          backgroundColor: Colors.white,
+                          radius: 50.0,
+                        ),
                         //  backgroundColor: Colors.white,
-
-
-                        
                       ),
                     ),
-                      Positioned(
-                           top: -(radius + iconSize + distance),
-                          right: 0,
-                          bottom: radius,
-                          left: 0,
-                          child:  IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () async {
-                                    setState(() {});
-                                            try {
-                                          
-                                              await _image.delete();
-                                             // files=null ;
-                                              print('Deleted image');
-                                              print('IMPRIMO image' +_image.toString());
-                                             // setState(() {});
+                    Positioned(
+                        top: -(radius + iconSize + distance),
+                        right: 0,
+                        bottom: radius,
+                        left: 0,
+                        child: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () async {
+                              setState(() {});
+                              try {
+                                await _image.delete();
+                                // files=null ;
+                                print('Deleted image');
+                                print('IMPRIMO image' + _image.toString());
+                                // setState(() {});
 
-                                            } catch (e) {
-
-                                              _image=null ;
-                                              print('Couldnt delete image');
-                                              print('IMPRIMO image' +
-                                              _image.toString());
-                                          
-                                            }
-
-                                  }
+                              } catch (e) {
+                                _image = null;
+                                print('Couldnt delete image');
+                                print('IMPRIMO image' + _image.toString());
+                              }
+                            }
                             /*Icon(
                             Icons.delete_forever,
                             color: Colors.grey,
                             size: iconSize,
                             */
-                  )),
+                            )),
 
-                  /**************************************VIDEO********************************** */
-                 //  (() {
-                                            _video==null
+                    /**************************************VIDEO********************************** */
+                    //  (() {
+                    _video == null
+                        ? InkWell(
+                            onTap: _pickVideo,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 40.0,
 
-                                                ?
-                                                        InkWell(
-                                                              onTap:  _pickVideo,
-                                                          child: CircleAvatar(
-                                                            backgroundColor: Colors.white,
-                                                            radius: 40.0,
-                                                            
-                                                              child: 
-                                                                        CircleAvatar(
-                                                                        child: Image.asset('assets/23.webp'),
-                                                                            backgroundColor: Colors.white,
-                                                                            radius: 30.0,
-                                                                        ),
-                                              //  backgroundColor: Colors.white,
+                              child: CircleAvatar(
+                                child: Image.asset('assets/23.webp'),
+                                backgroundColor: Colors.white,
+                                radius: 30.0,
+                              ),
+                              //  backgroundColor: Colors.white,
+                            ),
+                          )
+                        : _videoPlayerController.value.initialized
+                            ? AspectRatio(
+                                aspectRatio:
+                                    _videoPlayerController.value.aspectRatio,
+                                child: VideoPlayer(_videoPlayerController),
+                              )
+                            : Container(),
+                    Positioned(
+                        top: -(radius + iconSize + distance),
+                        right: 0,
+                        bottom: radius,
+                        left: 0,
+                        child: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () async {
+                              setState(() {});
+                              try {
+                                await _video.delete();
+                                // files=null ;
+                                print('Deleted video');
+                                print('IMPRIMO video' + _video.toString());
+                                // setState(() {});
 
-
-                                              
-                                                                ),
-                                                          )
-
-                                          :
-
-                                                       _videoPlayerController.value.initialized
-                                                      ? AspectRatio(
-                                                          aspectRatio: _videoPlayerController.value.aspectRatio,
-                                                          child: VideoPlayer(_videoPlayerController),
-                                                      )
-                                                      : Container(),
-                                                       Positioned(
-                                                                      top: -(radius + iconSize + distance),
-                                                                      right: 0,
-                                                                      bottom: radius,
-                                                                      left: 0,
-                                                                      child:  IconButton(
-                                                                              icon: Icon(Icons.delete),
-                                                                              onPressed: () async {
-                                                                                setState(() {});
-                                                                                        try {
-                                                                                      
-                                                                                          await _video.delete();
-                                                                                        // files=null ;
-                                                                                          print('Deleted video');
-                                                                                          print('IMPRIMO video' +_video.toString());
-                                                                                        // setState(() {});
-
-                                                                                        } catch (e) {
-
-                                                                                          _video=null ;
-                                                                                          print('Couldnt delete video');
-                                                                                          print('IMPRIMO video' +
-                                                                                          _video.toString());
-                                                                                      
-                                                                                        }
-
-                                                                              }
-                                                                        /*Icon(
+                              } catch (e) {
+                                _video = null;
+                                print('Couldnt delete video');
+                                print('IMPRIMO video' + _video.toString());
+                              }
+                            }
+                            /*Icon(
                                                                         Icons.delete_forever,
                                                                         color: Colors.grey,
                                                                         size: iconSize,
                                                                         */
-                                                              )),
+                            )),
 
-
-
-                                            
-                 //   }()),
-                    /*
-                    InkWell(
-                      onTap:  _pickVideo,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40.0,
-                        
-                          child: _video!=null
-                             ?
-                                    CircleAvatar(
-                                    child: (_video != null)
-                                        ? {_videoPlayerController.value.initialized
-                                            ? AspectRatio(
-                                                aspectRatio: _videoPlayerController.value.aspectRatio,
-                                                child: VideoPlayer(_videoPlayerController),
-                                            )
-                                            : Container()}
-                                        : Image.asset('assets/23.webp'),
-                                        backgroundColor: Colors.white,
-                                        radius: 30.0,
-                                ),
-                        //  backgroundColor: Colors.white,
-
-
-                        
-                      )
-                    ),*/
-                    /*
-                  if(_video != null) 
-                                  _videoPlayerController.value.initialized
-                              ? AspectRatio(
-                                  aspectRatio: _videoPlayerController.value.aspectRatio,
-                                  child: VideoPlayer(_videoPlayerController),
-                              )
-                              : Container()
-                          else
-                              Text("Click on Pick Video to select video", style: TextStyle(fontSize: 18.0),),
-                          RaisedButton(
-                              onPressed: () {
-                                  _pickVideo();
-                              },
-                       child: Text("Pick Video From Gallery"),
-                   ),
-                      */  //**************************************VIDEO********************************** */
-                    /*
-                  ListView(
-                        //Imprimir imagen
-                     //   radius: 55,
-                    //    backgroundColor: Color(0xffFDCF09),
-                       child: files == null? Text("Searching Files"):
-                                    ListView.builder(  //if file/folder list is grabbed, then show here
-                                        itemCount: files?.length ?? 0,
-                                        //Size of each child
-                                      //    itemExtent: 100,
-                                        itemBuilder: (context, index) {
-                                          return   Card(
-                                                  child: ListTile(
-                                                    leading: FlutterLogo(size: 56.0),
-                                                    title: Text('Two-line ListTile'),
-                                                    subtitle: Text('Here is a second line'),
-                                                    trailing: Icon(Icons.more_vert),
-                                                  )
-                                          );
-                                                /*
-                                              return Card(
-                                                // height: 100.0,
-                                                child:ListTile(
-                                                  
-                                                  title: Text(files[index].path.split('/').last),
-                                                  leading: Icon(Icons.picture_as_pdf),
-                                                  trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
-                                                  //Ver el pdf
-                                                  onTap: (){
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                      return ViewPDF(pathPDF:files[index].path.toString());
-                                                      //open viewPDF page on click
-                                                    }));
-                                                  },
-                                                )
-                                              );
-                                                */
-                                        },
-                                    )
-                          /*files == null
-                            //  ? Text('No image selected.')
-                            ? Text('No file selected.')
-                          //  : Image.file(files.first)
-                        :Text(files.first.toString())
-                        */
-                        /*
-                              child: file != null
-                                  ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: Image.file(
-                                       _image,
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                                    )
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-                                          borderRadius: BorderRadius.circular(50)),
-                                      width: 100,
-                                      height: 100,
-                                      child: Icon(
-                                        Icons.camera_alt,
-                                        color: Colors.grey[800],
-                                      ),
-                                    ),
-                                */
-                     ),
-                    */
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(

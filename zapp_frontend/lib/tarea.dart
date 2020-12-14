@@ -3,24 +3,29 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'chat.dart';
 import 'dart:async';
-import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
 //import 'package:dash_chat/dash_chat.dart';
 //import 'imagePicker.dart';
 
 // ignore: must_be_immutable
 
 class Tarea extends StatefulWidget {
-  Tarea({this.iconData, this.title, this.description, this.idTarea});
+  Tarea(
+      {this.iconData, this.title, this.description, this.imagen, this.idTarea});
   final IconData iconData;
   final String title;
   final String description;
   final String idTarea;
+  final String imagen;
   @override
   _Tarea createState() => _Tarea();
 }
@@ -30,6 +35,27 @@ class _Tarea extends State<Tarea> {
 
   @override
   Widget build(BuildContext context) {
+    Future getTarea(idTarea) async {
+      /* String url = 'http://zapp.pythonanywhere.com/actividad/';
+      url = url + idTarea;
+      //print(url);
+      http.Response response = await http.get(
+        url,
+        headers: {
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      final jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+
+      //if (jsonResponse.containsKey('Actividad')) {
+      // print(jsonResponse['Actividad']['imagen'].toString());
+      //_image = File(jsonResponse['Actividad']['imagen']);
+      //}*/
+    }
+
     final chat = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -52,7 +78,7 @@ class _Tarea extends State<Tarea> {
             home: Chat(),
           );
         */
-
+          print(widget.idTarea);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -65,6 +91,11 @@ class _Tarea extends State<Tarea> {
                 color: Colors.white, fontWeight: FontWeight.bold)),
       ),
     );
+
+    setState(() {
+      print(widget.imagen);
+      getTarea(widget.idTarea);
+    });
 
     return Scaffold(
         /* appBar: AppBar(
@@ -102,6 +133,11 @@ class _Tarea extends State<Tarea> {
                               fontFamily: 'Montserrat',
                               fontSize: 20.0,
                             )),
+                      ),
+                      Expanded(
+                        child: (widget.imagen != null)
+                            ? Image.network(widget.imagen)
+                            : Image.asset('assets/gal.png'),
                       ),
                       Expanded(
                         child: Text(

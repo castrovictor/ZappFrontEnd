@@ -7,6 +7,7 @@ import 'dart:io';
 
 List<String> tareas = new List<String>();
 List<String> codigos = new List<String>();
+List<String> imagenes = new List<String>();
 
 class TareaWidget extends StatelessWidget {
   TareaWidget({this.iconData, this.title, this.onPressed});
@@ -70,9 +71,11 @@ Future getTareas(codigo) async {
   codigos.clear();
   if (jsonResponse.containsKey('Actividad')) {
     for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
+      //if (!jsonResponse['Actividad'][i].constainsKey("detail")) {
       tareas.add(jsonResponse['Actividad'][i]['nombre']);
       codigos.add(jsonResponse['Actividad'][i]['id'].toString());
       //print(jsonResponse['Actividad'][i]['id'].toString());
+      //}
     }
   }
 }
@@ -95,6 +98,7 @@ class _Deberes extends State<Deberes> {
   Widget build(BuildContext context) {
     Timer(Duration(milliseconds: 500), () {
       setState(() {
+        if (!mounted) return;
         getTareas(widget.codigo);
       });
     });
@@ -159,11 +163,17 @@ class _Deberes extends State<Deberes> {
                                   jsonResponse['Actividad']['nombre'];
                               String descripcion =
                                   jsonResponse['Actividad']['descripcion'];
+                              String _image = 'http://zapp.pythonanywhere.com' +
+                                  jsonResponse['Actividad']['imagen']
+                                      .toString();
+                              print(_image);
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tarea(
                                       iconData: Icons.pending_actions_rounded,
                                       title: nombre,
-                                      description: descripcion)));
+                                      description: descripcion,
+                                      idTarea: codigos[i],
+                                      imagen: _image)));
                             },
                           )
                       ]))
