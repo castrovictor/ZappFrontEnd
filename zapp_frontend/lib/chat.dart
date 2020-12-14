@@ -114,15 +114,16 @@ class MensajeWidget extends StatelessWidget {
 
   }
     Future getImage() async {
+
      if(i!=''){
 
          fimage = File(i);
      }
      
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    //final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
   //  setState(() {
-      fimage = File(pickedFile.path);
+    //  fimage = File(pickedFile.path);
  //     si=true ;
    // });
     //  setState(() {});
@@ -199,19 +200,21 @@ class MensajeWidget extends StatelessWidget {
                       }
                       else
                          if(i!=''){
-                              /*
-                                          InkWell(
+
+                              getImage() ;
+                              
+                                 return         InkWell(
                                             
                                       child:   InkWell(
                                            
-                                            chzild: CircleAvatar(
+                                            child: CircleAvatar(
                                               backgroundColor: Colors.white,
                                               radius: 40.0,
                                               
                                                 child: CircleAvatar(
                                                   
                                                     child:
-                                                         Image.file(fimage),
+                                                         Image.asset(fimage.path.toString()),
                                                         backgroundColor: Colors.white,
                                                         radius: 50.0,
                                                     ),
@@ -221,8 +224,8 @@ class MensajeWidget extends StatelessWidget {
                                               
                                             ),
                                           )
-                                        )*/
-                                        
+                                        );
+                                        /*
                             return InkWell(
                                            
                                       child:   InkWell(
@@ -248,7 +251,7 @@ class MensajeWidget extends StatelessWidget {
                                             ),
                                           )
                                         );
-
+                                      */
                           
 
                     
