@@ -12,6 +12,8 @@ import 'package:http_parser/http_parser.dart';
 
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
+List<String> grupos = new List<String>();
+
 class MyApp extends StatefulWidget {
   MyApp(
       {this.nombre,
@@ -20,7 +22,8 @@ class MyApp extends StatefulWidget {
       this.codigos,
       this.imagen,
       this.video,
-      this.file});
+      this.file,
+      this.grupos});
   final String nombre;
   final String descripcion;
   final List<String> usuarios;
@@ -28,34 +31,71 @@ class MyApp extends StatefulWidget {
   final String imagen;
   final String video;
   final String file;
+  final List<String> grupos;
+  //final List<String> grupos;
   @override
   _MyAppState createState() =>
-      _MyAppState(usuarios: usuarios, codigos: codigos);
+      _MyAppState(usuarios: usuarios, codigos: codigos, grupos: grupos);
 }
 
 class _MyAppState extends State<MyApp> {
   List<String> usuarios;
   List<String> codigos;
-  _MyAppState({this.usuarios, this.codigos});
+  List<String> grupos;
+  _MyAppState({this.usuarios, this.codigos, this.grupos});
   bool asTabs = false;
   String selectedValue;
-  String preselectedValue = "dolor sit";
+  String preselectedValue = "";
   List<int> selectedItems = [];
   final List<DropdownMenuItem> items = [];
+  String selectedValue2;
+  String preselectedValue2 = "";
+  List<int> selectedItems2 = [];
+  final List<DropdownMenuItem> items2 = [];
 
   static const String appTitle = "Search Choices demo";
   final String loremIpsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
+  /*Future getGrupos() async {
+    String url = 'http://zapp.pythonanywhere.com/grupos/';
+    print(url);
+    http.Response response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    grupos.clear();
+    for (int i = 0; i < jsonResponse['grupos'].length; i++) {
+      grupos.add(jsonResponse['grupos'][i]);
+    }
+    for (int i = 0; i < grupos.length; i++) {
+      print(grupos[i]);
+      //print(codigos[i]);
+    }
+  }*/
+
   @override
   void initState() {
+    print("hay " + grupos.length.toString());
     for (int i = 0; i < codigos.length; i++) {
       items.add(DropdownMenuItem(
         child: Text(usuarios[i]),
         value: usuarios[i],
       ));
     }
-    ;
+    for (int j = 0; j < grupos.length; j++) {
+      print(j);
+      items2.add(DropdownMenuItem(
+        child: Text(grupos[j]),
+        value: grupos[j],
+      ));
+    }
     super.initState();
   }
 
@@ -103,6 +143,29 @@ class _MyAppState extends State<MyApp> {
           print(widget.descripcion);
           print(widget.imagen);
           var response;
+          for (int i = 0; i < selectedItems2.length; i++) {
+            String url = 'http://zapp.pythonanywhere.com/grupos/';
+            url = url + grupos[selectedItems2[i]];
+            print(url);
+            http.Response response = await http.get(
+              url,
+              headers: {
+                HttpHeaders.acceptHeader: 'application/json',
+                HttpHeaders.contentTypeHeader: 'application/json',
+              },
+            );
+
+            final jsonResponse = jsonDecode(response.body);
+            print(jsonResponse);
+            for (int i = 0; i < jsonResponse['usuarios'].length; i++) {
+              print("añado a " + usuarios[jsonResponse['usuarios'][i]]);
+              if (!selectedItems.contains(jsonResponse['usuarios'][i])) {
+                print("usuario nuevo, se añade");
+                selectedItems.add(jsonResponse['usuarios'][i]);
+              }
+            }
+          }
+
           for (int i = 0; i < selectedItems.length; i++) {
             print("se envia a");
             print(codigos[selectedItems[i]].toString());
@@ -338,6 +401,43 @@ class _MyAppState extends State<MyApp> {
                   onPressed: () {
                     setState(() {
                       selectedItems.clear();
+                    });
+                  },
+                  child: Text("Ninguno")),
+            ],
+          );
+        },
+        isExpanded: true,
+        menuConstraints: BoxConstraints.tight(Size.fromHeight(350)),
+      ),
+      "Grupos a los que mandar la tarea": SearchableDropdown.multiple(
+        items: items2,
+        selectedItems: selectedItems2,
+        hint: "Selecciona un grupo",
+        searchHint: "Selecciona un grupo",
+        onChanged: (value) {
+          setState(() {
+            selectedItems2 = value;
+          });
+        },
+        dialogBox: false,
+        closeButton: (selectedItemsClose) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedItems2.clear();
+                      selectedItems2.addAll(
+                          Iterable<int>.generate(items2.length).toList());
+                    });
+                  },
+                  child: Text("Todos")),
+              RaisedButton(
+                  onPressed: () {
+                    setState(() {
+                      selectedItems2.clear();
                     });
                   },
                   child: Text("Ninguno")),
