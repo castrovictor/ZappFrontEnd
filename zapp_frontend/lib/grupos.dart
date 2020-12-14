@@ -5,9 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 import 'crearGrupo.dart';
+import 'grupo.dart';
 
 List<String> grupos = new List<String>();
-List<String> codigosGrupos = new List<String>();
 
 class TareaWidget extends StatelessWidget {
   TareaWidget({this.iconData, this.title, this.onPressed});
@@ -55,9 +55,9 @@ class TareaWidget extends StatelessWidget {
 }
 
 Future getGrupos() async {
-  String url = 'http://zapp.pythonanywhere.com/actividad/noentregadas/';
-  //print(url);
-  /*http.Response response = await http.get(
+  String url = 'http://zapp.pythonanywhere.com/grupos/';
+  print(url);
+  http.Response response = await http.get(
     url,
     headers: {
       HttpHeaders.acceptHeader: 'application/json',
@@ -65,22 +65,23 @@ Future getGrupos() async {
     },
   );
 
-  final jsonResponse = jsonDecode(response.body);*/
+  final jsonResponse = jsonDecode(response.body);
+//  print(jsonResponse);
   grupos.clear();
-  codigosGrupos.clear();
-  /*if (jsonResponse.containsKey('Actividad')) {
-    for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
-      tareas.add(jsonResponse['Actividad'][i]['nombre']);
-      codigos.add(jsonResponse['Actividad'][i]['id'].toString());
-      //print(jsonResponse['Actividad'][i]['id'].toString());
-    }
+  for (int i = 0; i < jsonResponse['grupos'].length; i++) {
+    grupos.add(jsonResponse['grupos'][i]);
+  }
+  /*for (int i = 0; i < grupos.length; i++) {
+    print(grupos[i]);
+    //print(codigos[i]);
   }*/
 }
 
 class Grupos extends StatefulWidget {
-  Grupos({this.usuarios, this.codigos});
+  Grupos({this.usuarios, this.codigos, this.grupos});
   final List<String> usuarios;
   final List<String> codigos;
+  final List<String> grupos;
   @override
   _Grupos createState() => _Grupos();
 }
@@ -155,38 +156,20 @@ class _Grupos extends State<Grupos> {
                         height: MediaQuery.of(context).size.height * 0.02,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
+                      crearGrupo,
                       Expanded(
                           child: ListView(children: [
                         for (int i = 0; i < grupos.length; i++)
                           TareaWidget(
-                            iconData: Icons.pending_actions_rounded,
+                            iconData: Icons.group,
                             title: grupos[i],
                             onPressed: () async {
-                              String url =
-                                  'http://zapp.pythonanywhere.com/actividad/';
-                              url = url + codigosGrupos[i];
-                              //print(url);
-                              /* http.Response response = await http.get(
-                                url,
-                                headers: {
-                                  HttpHeaders.acceptHeader: 'application/json',
-                                  HttpHeaders.contentTypeHeader:
-                                      'application/json',
-                                },
-                              );
-
-                              final jsonResponse = jsonDecode(response.body);
-                              print(jsonResponse);
-
-                              String nombre =
-                                  jsonResponse['Actividad']['nombre'];
-                              String descripcion =
-                                  jsonResponse['Actividad']['descripcion'];
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Tarea(
-                                      iconData: Icons.pending_actions_rounded,
-                                      title: nombre,
-                                      description: descripcion)));*/
+                                  builder: (context) => Grupo(
+                                        nombreGrupo: grupos[i],
+                                        usuarios: widget.usuarios,
+                                        codigos: widget.codigos,
+                                      )));
                             },
                           )
                       ]))
