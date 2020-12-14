@@ -18,7 +18,7 @@ import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
 
-enum EstadoTarea { noEntregado, entregado, corregido }
+enum EstadoTareaf { noEntregado, entregado, corregido }
 
 File _image;
 bool hayImagen = true;
@@ -27,16 +27,18 @@ bool hayFile = true;
 File _video;
 bool hayVideo = true;
 
-class Tarea extends StatefulWidget {
-  Tarea({this.iconData, this.title, this.description, this.idTarea});
+class Tareaf extends StatefulWidget {
+  Tareaf({this.iconData, this.title, this.description, this.idTareaf, this.estado});
   final IconData iconData;
   final String title;
   final String description;
-  final String idTarea;
+  final String idTareaf;
+  String estado ;
 
-  Future getTareas(codigo) async {
+  Future getTareafs(codigo) async {
+
     String url = 'http://zapp.pythonanywhere.com/actividad/';
-    url = url + idTarea;
+    url = url + idTareaf;
     http.Response response = await http.get(
       url,
       headers: {
@@ -48,10 +50,12 @@ class Tarea extends StatefulWidget {
   }
 
   @override
-  _Tarea createState() => _Tarea();
+  _Tareaf createState() => _Tareaf();
+
+
 }
 
-class _Tarea extends State<Tarea> {
+class _Tareaf extends State<Tareaf> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   VideoPlayerController _controller;
   VoidCallback listener;
@@ -103,10 +107,12 @@ class _Tarea extends State<Tarea> {
     super.deactivate();
   }
 
-  EstadoTarea _estado = EstadoTarea.noEntregado;
+  EstadoTareaf _estado = EstadoTareaf.noEntregado;
 
   @override
   Widget build(BuildContext context) {
+
+    //BOTÓN CHAT 
     final chat = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -119,9 +125,9 @@ class _Tarea extends State<Tarea> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      Chat(nombre: widget.title, idActividad: widget.idTarea)));
+                      Chat(nombre: widget.title, idActividad: widget.idTareaf)));
         },
-        child: Text("Chat de tarea",
+        child: Text("Chat de tareaf",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
@@ -136,64 +142,80 @@ class _Tarea extends State<Tarea> {
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(36.0),
+
+
                 child: Column(
+
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
+
                     children: <Widget>[
-                      // Expanded(
-                      //   child: Column(
-                      //     mainAxisSize: MainAxisSize.min,
-                      //     children: <Widget>[
-                      //       Row(
-                      //         mainAxisAlignment: MainAxisAlignment.end,
-                      //         children: <Widget>[
-                      //           TextButton(
-                      //             child: const Text('Estado Tarea'),
-                      //             onPressed: () {/* ... */},
-                      //           ),
-                      //           const SizedBox(width: 8),
-                      //           ListTile(
-                      //             title: const Text('No entregada'),
-                      //             leading: Radio(
-                      //               value: EstadoTarea.noEntregado,
-                      //               groupValue: _estado,
-                      //               onChanged: (EstadoTarea value) {
-                      //                 setState(() {
-                      //                   _estado = value;
-                      //                 });
-                      //               },
-                      //             ),
-                      //           ),
-                      //           ListTile(
-                      //             title: const Text('Entregada'),
-                      //             leading: Radio(
-                      //               value: EstadoTarea.entregado,
-                      //               groupValue: _estado,
-                      //               onChanged: (EstadoTarea value) {
-                      //                 setState(() {
-                      //                   _estado = value;
-                      //                 });
-                      //               },
-                      //             ),
-                      //           ),
-                      //           ListTile(
-                      //             title: const Text('Corregida'),
-                      //             leading: Radio(
-                      //               value: EstadoTarea.corregido,
-                      //               groupValue: _estado,
-                      //               onChanged: (EstadoTarea value) {
-                      //                 setState(() {
-                      //                   _estado = value;
-                      //                 });
-                      //               },
-                      //             ),
-                      //           ),
-                      //           const SizedBox(width: 8),
-                      //         ],
-                      //       ),
-                      //     ],
-                      //       ),
-                      // ),
+                      
+                      Expanded(
+                         child: Column(
+                         mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Row(
+                               mainAxisAlignment: MainAxisAlignment.end,
+                               children: <Widget>[
+
+
+                                TextButton(
+                                  child:  Text(widget.estado),
+                                  onPressed: () {/* ... */},
+                                  ),
+
+
+                                const SizedBox(width: 8),
+
+                                    /*
+                                 ListTile(
+                                   title: const Text('No entregada'),
+                                 leading: Radio(
+                                     value: EstadoTareaf.noEntregado,
+                                   groupValue: _estado,
+                                  onChanged: (EstadoTareaf value) {
+                                       setState(() {
+                                        _estado = value;
+                                      });
+                                   },
+                                 ),
+                                )
+                                */
+                                /*
+                                ,
+                               ListTile(
+                                  title: const Text('Entregada'),
+                                 leading: Radio(
+                                  value: EstadoTareaf.entregado,
+                                     groupValue: _estado,
+                                   onChanged: (EstadoTareaf value) {
+                                       setState(() {
+                                        _estado = value;
+                                      });
+                                  },
+                                  ),
+                              ),
+                              */
+                              /*
+                                 ListTile(
+                                   title: const Text('Corregida'),
+                                  leading: Radio(
+                                value: EstadoTareaf.corregido,
+                                    groupValue: _estado,
+                                   onChanged: (EstadoTareaf value) {
+                                     setState(() {
+                                       _estado = value;
+                                      });
+                                   },
+                                  ),
+                               ),*/
+                                 const SizedBox(width: 8),
+                             ],
+                             ),
+                         ],
+                           ),
+                     ),
                       Expanded(
                         child: Text(widget.title,
                             style: TextStyle(
@@ -235,10 +257,21 @@ class _Tarea extends State<Tarea> {
                       ),
                       FloatingActionButton(
                         onPressed: () {
-                          createVideo();
-                          _controller.play();
-                        },
-                        child: Icon(Icons.play_arrow),
+                              // Wrap the play or pause in a call to `setState`. This ensures the
+                              // correct icon is shown
+                              setState(() {
+                                // If the video is playing, pause it.
+                                if (_controller.value.isPlaying) {
+                                  _controller.pause();
+                                } else {
+                                  // If the video is paused, play it.
+                                  _controller.play();
+                                }
+                              });
+                              },
+                         child: Icon(
+                                      _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                         ),
                       ),
                       // Expanded(
                       //   child: MaterialApp(
@@ -272,12 +305,21 @@ class _Tarea extends State<Tarea> {
                       // ),
                       Expanded(
                         child: Text(
-                            'Sube tu solución o pregunta duda en el chat de tarea',
+                            'Sube tu solución o pregunta duda en el chat de tareaf',
                             style: TextStyle(
                               fontFamily: 'Montserrat',
                               fontSize: 20.0,
                             )),
                       ),
+                         Expanded(
+                        child: Text(
+                            '',
+                            style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 20.0,
+                            )),
+                      ),
+
 
                       /* Expanded(
                           child: file == null
