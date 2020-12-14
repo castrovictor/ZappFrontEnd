@@ -46,7 +46,7 @@ class MensajeWidget extends StatelessWidget {
   /// icon data
   final IconData iconData;
   
-   List<File> files;
+   File file;
    File fimage;
    File fvideo ;
 
@@ -85,12 +85,18 @@ class MensajeWidget extends StatelessWidget {
                                    
       }
       */
+      /*
        FilePickerResult result = await FilePicker
                                         .platform
                                         .pickFiles(allowMultiple: true);
 
                                     if (result != null) {
-                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
+                                      */
+
+
+                                      //   List<File>
+                                      /*
+                                     files = result.paths.map((path) => File(path)).toList();
                                       files = result.paths
                                           .map((path) => File(path))
                                           .toList();
@@ -100,6 +106,11 @@ class MensajeWidget extends StatelessWidget {
                                       // User canceled the picker
                                     }
                                   //  setState(() {});
+                                  */
+
+                                                      
+                                                                      file= File(f) ;
+                                                                      print('Archivo cargado  : '+file.toString()) ;
 
   }
     Future getImage() async {
@@ -163,7 +174,8 @@ class MensajeWidget extends StatelessWidget {
               children: <Widget>[
                     
                   (() {
-                    print('IMPRIMO RUTA IMAGEN' +i);
+                 //   print('IMPRIMO RUTA IMAGEN' +i);
+                  print('IMPRIMO RUTA ARCHIVO' +f);
                     if(texto!=''){
 
               
@@ -210,7 +222,7 @@ class MensajeWidget extends StatelessWidget {
                                             ),
                                           )
                                         )*/
-                                        /*
+                                        
                             return InkWell(
                                            
                                       child:   InkWell(
@@ -237,42 +249,29 @@ class MensajeWidget extends StatelessWidget {
                                           )
                                         );
 
-                          */
-
-                    return      SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            height: MediaQuery.of(context).size.height * 0.075,
-                            child: ColoredBox(
-                              color: Colors.lightBlue[50],
-                              // child: Center(
-                              //poner mensaje dependiendo de si es de tutor
-                              //Distinguir si el contenido es nulll
                           
-                              child: Text('IMAGEN '+texto,
-                                  style: TextStyle(
-                                      fontFamily: 'Montserrat',
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold)
-                              ),
-                            )
-                          );
 
+                    
                       }
                         else if(f!=''){
+                          print("IMPRIMO RUTA DE ARCHIVO EN MENSAJE "+f);
+                          getFile() ;
+
                          return Card(
                                       child: ListTile(
                                       title:
-                                          Text(files[0].path.split('/').last),
+                                          Text(file.path.split('/').last),
                                       leading: Icon(Icons.picture_as_pdf),
                                       
                                       // trailing: Icon(Icons.arrow_forward, color: Colors.redAccent,),
+
                                       onTap: () {
                                         Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
                                           return ViewPDF(
                                               pathPDF:
-                                                  files[0].path.toString());
+                                                  file.path.toString());
                                           //open viewPDF page on click
                                         }));
                                       },
@@ -894,8 +893,9 @@ File f = await ImagePicker.pickImage(source: ImageSource.gallery);
                 onPressed: () {
                           setState(() {
                                 
-
-
+                              _image!=null ? si=true : si=false ;
+                              _video!=null ? sv=true : sv=false ;
+                              files !=null ? sf=true :sf=false ;
                           });
                   //aqui deberia hacer las cosas de meter en la lista la cosa que se haya elegido y tal
                   //y un set state
@@ -939,6 +939,7 @@ File f = await ImagePicker.pickImage(source: ImageSource.gallery);
                  videos.add('');
               }
                 if(sf==true){
+                    print(' Lleno ARCHIVO ARRAY' +   files[0].path);
                  archivos.add(files.first.path);
               }else{
                  archivos.add('');
