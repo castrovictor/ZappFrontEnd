@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'crearTarea.dart';
 import 'altaFacilitador.dart';
 import 'altaSocio.dart';
+import 'grupos.dart';
 
 // ignore: must_be_immutable
 class Administrar extends StatelessWidget {
-  Administrar({this.usuarios, this.codigos});
+  Administrar({this.usuarios, this.codigos, this.grupos});
   final List<String> codigos;
   final List<String> usuarios;
+  final List<String> grupos;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   @override
@@ -24,8 +26,8 @@ class Administrar extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      CrearTarea(usuarios: usuarios, codigos: codigos)));
+                  builder: (context) => CrearTarea(
+                      usuarios: usuarios, codigos: codigos, grupos: grupos)));
         },
         child: Text("Crear Tarea",
             textAlign: TextAlign.center,
@@ -43,9 +45,12 @@ class Administrar extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => CrearTarea()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Grupos(
+                      usuarios: usuarios, codigos: codigos, grupos: grupos)));
         },
-        child: Text("Añadir pictograma",
+        child: Text("Grupos",
             textAlign: TextAlign.center,
             style: style.copyWith(
                 color: Colors.white, fontWeight: FontWeight.bold)),
