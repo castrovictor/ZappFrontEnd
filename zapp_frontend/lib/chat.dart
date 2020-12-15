@@ -40,10 +40,12 @@ class MensajeWidget extends StatelessWidget {
       this.f,
       this.im,
       this.v,
-      this.tutor});
+      this.tutor,
+      this.nombreUser});
 
   /// icon data
   final IconData iconData;
+  String nombreUser;
 
   File file;
   File fimage;
@@ -116,7 +118,7 @@ class MensajeWidget extends StatelessWidget {
 
                           child: Text(
                               'Mensaje de ' +
-                                  (tutor ? 'tutor: ' : 'socio: ') +
+                                  (tutor ? 'tutor: ' : nombreUser + ': ') +
                                   texto,
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
@@ -424,9 +426,10 @@ Future getMensajes(idActividad) async {
     }*/
 
 class Chat extends StatefulWidget {
-  Chat({this.nombre, this.idActividad});
+  Chat({this.nombre, this.idActividad, this.usuario});
   final String nombre;
   final String idActividad;
+  final String usuario;
 
   @override
   _Chat createState() => _Chat();
@@ -931,7 +934,7 @@ class _Chat extends State<Chat> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.nombre),
+          title: Text('Chat de:' + widget.nombre),
           backgroundColor: Colors.green,
         ),
         body: Center(
@@ -953,6 +956,7 @@ class _Chat extends State<Chat> {
                                 v: videos[i],
                                 f: archivos[i],
                                 tutor: tutor[i],
+                                nombreUser: widget.usuario,
                                 onPressed: () async {},
                               )
 

@@ -22,8 +22,8 @@ import 'dart:io';
 
 PersistentTabController _controller = PersistentTabController(initialIndex: 0);
 
-String fechaCumple;
-String nombre;
+String fechaCumple = 'Cumpleaños';
+String nombre = 'socio';
 List<String> nombreActividades = new List<String>();
 List<String> descripcionActividades = new List<String>();
 List<String> nombreActividadesHechas = new List<String>();
@@ -44,12 +44,12 @@ Future getJson(codigo) async {
   final jsonResponse = jsonDecode(response.body);
   nombre = jsonResponse['User']['username'];
   fechaCumple = jsonResponse['User']['fechaNacimiento'];
-  if (nombre == null) {
+  /*if (nombre == null) {
     nombre = "Nombre";
   }
   if (fechaCumple == null) {
     fechaCumple = "Cumpleaños";
-  }
+  }*/
 }
 
 //Screens for each nav items.
