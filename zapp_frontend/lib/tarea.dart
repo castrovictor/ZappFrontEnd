@@ -202,11 +202,22 @@ class _Tarea extends State<Tarea> {
                           ),
                           FloatingActionButton(
                             onPressed: () {
-                              createVideo();
-                              _controller.play();
-                            },
-                            child: Icon(Icons.play_arrow),
-                          ),
+                                  // Wrap the play or pause in a call to `setState`. This ensures the
+                                  // correct icon is shown.
+                                  setState(() {
+                                    // If the video is playing, pause it.
+                                    if (_controller.value.isPlaying) {
+                                      _controller.pause();
+                                    } else {
+                                      // If the video is paused, play it.
+                                      _controller.play();
+                                    }
+                                  });
+                             },
+                        child: Icon(
+                                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                              ),
+                                                ),
                         ],
                       )),
                       // Expanded(
