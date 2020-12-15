@@ -178,8 +178,7 @@ class _Deberes extends State<Biblioteca> {
                               String _image = 'http://zapp.pythonanywhere.com' +
                                   jsonResponse['Actividad']['imagen']
                                       .toString();
-                              String _estado =
-                                  jsonResponse['Actividad']['estado'];
+                              String _estado = jsonResponse['Actividad']['estado'];
                               String _usuario = usuarios[i];
                               //Miro estado
                               Navigator.of(context).push(MaterialPageRoute(

@@ -170,12 +170,16 @@ class _Tareaf extends State<Tareaf> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.03,
                         child: Expanded(
-                            child: Text('Estado: ' + widget.estado,
+
+                          //Estado
+                       child: Text('Estado: ' + widget.estado,
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold))),
                       ),
+
+                      //Usuario
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.03,
@@ -186,6 +190,7 @@ class _Tareaf extends State<Tareaf> {
                                     fontSize: 15.0,
                                     fontWeight: FontWeight.bold))),
                       ),
+
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.06,
@@ -194,38 +199,77 @@ class _Tareaf extends State<Tareaf> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
                                 children: <Widget>[
+
+
                               TextButton(
-                                  onPressed: () {
+                                  child: Text('ENTREGADO'),
+                                //Cambiar estado a entregado 
+                                  onPressed: () async {
+
                                     widget.estado = 'Entregado';
-                                    var uri = Uri.parse(
+
+                                     var uri = Uri.parse(
                                         'http://zapp.pythonanywhere.com/cambiarEstadoActividad/' +
                                             widget.idTarea +
-                                            '/0');
+                                            '/1');
+
                                     var request =
-                                        http.MultipartRequest('PUT', uri);
+                                        http.MultipartRequest('PUT', uri)
+                                        ..fields['estado']=widget.estado ;
                                     setState(() {});
+                                  
+                          
+                                        var response = await request.send();
+                                       if (response.statusCode == 200) print('Uploaded!');
+
+                                    print('Imprimo variable estado '+ widget.estado) ;
+
+
                                   },
-                                  child: Text('Entregado',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold))),
+                              ),
+                              
+                            
                               TextButton(
-                                  onPressed: () {
+                                  child: Text('CORREGIDO'),
+                                   onPressed: () async {
+
+
                                     widget.estado = 'Corregido';
+
+                                    /*URL:http://zapp.pythonanywhere.com/cambiarEstadoActividad/pk/estado
+                                          metodo:PUT
+                                  */
+
+                                    
                                     var uri = Uri.parse(
                                         'http://zapp.pythonanywhere.com/cambiarEstadoActividad/' +
                                             widget.idTarea +
                                             '/2');
+
                                     var request =
-                                        http.MultipartRequest('PUT', uri);
-                                    setState(() {});
+                                        http.MultipartRequest('PUT', uri)
+                                        ..fields['estado']=widget.estado ;
+                                    setState(() {}
+                                  
+                                  
+                                  );
+                                  
+                                  /*
+                                    var request = http.MultipartRequest('PUT', uri)
+                  ..fields['idActividad'] = widget.idActividad
+                  ..fields['is_staff'] = 'false'
+                  ..files.add(await http.MultipartFile.fromPath(
+                      'imagen', _image.path,
+                      contentType: MediaType('application', 'udefined')));
+
+*/
+                                        var response = await request.send();
+                                       if (response.statusCode == 200) print('Uploaded!');
+
+                                    print('Imprimo variable estado '+ widget.estado) ;
                                   },
-                                  child: Text('Corregido',
-                                      style: TextStyle(
-                                          fontFamily: 'Montserrat',
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold))),
+                              )
+
                             ])),
                       ),
                       SizedBox(
@@ -260,63 +304,7 @@ class _Tareaf extends State<Tareaf> {
                           ),
                         ],
                       )),
-                      // Expanded(
-                      //   child: MaterialApp(
-                      //     title: 'Video',
-                      //     home: Scaffold(
-                      //       body: Center(
-                      //         child: _controller.value.initialized
-                      //             ? AspectRatio(
-                      //                 aspectRatio:
-                      //                     _controller.value.aspectRatio,
-                      //                 child: VideoPlayer(_controller),
-                      //               )
-                      //             : Container(),
-                      //       ),
-                      //       floatingActionButton: FloatingActionButton(
-                      //         onPressed: () {
-                      //           setState(() {
-                      //             _controller.value.isPlaying
-                      //                 ? _controller.pause()
-                      //                 : _controller.play();
-                      //           });
-                      //         },
-                      //         child: Icon(
-                      //           _controller.value.isPlaying
-                      //               ? Icons.pause
-                      //               : Icons.play_arrow,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   width: MediaQuery.of(context).size.width * 0.9,
-                      //   height: MediaQuery.of(context).size.height * 0.05,
-                      //   //child: const ColoredBox(color: Colors.amber),
-                      // ),
-                      // Expanded(
-                      //   child: Text(
-                      //       'Sube tu solución o pregunta duda en el chat de tarea',
-                      //       style: TextStyle(
-                      //         fontFamily: 'Montserrat',
-                      //         fontSize: 20.0,
-                      //       )),
-                      // ),
-
-                      /* Expanded(
-                          child: file == null
-                              ? Center(
-                                  child: Text('AÑADIR',
-                                      style: TextStyle(
-                                        fontFamily: 'Montserrat',
-                                        fontSize: 20.0,
-                                      )))
-                              : Image.file(file)),
-                      new FloatingActionButton(
-                        onPressed: pickImage,
-                        child: Icon(Icons.camera_alt, size: 25),
-                      ),*/
+                     
                       chat,
                     ]))));
   }
