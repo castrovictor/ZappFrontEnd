@@ -70,7 +70,7 @@ class MensajeWidget extends StatelessWidget {
     print("imagen: " + im + "bool " + im != '');
     //  getFile() ;
     //   getImage();
-    _showImageDialog( String url ) {
+    _showImageDialog(String url) {
       showDialog(
         context: context,
         builder: (context) => new AlertDialog(
@@ -125,24 +125,24 @@ class MensajeWidget extends StatelessWidget {
                         ));
                   } else if (im != '') {
                     return InkWell(
-                      onTap: () {
-                                                     _showImageDialog( 'http://zapp.pythonanywhere.com' + im ) ;
-
-                                                },
+                        onTap: () {
+                          _showImageDialog(
+                              'http://zapp.pythonanywhere.com' + im);
+                        },
                         child: InkWell(
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: 40.0,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 40.0,
 
-                        child: CircleAvatar(
-                          child: Image.network(
-                              'http://zapp.pythonanywhere.com' + im),
-                          backgroundColor: Colors.white,
-                          radius: 50.0,
-                        ),
-                        //  backgroundColor: Colors.white,
-                      ),
-                    ));
+                            child: CircleAvatar(
+                              child: Image.network(
+                                  'http://zapp.pythonanywhere.com' + im),
+                              backgroundColor: Colors.white,
+                              radius: 50.0,
+                            ),
+                            //  backgroundColor: Colors.white,
+                          ),
+                        ));
                     /*
                             return InkWell(
                                            
@@ -362,8 +362,6 @@ class MensajeWidget extends StatelessWidget {
 }
 
 Future getMensajes(idActividad) async {
-
-
   String url = 'http://zapp.pythonanywhere.com/actividad/adjuntar/';
   url = url + idActividad;
   http.Response response = await http.get(
@@ -384,20 +382,18 @@ Future getMensajes(idActividad) async {
   videos.clear();
   archivos.clear();
 
-
   if (jsonResponse.containsKey("Adjuntado")) {
     for (int i = 0; i < jsonResponse['Adjuntado'].length; i++) {
       print('tutor:' + jsonResponse['Adjuntado'][i]['is_staff'].toString());
-      print( 'comentario' + jsonResponse['Adjuntado'][i]['comentario'].toString());
-      print('imagen de get mensaje :' + jsonResponse['Adjuntado'][i]['imagen'].toString());
+      print(
+          'comentario' + jsonResponse['Adjuntado'][i]['comentario'].toString());
+      print('imagen de get mensaje :' +
+          jsonResponse['Adjuntado'][i]['imagen'].toString());
 
-
-      
       if (jsonResponse['Adjuntado'][i]['is_staff'].toString() == 'false') {
         tutor.add(false);
       } else
         tutor.add(true);
-
 
       if (jsonResponse['Adjuntado'][i]['comentario'].toString() != '') {
         print(
@@ -409,12 +405,11 @@ Future getMensajes(idActividad) async {
       } else if (jsonResponse['Adjuntado'][i]['imagen'].toString() != '') {
         print("AÑADO IMAGENNNNNNNNNNNN " +
             jsonResponse['Adjuntado'][i]['imagen'].toString());
-     imagenes.add(jsonResponse['Adjuntado'][i]['imagen'].toString());
+        imagenes.add(jsonResponse['Adjuntado'][i]['imagen'].toString());
         mensajes.add('');
         videos.add('');
         archivos.add('');
       }
-
     }
   }
 }
@@ -793,60 +788,82 @@ class _Chat extends State<Chat> {
         borderRadius: BorderRadius.circular(30.0),
         color: Color(0xff01A0C7),
         child: MaterialButton(
-            minWidth: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            onPressed: () async {
-              await _showMyDialog();
+          minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () async {
+            await _showMyDialog();
 
-              if (si == true) {
-                var uri = Uri.parse('http://zapp.pythonanywhere.com/subir/');
-                var request = http.MultipartRequest('PUT', uri)
-                  ..fields['idActividad'] = widget.idActividad
-                  ..fields['is_staff'] = 'false'
-                  ..files.add(await http.MultipartFile.fromPath(
-                      'imagen', _image.path,
-                      contentType: MediaType('application', 'udefined')));
+            if (si == true) {
+              var uri = Uri.parse('http://zapp.pythonanywhere.com/subir/');
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['idActividad'] = widget.idActividad
+                ..fields['is_staff'] = 'false'
+                ..files.add(await http.MultipartFile.fromPath(
+                    'imagen', _image.path,
+                    contentType: MediaType('application', 'udefined')));
 
-                var response = await request.send();
-                if (response.statusCode == 200) print('Uploaded!');
-              }
+              var response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+            }
 
-              si = false;
-              sv = false;
-              sf = false;
-            },
-            child: Text("Mandar adjunto",
-                textAlign: TextAlign.center,
-                style: style.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold))));
+            si = false;
+            sv = false;
+            sf = false;
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Text("IMAGEN",
+                  textAlign: TextAlign.center,
+                  style: style.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              Icon(
+                Icons.add,
+                size: 40.0,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ));
 
     final enviarMensaje = Material(
         elevation: 5.0,
         borderRadius: BorderRadius.circular(30.0),
         color: Color(0xff01A0C7),
         child: MaterialButton(
-            minWidth: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
+          minWidth: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          onPressed: () async {
+            if (_formKey.currentState.validate()) {
+              _formKey.currentState.save();
 
-                var uri = Uri.parse('http://zapp.pythonanywhere.com/subir/');
-                var request = http.MultipartRequest('PUT', uri)
-                  ..fields['comentario'] = mensaje
-                  ..fields['idActividad'] = widget.idActividad
-                  ..fields['is_staff'] = 'false';
+              var uri = Uri.parse('http://zapp.pythonanywhere.com/subir/');
+              var request = http.MultipartRequest('PUT', uri)
+                ..fields['comentario'] = mensaje
+                ..fields['idActividad'] = widget.idActividad
+                ..fields['is_staff'] = 'false';
 
-                var response = await request.send();
-                if (response.statusCode == 200) print('Uploaded!');
-                print(await response.stream.transform(utf8.decoder).join());
-              }
-              _formKey.currentState.reset();
-            },
-            child: Text("Mandar mensaje",
-                textAlign: TextAlign.center,
-                style: style.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold))));
+              var response = await request.send();
+              if (response.statusCode == 200) print('Uploaded!');
+              print(await response.stream.transform(utf8.decoder).join());
+            }
+            _formKey.currentState.reset();
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Text("MENSAJE",
+                  textAlign: TextAlign.center,
+                  style: style.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold)),
+              Icon(
+                Icons.message,
+                size: 40.0,
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ));
 
     Timer(Duration(milliseconds: 500), () {
       setState(() {
@@ -943,12 +960,16 @@ class _Chat extends State<Chat> {
                           ])),
                           MyTextFormField(
                             hintText: 'Escribe mensaje',
-                            text: 'Escribe una respuesta',
+                            text: '',
                             onSaved: (String value) {
                               mensaje = value;
                             },
                           ),
                           enviarMensaje,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ),
                           adjuntar,
                         ])))));
   }
