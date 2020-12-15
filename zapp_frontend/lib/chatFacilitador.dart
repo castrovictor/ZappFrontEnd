@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'tarea.dart';
+import 'tareaFacilitador.dart';
 import 'myTextFormField.dart';
 import 'pdf.dart';
 import 'dart:convert';
@@ -413,6 +413,15 @@ Future getMensajes(idActividad) async {
     }
   }
 }
+/*if (jsonResponse.containsKey('Adjuntado')) {
+    for (int i = 0; i < jsonResponse['Adjuntado'].length; i++) {
+      mensajes.add(jsonResponse['Adjuntado'][i]['comentario']);
+      if (jsonResponse['Adjuntado'][i]['is_staff']) {
+        tutor.add('true');
+      } else {
+        tutor.add('false');
+      }
+    }*/
 
 class Chat extends StatefulWidget {
   Chat({this.nombre, this.idActividad});
@@ -673,13 +682,14 @@ class _Chat extends State<Chat> {
                         child: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () async {
+                              
                               setState(() {});
                               try {
                                 await _image.delete();
                                 // files=null ;
                                 print('Deleted image');
                                 print('IMPRIMO image' + _image.toString());
-                                // setState(() {});
+                                setState(() {});
                                 si = false;
                               } catch (e) {
                                 _image = null;
@@ -837,8 +847,12 @@ class _Chat extends State<Chat> {
               var response = await request.send();
               if (response.statusCode == 200) print('Uploaded!');
               print(await response.stream.transform(utf8.decoder).join());
+
             }
             _formKey.currentState.reset();
+            setState(() {
+      
+                });
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -962,6 +976,8 @@ class _Chat extends State<Chat> {
                             height: MediaQuery.of(context).size.height * 0.01,
                           ),
                           adjuntar,
+
+                          
                         ])))));
   }
 

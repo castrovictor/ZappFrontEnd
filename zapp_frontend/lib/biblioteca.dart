@@ -179,6 +179,7 @@ class _Deberes extends State<Biblioteca> {
                                   jsonResponse['Actividad']['imagen']
                                       .toString();
                               String _estado = jsonResponse['Actividad']['estado'];
+                            //  String _codigo = jsonResponse['Actividad']['id'];
                               String _usuario = usuarios[i];
                               //Miro estado
                               Navigator.of(context).push(MaterialPageRoute(
@@ -187,6 +188,7 @@ class _Deberes extends State<Biblioteca> {
                                       title: nombre,
                                       imagen: _image,
                                       estado: _estado,
+                                      idTarea: codigos[i],
                                       usuario: _usuario,
                                       description: descripcion)));
                             },

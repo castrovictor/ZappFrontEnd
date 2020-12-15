@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'chat.dart';
+import 'chatFacilitador.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'video.dart';
@@ -10,6 +10,7 @@ import 'video.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
 
 import 'package:http/http.dart' as http;
 import 'package:video_player/video_player.dart';
