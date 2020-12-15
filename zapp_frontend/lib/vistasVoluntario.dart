@@ -4,6 +4,7 @@ import 'package:zapp_frontend/chat.dart';
 import 'perfilFacilitador.dart';
 import 'administrar.dart';
 import 'biblioteca.dart';
+import 'bibliotecaEntregados.dart';
 import 'usuarios.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -96,6 +97,7 @@ List<Widget> _NavScreens() {
   return [
     Administrar(usuarios: usuarios, codigos: codigos),
     Biblioteca(usuariosList: usuarios, codigosUsuarios: codigos),
+    BibliotecaE(usuariosList: usuarios, codigosUsuarios: codigos),
     Usuarios(usuariosList: usuarios),
     PerfilFacilitador(),
   ];
@@ -112,6 +114,12 @@ List<PersistentBottomNavBarItem> _navBarsItems() {
     PersistentBottomNavBarItem(
       icon: Icon(Icons.account_balance_rounded),
       title: ("Biblioteca"),
+      activeColor: Colors.blue,
+      inactiveColor: Colors.grey,
+    ),
+    PersistentBottomNavBarItem(
+      icon: Icon(Icons.format_list_bulleted),
+      title: ("Entregas"),
       activeColor: Colors.blue,
       inactiveColor: Colors.grey,
     ),

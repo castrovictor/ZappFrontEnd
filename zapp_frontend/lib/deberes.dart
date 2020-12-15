@@ -173,7 +173,8 @@ class _Deberes extends State<Deberes> {
                                       description: descripcion,
                                       idTarea: codigos[i],
                                       imagen: _image,
-                                      estado: _estado)));
+                                      estado: _estado,
+                                      userId: widget.codigo)));
                             },
                           )
                       ]))

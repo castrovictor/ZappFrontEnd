@@ -21,6 +21,7 @@ import 'package:video_player/video_player.dart';
 
 File _video;
 bool hayVideo = true;
+String nombre = 'socio';
 
 class Tarea extends StatefulWidget {
   Tarea(
@@ -29,13 +30,15 @@ class Tarea extends StatefulWidget {
       this.description,
       this.imagen,
       this.idTarea,
-      this.estado});
+      this.estado,
+      this.userId});
   final IconData iconData;
   final String title;
   final String description;
   final String idTarea;
   final String imagen;
   final String estado;
+  final String userId;
 
   @override
   _Tarea createState() => _Tarea();
@@ -88,6 +91,21 @@ class _Tarea extends State<Tarea> {
   //   _controller.removeListener(listener);
   //   super.deactivate();
   // }
+  Future getJson(codigo) async {
+    String url = 'http://zapp.pythonanywhere.com/socio/';
+    url = url + codigo;
+    print(url);
+    http.Response response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+    nombre = jsonResponse['User']['username'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +116,9 @@ class _Tarea extends State<Tarea> {
       child: MaterialButton(
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        onPressed: () {
+        onPressed: () async {
           /*
+
             Navigator.push(
                   context,
                //   MaterialPageRoute(builder: (context) => WelcomeScreen()));
@@ -113,12 +132,15 @@ class _Tarea extends State<Tarea> {
             home: Chat(),
           );
         */
-
+          await getJson(widget.userId);
+          print(nombre);
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      Chat(nombre: widget.title, idActividad: widget.idTarea)));
+                  builder: (context) => Chat(
+                      nombre: widget.title,
+                      idActividad: widget.idTarea,
+                      usuario: nombre)));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -195,16 +217,14 @@ class _Tarea extends State<Tarea> {
                                   : Container()),
                           AspectRatio(
                             aspectRatio: 16 / 9,
-                            child: Container(
-                              child: new VideoPlayerScreen() 
-                              /* (_controller != null
+                            child: Container(child: new VideoPlayerScreen()
+                                /* (_controller != null
                                   ? VideoPlayer(_controller)
                                   : Container()),
                             ),*/
-                          ),
+                                ),
 
-
-                          /*
+                            /*
                           FloatingActionButton(
                             onPressed: () {
                                   // Wrap the play or pause in a call to `setState`. This ensures the
