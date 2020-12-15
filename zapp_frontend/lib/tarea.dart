@@ -18,32 +18,23 @@ import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
 
-File _image;
-bool hayImagen = true;
-File file;
-bool hayFile = true;
 File _video;
 bool hayVideo = true;
 
 class Tarea extends StatefulWidget {
-  Tarea({this.iconData, this.title, this.description, this.idTarea});
+  Tarea(
+      {this.iconData,
+      this.title,
+      this.description,
+      this.imagen,
+      this.idTarea,
+      this.estado});
   final IconData iconData;
   final String title;
   final String description;
   final String idTarea;
-
-  Future getTareas(codigo) async {
-    String url = 'http://zapp.pythonanywhere.com/actividad/';
-    url = url + idTarea;
-    http.Response response = await http.get(
-      url,
-      headers: {
-        HttpHeaders.acceptHeader: 'application/json',
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
-    final jsonResponse = jsonDecode(response.body);
-  }
+  final String imagen;
+  final String estado;
 
   @override
   _Tarea createState() => _Tarea();
@@ -69,10 +60,6 @@ class _Tarea extends State<Tarea> {
       //     setState(() {});
       //   });
     }
-    if (hayImagen) {
-      //
-    }
-    if (hayFile) {}
   }
 
   @override
@@ -94,12 +81,12 @@ class _Tarea extends State<Tarea> {
     }
   }
 
-  @override
-  void deactivate() {
-    _controller.setVolume(0.0);
-    _controller.removeListener(listener);
-    super.deactivate();
-  }
+  // @override
+  // void deactivate() {
+  //   //_controller.setVolume(0.0);
+  //   _controller.removeListener(listener);
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -132,10 +119,20 @@ class _Tarea extends State<Tarea> {
                   builder: (context) =>
                       Chat(nombre: widget.title, idActividad: widget.idTarea)));
         },
-        child: Text("Chat de tarea",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Text("Chat",
+                textAlign: TextAlign.center,
+                style: style.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            Icon(
+              Icons.chat,
+              size: 40.0,
+              color: Colors.white,
+            ),
+          ],
+        ),
       ),
     );
 
@@ -148,55 +145,70 @@ class _Tarea extends State<Tarea> {
             child: Padding(
                 padding: const EdgeInsets.all(36.0),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Expanded(
-                        child: Text(widget.title,
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 40.0,
-                                fontWeight: FontWeight.bold)),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.09,
+                        child: Expanded(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                              Text(widget.title,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 45.0,
+                                      fontWeight: FontWeight.bold)),
+                              Icon(widget.iconData, size: 40.0),
+                            ])),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.05,
-                        //child: const ColoredBox(color: Colors.amber),
+                        child: Expanded(
+                            child: Text('Estado: ' + widget.estado,
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.bold))),
                       ),
-                      Icon(widget.iconData, size: 100.0),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
+                        height: MediaQuery.of(context).size.height * 0.02,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
                       Expanded(
-                        child: Text(widget.description,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                      ),
-                      Card(
-                          child: (_image != null)
-                              ? Image.file(_image)
-                              : Container()
-                          //: Image.asset('assets/gal.png'),
+                          child: ListView(
+                        children: [
+                          Expanded(
+                            child: Text(widget.description,
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 25.0,
+                                )),
                           ),
-                      AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Container(
-                          child: (_controller != null
-                              ? VideoPlayer(_controller)
-                              : Container()),
-                        ),
-                      ),
-                      FloatingActionButton(
-                        onPressed: () {
-                          createVideo();
-                          _controller.play();
-                        },
-                        child: Icon(Icons.play_arrow),
-                      ),
+                          Card(
+                              child: (widget.imagen != null)
+                                  ? Image.network(widget.imagen)
+                                  : Container()),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Container(
+                              child: (_controller != null
+                                  ? VideoPlayer(_controller)
+                                  : Container()),
+                            ),
+                          ),
+                          FloatingActionButton(
+                            onPressed: () {
+                              createVideo();
+                              _controller.play();
+                            },
+                            child: Icon(Icons.play_arrow),
+                          ),
+                        ],
+                      )),
                       // Expanded(
                       //   child: MaterialApp(
                       //     title: 'Video',
@@ -227,14 +239,19 @@ class _Tarea extends State<Tarea> {
                       //     ),
                       //   ),
                       // ),
-                      Expanded(
-                        child: Text(
-                            'Sube tu solución o pregunta duda en el chat de tarea',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                      ),
+                      // SizedBox(
+                      //   width: MediaQuery.of(context).size.width * 0.9,
+                      //   height: MediaQuery.of(context).size.height * 0.05,
+                      //   //child: const ColoredBox(color: Colors.amber),
+                      // ),
+                      // Expanded(
+                      //   child: Text(
+                      //       'Sube tu solución o pregunta duda en el chat de tarea',
+                      //       style: TextStyle(
+                      //         fontFamily: 'Montserrat',
+                      //         fontSize: 20.0,
+                      //       )),
+                      // ),
 
                       /* Expanded(
                           child: file == null

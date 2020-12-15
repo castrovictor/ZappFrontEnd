@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'tarea.dart';
-import 'tareaFacilitador.dart' ;
+import 'tareaFacilitador.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -150,14 +150,10 @@ class _Deberes extends State<Biblioteca> {
                       Expanded(
                           child: ListView(children: [
                         for (int i = 0; i < tareafs.length; i++)
-
-
                           TareafWidget(
                             usuario: usuarios[i],
                             title: tareafs[i],
                             onPressed: () async {
-
-
                               String url =
                                   'http://zapp.pythonanywhere.com/actividad/';
                               url = url + codigos[i];
@@ -178,19 +174,20 @@ class _Deberes extends State<Biblioteca> {
                                   jsonResponse['Actividad']['nombre'];
                               String descripcion =
                                   jsonResponse['Actividad']['descripcion'];
-                              
-
-                              String estado =   jsonResponse['Actividad']['estado'];
+                              String _image = 'http://zapp.pythonanywhere.com' +
+                                  jsonResponse['Actividad']['imagen']
+                                      .toString();
+                              String _estado =
+                                  jsonResponse['Actividad']['estado'];
+                              String _usuario = usuarios[i];
                               //Miro estado
-
-                           
-                              
-                              
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>Tareaf (
+                                  builder: (context) => Tareaf(
                                       iconData: Icons.pending_actions_rounded,
                                       title: nombre,
-                                      estado: estado,
+                                      imagen: _image,
+                                      estado: _estado,
+                                      usuario: _usuario,
                                       description: descripcion)));
                             },
                           )

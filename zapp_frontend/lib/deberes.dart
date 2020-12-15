@@ -7,6 +7,7 @@ import 'dart:io';
 
 List<String> tareas = new List<String>();
 List<String> codigos = new List<String>();
+List<String> imagenes = new List<String>();
 
 class TareaWidget extends StatelessWidget {
   TareaWidget({this.iconData, this.title, this.onPressed});
@@ -159,11 +160,20 @@ class _Deberes extends State<Deberes> {
                                   jsonResponse['Actividad']['nombre'];
                               String descripcion =
                                   jsonResponse['Actividad']['descripcion'];
+                              String _image = 'http://zapp.pythonanywhere.com' +
+                                  jsonResponse['Actividad']['imagen']
+                                      .toString();
+                              String _estado =
+                                  jsonResponse['Actividad']['estado'];
+                              print(_image);
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tarea(
                                       iconData: Icons.pending_actions_rounded,
                                       title: nombre,
-                                      description: descripcion)));
+                                      description: descripcion,
+                                      idTarea: codigos[i],
+                                      imagen: _image,
+                                      estado: _estado)));
                             },
                           )
                       ]))

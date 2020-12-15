@@ -18,41 +18,28 @@ import 'package:video_player/video_player.dart';
 
 // ignore: must_be_immutable
 
-enum EstadoTareaf { noEntregado, entregado, corregido }
-
-File _image;
-bool hayImagen = true;
-File file;
-bool hayFile = true;
 File _video;
 bool hayVideo = true;
 
 class Tareaf extends StatefulWidget {
-  Tareaf({this.iconData, this.title, this.description, this.idTareaf, this.estado});
+  Tareaf(
+      {this.iconData,
+      this.title,
+      this.description,
+      this.imagen,
+      this.idTarea,
+      this.estado,
+      this.usuario});
   final IconData iconData;
   final String title;
   final String description;
-  final String idTareaf;
-  String estado ;
-
-  Future getTareafs(codigo) async {
-
-    String url = 'http://zapp.pythonanywhere.com/actividad/';
-    url = url + idTareaf;
-    http.Response response = await http.get(
-      url,
-      headers: {
-        HttpHeaders.acceptHeader: 'application/json',
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
-    final jsonResponse = jsonDecode(response.body);
-  }
+  final String idTarea;
+  final String imagen;
+  String estado;
+  final String usuario;
 
   @override
   _Tareaf createState() => _Tareaf();
-
-
 }
 
 class _Tareaf extends State<Tareaf> {
@@ -75,24 +62,18 @@ class _Tareaf extends State<Tareaf> {
       //     setState(() {});
       //   });
     }
-    if (hayImagen) {
-      //
-    }
-    if (hayFile) {}
   }
 
   @override
   void createVideo() {
-
     if (_controller == null) {
       // para el api
       //_controller = VideoPlayerController.network("")
       _controller = VideoPlayerController.asset("assets/videoplayback.mp4")
         ..addListener(listener)
-       // ..setVolume(1.0)
+        ..setVolume(1.0)
         ..initialize();
     } else {
-      
       if (_controller.value.isPlaying) {
         _controller.pause();
       } else {
@@ -102,22 +83,15 @@ class _Tareaf extends State<Tareaf> {
     }
   }
 
-  @override
-  void deactivate() {
-    
-    if(_controller!=null){
-    _controller.setVolume(0.0);
-    _controller.removeListener(listener);
-    super.deactivate();
-    }
-  }
-
-  EstadoTareaf _estado = EstadoTareaf.noEntregado;
+  // @override
+  // void deactivate() {
+  //   _controller.setVolume(0.0);
+  //   _controller.removeListener(listener);
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {
-
-    //BOTÓN CHAT 
     final chat = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -126,16 +100,41 @@ class _Tareaf extends State<Tareaf> {
         minWidth: MediaQuery.of(context).size.width,
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
+          /*
+            Navigator.push(
+                  context,
+               //   MaterialPageRoute(builder: (context) => WelcomeScreen()));
+               */
+          /*
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.purple,
+            ),
+            home: Chat(),
+          );
+        */
+
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      Chat(nombre: widget.title, idActividad: widget.idTareaf)));
+                      Chat(nombre: widget.title, idActividad: widget.idTarea)));
         },
-        child: Text("Chat de tareaf",
-            textAlign: TextAlign.center,
-            style: style.copyWith(
-                color: Colors.white, fontWeight: FontWeight.bold)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Text("Chat",
+                textAlign: TextAlign.center,
+                style: style.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            Icon(
+              Icons.chat,
+              size: 40.0,
+              color: Colors.white,
+            ),
+          ],
+        ),
       ),
     );
 
@@ -147,164 +146,123 @@ class _Tareaf extends State<Tareaf> {
         body: Center(
             child: Padding(
                 padding: const EdgeInsets.all(36.0),
-
-
                 child: Column(
-
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,
-
                     children: <Widget>[
-                      
-                      Expanded(
-                         child: Column(
-                         mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Row(
-                               mainAxisAlignment: MainAxisAlignment.end,
-                               children: <Widget>[
-
-
-                                TextButton(
-                                  child:  Text(widget.estado),
-                                  onPressed: () {/* ... */},
-                                  ),
-
-
-                                const SizedBox(width: 8),
-
-                                    /*
-                                 ListTile(
-                                   title: const Text('No entregada'),
-                                 leading: Radio(
-                                     value: EstadoTareaf.noEntregado,
-                                   groupValue: _estado,
-                                  onChanged: (EstadoTareaf value) {
-                                       setState(() {
-                                        _estado = value;
-                                      });
-                                   },
-                                 ),
-                                )
-                                */
-                                /*
-                                ,
-                               ListTile(
-                                  title: const Text('Entregada'),
-                                 leading: Radio(
-                                  value: EstadoTareaf.entregado,
-                                     groupValue: _estado,
-                                   onChanged: (EstadoTareaf value) {
-                                       setState(() {
-                                        _estado = value;
-                                      });
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.09,
+                        child: Expanded(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                              Text(widget.title,
+                                  style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 30.0,
+                                      fontWeight: FontWeight.bold)),
+                              Icon(widget.iconData, size: 30.0),
+                            ])),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        child: Expanded(
+                            child: Text('Estado: ' + widget.estado,
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold))),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        child: Expanded(
+                            child: Text('Usuario: ' + widget.usuario,
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold))),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: Expanded(
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    widget.estado = 'Entregado';
+                                    var uri = Uri.parse(
+                                        'http://zapp.pythonanywhere.com/cambiarEstadoActividad/' +
+                                            widget.idTarea +
+                                            '/0');
+                                    var request =
+                                        http.MultipartRequest('PUT', uri);
+                                    setState(() {});
                                   },
-                                  ),
-                              ),
-                              */
-                              /*
-                                 ListTile(
-                                   title: const Text('Corregida'),
-                                  leading: Radio(
-                                value: EstadoTareaf.corregido,
-                                    groupValue: _estado,
-                                   onChanged: (EstadoTareaf value) {
-                                     setState(() {
-                                       _estado = value;
-                                      });
-                                   },
-                                  ),
-                               ),*/
-                                 const SizedBox(width: 8),
-                             ],
-                             ),
-                         ],
-                           ),
-                     ),
-                      Expanded(
-                        child: Text(widget.title,
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontSize: 40.0,
-                                fontWeight: FontWeight.bold)),
+                                  child: Text('Entregado',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold))),
+                              TextButton(
+                                  onPressed: () {
+                                    widget.estado = 'Corregido';
+                                    var uri = Uri.parse(
+                                        'http://zapp.pythonanywhere.com/cambiarEstadoActividad/' +
+                                            widget.idTarea +
+                                            '/2');
+                                    var request =
+                                        http.MultipartRequest('PUT', uri);
+                                    setState(() {});
+                                  },
+                                  child: Text('Corregido',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold))),
+                            ])),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        //child: const ColoredBox(color: Colors.amber),
-                      ),
-                      Icon(widget.iconData, size: 100.0),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
+                        height: MediaQuery.of(context).size.height * 0.02,
                         //child: const ColoredBox(color: Colors.amber),
                       ),
                       Expanded(
-                        child: Text(widget.description,
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                      ),
-                      Card(
-                          child: (_image != null)
-                              ? Image.file(_image)
-                              : Container()
-                          //: Image.asset('assets/gal.png'),
+                          child: ListView(
+                        children: [
+                          Expanded(
+                            child: Text(widget.description,
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: 25.0,
+                                )),
                           ),
-                      AspectRatio(
-
-                        aspectRatio: 16 / 9,
-                        child: (() { 
-
-
-                          if(_controller != null){
-
-
-                         new   Column(
-
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-
-                                    children: <Widget>[
-                                 VideoPlayer(_controller),
-                                 FloatingActionButton(
-                                        onPressed: () {
-                                              // Wrap the play or pause in a call to `setState`. This ensures the
-                                              // correct icon is shown
-                                              setState(() {
-                                                // If the video is playing, pause it.
-                                                if (_controller.value.isPlaying) {
-                                                  _controller.pause();
-                                                } else {
-                                                  // If the video is paused, play it.
-                                                  _controller.play();
-                                                }
-                                              });
-                                          },
-                                        child: Icon(
-                                                      _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                                          ),
-                                  ),
-                              ]
-                         );
-                        }
-                        else  {
-                         return Container();
-
-                        }
-                        }())
-                        /* Container(
-                          child: (_controller != null
-                              ? VideoPlayer(_controller)
-                              : Container()),
-                        ),
-                          */
-
-
-
-                      ),
-                     
+                          Card(
+                              child: (widget.imagen != null)
+                                  ? Image.network(widget.imagen)
+                                  : Container()),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Container(
+                              child: (_controller != null
+                                  ? VideoPlayer(_controller)
+                                  : Container()),
+                            ),
+                          ),
+                          FloatingActionButton(
+                            onPressed: () {
+                              createVideo();
+                              _controller.play();
+                            },
+                            child: Icon(Icons.play_arrow),
+                          ),
+                        ],
+                      )),
                       // Expanded(
                       //   child: MaterialApp(
                       //     title: 'Video',
@@ -335,23 +293,19 @@ class _Tareaf extends State<Tareaf> {
                       //     ),
                       //   ),
                       // ),
-                      Expanded(
-                        child: Text(
-                            'Sube tu solución o pregunta duda en el chat de tareaf',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                      ),
-                         Expanded(
-                        child: Text(
-                            '',
-                            style: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontSize: 20.0,
-                            )),
-                      ),
-
+                      // SizedBox(
+                      //   width: MediaQuery.of(context).size.width * 0.9,
+                      //   height: MediaQuery.of(context).size.height * 0.05,
+                      //   //child: const ColoredBox(color: Colors.amber),
+                      // ),
+                      // Expanded(
+                      //   child: Text(
+                      //       'Sube tu solución o pregunta duda en el chat de tarea',
+                      //       style: TextStyle(
+                      //         fontFamily: 'Montserrat',
+                      //         fontSize: 20.0,
+                      //       )),
+                      // ),
 
                       /* Expanded(
                           child: file == null
