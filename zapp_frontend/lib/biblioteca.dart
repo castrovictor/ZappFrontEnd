@@ -179,6 +179,7 @@ class _Deberes extends State<Biblioteca> {
                                       .toString();
                               String _estado =
                                   jsonResponse['Actividad']['estado'];
+                              String _usuario = usuarios[i];
                               //Miro estado
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => Tareaf(
@@ -186,6 +187,7 @@ class _Deberes extends State<Biblioteca> {
                                       title: nombre,
                                       imagen: _image,
                                       estado: _estado,
+                                      usuario: _usuario,
                                       description: descripcion)));
                             },
                           )

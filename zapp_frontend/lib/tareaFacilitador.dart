@@ -28,13 +28,15 @@ class Tareaf extends StatefulWidget {
       this.description,
       this.imagen,
       this.idTarea,
-      this.estado});
+      this.estado,
+      this.usuario});
   final IconData iconData;
   final String title;
   final String description;
   final String idTarea;
   final String imagen;
-  final String estado;
+  String estado;
+  final String usuario;
 
   @override
   _Tareaf createState() => _Tareaf();
@@ -81,12 +83,12 @@ class _Tareaf extends State<Tareaf> {
     }
   }
 
-  @override
-  void deactivate() {
-    _controller.setVolume(0.0);
-    _controller.removeListener(listener);
-    super.deactivate();
-  }
+  // @override
+  // void deactivate() {
+  //   _controller.setVolume(0.0);
+  //   _controller.removeListener(listener);
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -158,20 +160,72 @@ class _Tareaf extends State<Tareaf> {
                               Text(widget.title,
                                   style: TextStyle(
                                       fontFamily: 'Montserrat',
-                                      fontSize: 45.0,
+                                      fontSize: 30.0,
                                       fontWeight: FontWeight.bold)),
-                              Icon(widget.iconData, size: 40.0),
+                              Icon(widget.iconData, size: 30.0),
                             ])),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height * 0.05,
+                        height: MediaQuery.of(context).size.height * 0.03,
                         child: Expanded(
                             child: Text('Estado: ' + widget.estado,
                                 style: TextStyle(
                                     fontFamily: 'Montserrat',
-                                    fontSize: 25.0,
+                                    fontSize: 15.0,
                                     fontWeight: FontWeight.bold))),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        child: Expanded(
+                            child: Text('Usuario: ' + widget.usuario,
+                                style: TextStyle(
+                                    fontFamily: 'Montserrat',
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold))),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.06,
+                        child: Expanded(
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    widget.estado = 'Entregado';
+                                    var uri = Uri.parse(
+                                        'http://zapp.pythonanywhere.com/cambiarEstadoActividad/' +
+                                            widget.idTarea +
+                                            '/0');
+                                    var request =
+                                        http.MultipartRequest('PUT', uri);
+                                    setState(() {});
+                                  },
+                                  child: Text('Entregado',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold))),
+                              TextButton(
+                                  onPressed: () {
+                                    widget.estado = 'Corregido';
+                                    var uri = Uri.parse(
+                                        'http://zapp.pythonanywhere.com/cambiarEstadoActividad/' +
+                                            widget.idTarea +
+                                            '/2');
+                                    var request =
+                                        http.MultipartRequest('PUT', uri);
+                                    setState(() {});
+                                  },
+                                  child: Text('Corregido',
+                                      style: TextStyle(
+                                          fontFamily: 'Montserrat',
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold))),
+                            ])),
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,

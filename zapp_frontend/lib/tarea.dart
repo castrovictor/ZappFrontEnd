@@ -81,12 +81,12 @@ class _Tarea extends State<Tarea> {
     }
   }
 
-  @override
-  void deactivate() {
-    _controller.setVolume(0.0);
-    _controller.removeListener(listener);
-    super.deactivate();
-  }
+  // @override
+  // void deactivate() {
+  //   //_controller.setVolume(0.0);
+  //   _controller.removeListener(listener);
+  //   super.deactivate();
+  // }
 
   @override
   Widget build(BuildContext context) {
