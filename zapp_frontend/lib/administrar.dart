@@ -3,14 +3,42 @@ import 'crearTarea.dart';
 import 'altaFacilitador.dart';
 import 'altaSocio.dart';
 import 'grupos.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
+
+List<String> grupos;
 
 // ignore: must_be_immutable
 class Administrar extends StatelessWidget {
-  Administrar({this.usuarios, this.codigos, this.grupos});
+  Administrar({this.usuarios, this.codigos});
   final List<String> codigos;
   final List<String> usuarios;
-  final List<String> grupos;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
+
+  Future getGrupos() async {
+    String url = 'http://zapp.pythonanywhere.com/grupos/';
+    print(url);
+    http.Response response = await http.get(
+      url,
+      headers: {
+        HttpHeaders.acceptHeader: 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+      },
+    );
+
+    final jsonResponse = jsonDecode(response.body);
+    print(jsonResponse);
+    print(usuarios.length);
+    grupos.clear();
+    for (int i = 0; i < jsonResponse['grupos'].length; i++) {
+      grupos.add(jsonResponse['grupos'][i]);
+    }
+    for (int i = 0; i < grupos.length; i++) {
+      print(grupos[i]);
+      //print(codigos[i]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +51,12 @@ class Administrar extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         onPressed: () {
           print(codigos.length);
+          getGrupos();
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CrearTarea(
-                      usuarios: usuarios, codigos: codigos, grupos: grupos)));
+                  builder: (context) =>
+                      CrearTarea(usuarios: usuarios, codigos: codigos)));
         },
         child: Text("Crear Tarea",
             textAlign: TextAlign.center,

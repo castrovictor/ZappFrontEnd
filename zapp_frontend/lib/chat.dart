@@ -7,6 +7,7 @@ import 'tarea.dart';
 import 'myTextFormField.dart';
 import 'pdf.dart';
 import 'dart:convert';
+import 'package:http_parser/http_parser.dart';
 
 import 'package:file_picker/file_picker.dart';
 
@@ -37,7 +38,7 @@ class MensajeWidget extends StatelessWidget {
       this.texto,
       this.onPressed,
       this.f,
-      this.i,
+      this.im,
       this.v,
       this.tutor});
 
@@ -53,77 +54,23 @@ class MensajeWidget extends StatelessWidget {
   /// texto to show
   final String texto;
 
-  String f = '';
-  String i = '';
-  String v = '';
+  final String f;
+  final String im;
+  final String v;
 
   /// Airport to show
   final VoidCallback onPressed;
 
   final picker = ImagePicker();
   //comprobar que f!=''
-  Future getFile() async {
-    /*
-      if(f!=''){
-    final pickedFile = await .getImage(source: ImageSource.gallery);
-      FilePickerResult result = await FilePicker
-                                        .platform
-                                        .pickFiles(allowMultiple: true);
-
-                                    if (result != null) {
-                                      //   List<File> files = result.paths.map((path) => File(path)).toList();
-                                      files = result.paths
-                                          .map((path) => File(path)).toList();
-
-                                    }
-                                   
-      }
-      */
-    /*
-       FilePickerResult result = await FilePicker
-                                        .platform
-                                        .pickFiles(allowMultiple: true);
-
-                                    if (result != null) {
-                                      */
-
-    //   List<File>
-    /*
-                                     files = result.paths.map((path) => File(path)).toList();
-                                      files = result.paths
-                                          .map((path) => File(path))
-                                          .toList();
-                                      print('IMPRIMO URL' +
-                                          files.first.toString());
-                                    } else {
-                                      // User canceled the picker
-                                    }
-                                  //  setState(() {});
-                                  */
-
-    file = File(f);
-    print('Archivo cargado  : ' + file.toString());
-  }
-
-  Future getImage() async {
-    if (i != '') {
-      fimage = File(i);
-    }
-
-    //final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    //  setState(() {
-    //  fimage = File(pickedFile.path);
-    //     si=true ;
-    // });
-    //  setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
+    print("texto: " + texto);
+    print("imagen: " + im + "bool " + im != '');
     //  getFile() ;
     //   getImage();
-    _showImageDialog() {
+    _showImageDialog( String url ) {
       showDialog(
         context: context,
         builder: (context) => new AlertDialog(
@@ -131,7 +78,7 @@ class MensajeWidget extends StatelessWidget {
           //   content: new Text("Hey! I'm Coflutter!"),
           actions: <Widget>[
             //Aquí mandamos al url de la imagen
-            Image.asset('assets/gal.png'),
+            Image.network(url),
             TextButton(
               child: Text('Aceptar'),
               onPressed: () {
@@ -145,6 +92,7 @@ class MensajeWidget extends StatelessWidget {
       );
     }
 
+    print("imagen2: " + im + "bool222222 " + im != '');
     return InkWell(
       onTap: onPressed,
       child: Padding(
@@ -154,8 +102,8 @@ class MensajeWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 (() {
-                  //   print('IMPRIMO RUTA IMAGEN' +i);
-                  print('IMPRIMO RUTA ARCHIVO' + f);
+                  print('IMPRIMO RUTA IMAGEN' + im.toString());
+                  print('IMPRIMO RUTA IMAGEN' + texto);
                   if (texto != '') {
                     return SizedBox(
                         width: MediaQuery.of(context).size.width * 0.75,
@@ -166,23 +114,29 @@ class MensajeWidget extends StatelessWidget {
                           //poner mensaje dependiendo de si es de tutor
                           //Distinguir si el contenido es nulll
 
-                          child: Text('LLEGO' + texto,
+                          child: Text(
+                              'Mensaje de ' +
+                                  (tutor ? 'tutor: ' : 'socio: ') +
+                                  texto,
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold)),
                         ));
-                  } else if (i != '') {
-                    getImage();
-
+                  } else if (im != '') {
                     return InkWell(
+                      onTap: () {
+                                                     _showImageDialog( 'http://zapp.pythonanywhere.com' + im ) ;
+
+                                                },
                         child: InkWell(
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         radius: 40.0,
 
                         child: CircleAvatar(
-                          child: Image.asset(fimage.path.toString()),
+                          child: Image.network(
+                              'http://zapp.pythonanywhere.com' + im),
                           backgroundColor: Colors.white,
                           radius: 50.0,
                         ),
@@ -219,7 +173,7 @@ class MensajeWidget extends StatelessWidget {
 
                   } else if (f != '') {
                     print("IMPRIMO RUTA DE ARCHIVO EN MENSAJE " + f);
-                    getFile();
+                    //getFile();
 
                     return Card(
                         child: ListTile(
@@ -408,6 +362,8 @@ class MensajeWidget extends StatelessWidget {
 }
 
 Future getMensajes(idActividad) async {
+
+
   String url = 'http://zapp.pythonanywhere.com/actividad/adjuntar/';
   url = url + idActividad;
   http.Response response = await http.get(
@@ -418,10 +374,51 @@ Future getMensajes(idActividad) async {
     },
   );
 
-  final jsonResponse = jsonDecode(response.body);
+  final jsonResponse = await jsonDecode(response.body);
   print(jsonResponse);
+  print(jsonResponse['Adjuntado']);
 
-  /*if (jsonResponse.containsKey('Adjuntado')) {
+  tutor.clear();
+  mensajes.clear();
+  imagenes.clear();
+  videos.clear();
+  archivos.clear();
+
+
+  if (jsonResponse.containsKey("Adjuntado")) {
+    for (int i = 0; i < jsonResponse['Adjuntado'].length; i++) {
+      print('tutor:' + jsonResponse['Adjuntado'][i]['is_staff'].toString());
+      print( 'comentario' + jsonResponse['Adjuntado'][i]['comentario'].toString());
+      print('imagen de get mensaje :' + jsonResponse['Adjuntado'][i]['imagen'].toString());
+
+
+      
+      if (jsonResponse['Adjuntado'][i]['is_staff'].toString() == 'false') {
+        tutor.add(false);
+      } else
+        tutor.add(true);
+
+
+      if (jsonResponse['Adjuntado'][i]['comentario'].toString() != '') {
+        print(
+            "holaaa:" + jsonResponse['Adjuntado'][i]['comentario'].toString());
+        mensajes.add(jsonResponse['Adjuntado'][i]['comentario'].toString());
+        imagenes.add('');
+        videos.add('');
+        archivos.add('');
+      } else if (jsonResponse['Adjuntado'][i]['imagen'].toString() != '') {
+        print("AÑADO IMAGENNNNNNNNNNNN " +
+            jsonResponse['Adjuntado'][i]['imagen'].toString());
+     imagenes.add(jsonResponse['Adjuntado'][i]['imagen'].toString());
+        mensajes.add('');
+        videos.add('');
+        archivos.add('');
+      }
+
+    }
+  }
+}
+/*if (jsonResponse.containsKey('Adjuntado')) {
     for (int i = 0; i < jsonResponse['Adjuntado'].length; i++) {
       mensajes.add(jsonResponse['Adjuntado'][i]['comentario']);
       if (jsonResponse['Adjuntado'][i]['is_staff']) {
@@ -430,7 +427,6 @@ Future getMensajes(idActividad) async {
         tutor.add('false');
       }
     }*/
-}
 
 class Chat extends StatefulWidget {
   Chat({this.nombre, this.idActividad});
@@ -666,6 +662,7 @@ class _Chat extends State<Chat> {
                         getImage();
                         si = true;
                         print('IMPRIMO image elegida ' + _image.toString());
+                        getImage();
                         setState(() {});
                       },
                       child: CircleAvatar(
@@ -800,28 +797,20 @@ class _Chat extends State<Chat> {
             padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
             onPressed: () async {
               await _showMyDialog();
-              setState(() {
-                mensajes.add('');
-                tutor.add(true);
-                if (si == true) {
-                  imagenes.add(_image.toString());
-                  print(' Illeno IMAGEN ARRAY' + _image.toString());
-                } else {
-                  imagenes.add('');
-                  print('INTRODUZCO IMAGEN VACÍA');
-                }
-                if (sv == true) {
-                  videos.add(_video.path);
-                } else {
-                  videos.add('');
-                }
-                if (sf == true) {
-                  print(' Lleno ARCHIVO ARRAY' + files[0].path);
-                  archivos.add(files.first.path);
-                } else {
-                  archivos.add('');
-                }
-              });
+
+              if (si == true) {
+                var uri = Uri.parse('http://zapp.pythonanywhere.com/subir/');
+                var request = http.MultipartRequest('PUT', uri)
+                  ..fields['idActividad'] = widget.idActividad
+                  ..fields['is_staff'] = 'false'
+                  ..files.add(await http.MultipartFile.fromPath(
+                      'imagen', _image.path,
+                      contentType: MediaType('application', 'udefined')));
+
+                var response = await request.send();
+                if (response.statusCode == 200) print('Uploaded!');
+              }
+
               si = false;
               sv = false;
               sf = false;
@@ -842,10 +831,9 @@ class _Chat extends State<Chat> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
 
-                var uri = Uri.parse(
-                    'http://zapp.pythonanywhere.com/actividad/subir/');
+                var uri = Uri.parse('http://zapp.pythonanywhere.com/subir/');
                 var request = http.MultipartRequest('PUT', uri)
-                  ..fields[''] = mensaje
+                  ..fields['comentario'] = mensaje
                   ..fields['idActividad'] = widget.idActividad
                   ..fields['is_staff'] = 'false';
 
@@ -860,7 +848,12 @@ class _Chat extends State<Chat> {
                 style: style.copyWith(
                     color: Colors.white, fontWeight: FontWeight.bold))));
 
-    getMensajes(widget.idActividad);
+    Timer(Duration(milliseconds: 500), () {
+      setState(() {
+        if (!mounted) return;
+        getMensajes(widget.idActividad);
+      });
+    });
     /*
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
@@ -936,60 +929,14 @@ class _Chat extends State<Chat> {
                           Expanded(
                               child: ListView(children: [
                             for (int i = 0; i < mensajes.length; i++)
-                              //*****CREA MENSAJE **************/
-                              /* MensajeWidget(
-                                    {this.iconData,
-                                    this.texto,
-                                    this.onPressed,
-                                    this.file,
-                                    this.fimage,
-                                    this.fvideo,
-                                    this.tutor});
-                                      */
-                              /*
-                               try{
-                                File f= fs[i];
-                               File f= imgs[i];
-                                File fvi: vd[i];
-                                }
-                                catch{
-                                  print('Exception caughtttttttttttt');
-                                }
-                              */
                               MensajeWidget(
                                 iconData: Icons.pending_actions_rounded,
                                 texto: mensajes[i],
-                                i: imagenes[i],
+                                im: imagenes[i],
                                 v: videos[i],
                                 f: archivos[i],
                                 tutor: tutor[i],
-                                onPressed: () async {
-                                  /*String url =
-                                  'http://zapp.pythonanywhere.com/mensaje/';
-                              url = url + codigos[i];
-                              //print(url);
-                              http.Response response = await http.get(
-                                url,
-                                headers: {
-                                  HttpHeaders.acceptHeader: 'application/json',
-                                  HttpHeaders.contentTypeHeader:
-                                      'application/json',
-                                },
-                              );
-
-                              final jsonResponse = jsonDecode(response.body);
-                              print(jsonResponse);
-
-                              String contenido =
-                                  jsonResponse['mensaje']['contenido'];
-                              String descripcion =
-                                  jsonResponse['mensaje']['descripcion'];
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Tarea(
-                                      iconData: Icons.pending_actions_rounded,
-                                      texto: contenido,
-                                      description: descripcion)))*/
-                                },
+                                onPressed: () async {},
                               )
 
                             /******************************/

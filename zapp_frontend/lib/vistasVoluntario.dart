@@ -94,7 +94,7 @@ List<Widget> _NavScreens() {
   getUsuarios();
   getGrupos();
   return [
-    Administrar(usuarios: usuarios, codigos: codigos, grupos: grupos),
+    Administrar(usuarios: usuarios, codigos: codigos),
     Biblioteca(usuariosList: usuarios, codigosUsuarios: codigos),
     Usuarios(usuariosList: usuarios),
     PerfilFacilitador(),

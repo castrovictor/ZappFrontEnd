@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'tarea.dart';
+import 'tareaFacilitador.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
-List<String> tareas = new List<String>();
+List<String> tareafs = new List<String>();
 List<String> usuarios = new List<String>();
 List<String> codigos = new List<String>();
 
-class TareaWidget extends StatelessWidget {
-  TareaWidget({this.usuario, this.title, this.onPressed});
+class TareafWidget extends StatelessWidget {
+  TareafWidget({this.usuario, this.title, this.onPressed});
 
   /// icon data
   final String usuario;
@@ -61,7 +62,7 @@ class TareaWidget extends StatelessWidget {
   }
 }
 
-Future getTareas(
+Future getTareafs(
     List<String> usuariosList, List<String> codigosUsuarios) async {
   String url = 'http://zapp.pythonanywhere.com/actividad/0';
   //print(url);
@@ -74,12 +75,12 @@ Future getTareas(
   );
 
   final jsonResponse = jsonDecode(response.body);
-  tareas.clear();
+  tareafs.clear();
   codigos.clear();
   String codAux;
   if (jsonResponse.containsKey('Actividad')) {
     for (int i = 0; i < jsonResponse['Actividad'].length; i++) {
-      tareas.add(jsonResponse['Actividad'][i]['nombre']);
+      tareafs.add(jsonResponse['Actividad'][i]['nombre']);
       codigos.add(jsonResponse['Actividad'][i]['id'].toString());
       codAux = jsonResponse['Actividad'][i]['idUsuario'].toString();
       usuarios.add(usuariosList[codigosUsuarios.indexOf(codAux)]);
@@ -103,19 +104,20 @@ class _Deberes extends State<Biblioteca> {
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
 
   // var oneSec = const Duration(seconds: 1);
-  //_Deberes.periodic(oneSec, getTareas(widget.codigo));
+  //_Deberes.periodic(oneSec, getTareafs(widget.codigo));
 
   @override
   Widget build(BuildContext context) {
     Timer(Duration(milliseconds: 500), () {
+      if (!mounted) return;
       setState(() {
-        getTareas(widget.usuariosList, widget.codigosUsuarios);
+        getTareafs(widget.usuariosList, widget.codigosUsuarios);
       });
     });
     //var oneSec = const Duration(seconds: 1);
     /*Timer.periodic(Duration(seconds: 10), (timer) {
       setState(() {
-        getTareas(widget.codigo);
+        getTareafs(widget.codigo);
       });
     });*/
     return Scaffold(
@@ -148,10 +150,10 @@ class _Deberes extends State<Biblioteca> {
                       ),
                       Expanded(
                           child: ListView(children: [
-                        for (int i = 0; i < tareas.length; i++)
-                          TareaWidget(
+                        for (int i = 0; i < tareafs.length; i++)
+                          TareafWidget(
                             usuario: usuarios[i],
-                            title: tareas[i],
+                            title: tareafs[i],
                             onPressed: () async {
                               String url =
                                   'http://zapp.pythonanywhere.com/actividad/';
@@ -173,10 +175,20 @@ class _Deberes extends State<Biblioteca> {
                                   jsonResponse['Actividad']['nombre'];
                               String descripcion =
                                   jsonResponse['Actividad']['descripcion'];
+                              String _image = 'http://zapp.pythonanywhere.com' +
+                                  jsonResponse['Actividad']['imagen']
+                                      .toString();
+                              String _estado =
+                                  jsonResponse['Actividad']['estado'];
+                              String _usuario = usuarios[i];
+                              //Miro estado
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => Tarea(
+                                  builder: (context) => Tareaf(
                                       iconData: Icons.pending_actions_rounded,
                                       title: nombre,
+                                      imagen: _image,
+                                      estado: _estado,
+                                      usuario: _usuario,
                                       description: descripcion)));
                             },
                           )
@@ -194,12 +206,12 @@ class ListSearchState extends State<ListSearch> {
   TextEditingController _textController = TextEditingController();
   // String lista
   static List<String> mainDataList = [
-    "Tarea1",
-    "Tarea2",
-    "Tarea3",
-    "Tarea",
-    "Tarea5",
-    "Tarea6",
+    "Tareaf1",
+    "Tareaf2",
+    "Tareaf3",
+    "Tareaf",
+    "Tareaf5",
+    "Tareaf6",
   ];
 
   // Copy Main List into New List.
@@ -289,7 +301,7 @@ class Biblioteca extends StatelessWidget {
         home: Scaffold(
             resizeToAvoidBottomPadding: false,
             appBar: AppBar(
-              title: Text('Búsqueda tareas'),
+              title: Text('Búsqueda tareafs'),
             ),
             body: Center(
                 child: new SingleChildScrollView(

@@ -14,13 +14,12 @@ import 'package:http/http.dart' as http;
 import 'package:video_player/video_player.dart';
 import 'pdf.dart';
 
-//List<String> grupos = new List<String>();
+List<String> grupos = new List<String>();
 
 class CrearTarea extends StatefulWidget {
-  CrearTarea({this.usuarios, this.codigos, this.grupos});
+  CrearTarea({this.usuarios, this.codigos});
   List<String> usuarios;
   List<String> codigos;
-  List<String> grupos;
 
   @override
   _CrearTarea createState() => _CrearTarea();
@@ -88,7 +87,7 @@ class _CrearTarea extends State<CrearTarea> {
     var file = null;
     //Botón crear
 
-    /*Future getGrupos() async {
+    Future getGrupos() async {
       String url = 'http://zapp.pythonanywhere.com/grupos/';
       print(url);
       http.Response response = await http.get(
@@ -109,7 +108,7 @@ class _CrearTarea extends State<CrearTarea> {
         print(grupos[i]);
         //print(codigos[i]);
       }
-    }*/
+    }
 
     final crear = Material(
         borderRadius: BorderRadius.circular(30.0),
@@ -150,8 +149,8 @@ class _CrearTarea extends State<CrearTarea> {
               } else {
                 fichero = 'no';
               }
-              //getGrupos();
-              print(widget.grupos.length);
+              await getGrupos();
+              print(grupos.length);
               Navigator.push(
                   context,
                   MaterialPageRoute(
