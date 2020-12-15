@@ -4,7 +4,7 @@ import 'dart:io';
 import 'chat.dart';
 import 'dart:async';
 import 'dart:convert';
-
+import 'video.dart';
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +91,7 @@ class _Tareaf extends State<Tareaf> {
   // }
 
   @override
+
   Widget build(BuildContext context) {
     final chat = Material(
       elevation: 5.0,
@@ -247,19 +248,15 @@ class _Tareaf extends State<Tareaf> {
                                   ? Image.network(widget.imagen)
                                   : Container()),
                           AspectRatio(
+                          
                             aspectRatio: 16 / 9,
                             child: Container(
-                              child: (_controller != null
+                              child: new VideoPlayerScreen() 
+                              /* (_controller != null
                                   ? VideoPlayer(_controller)
                                   : Container()),
-                            ),
+                            ),*/
                           ),
-                          FloatingActionButton(
-                            onPressed: () {
-                              createVideo();
-                              _controller.play();
-                            },
-                            child: Icon(Icons.play_arrow),
                           ),
                         ],
                       )),

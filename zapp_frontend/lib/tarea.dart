@@ -4,6 +4,7 @@ import 'dart:io';
 import 'chat.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'video.dart';
 
 //import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:firebase_storage/firebase_storage.dart';
@@ -195,11 +196,15 @@ class _Tarea extends State<Tarea> {
                           AspectRatio(
                             aspectRatio: 16 / 9,
                             child: Container(
-                              child: (_controller != null
+                              child: new VideoPlayerScreen() 
+                              /* (_controller != null
                                   ? VideoPlayer(_controller)
                                   : Container()),
-                            ),
+                            ),*/
                           ),
+
+
+                          /*
                           FloatingActionButton(
                             onPressed: () {
                                   // Wrap the play or pause in a call to `setState`. This ensures the
@@ -217,7 +222,8 @@ class _Tarea extends State<Tarea> {
                         child: Icon(
                                 _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
                               ),
-                                                ),
+                        ),*/
+                          )
                         ],
                       )),
                       // Expanded(
