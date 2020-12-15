@@ -92,17 +92,17 @@ Future getTareafs(
 }
 
 // ignore: must_be_immutable
-class Biblioteca extends StatefulWidget {
-  Biblioteca({this.usuariosList, this.codigosUsuarios});
+class BibliotecaE extends StatefulWidget {
+  BibliotecaE({this.usuariosList, this.codigosUsuarios});
   List<String> usuariosList;
   List<String> codigosUsuarios;
 
   @override
-  _Deberes createState() => _Deberes();
+  _DeberesE createState() => _DeberesE();
 }
 
-class _Deberes extends State<Biblioteca> {
-  _Deberes();
+class _DeberesE extends State<BibliotecaE> {
+  _DeberesE();
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 30.0);
 
   // var oneSec = const Duration(seconds: 1);
@@ -137,12 +137,12 @@ class _Deberes extends State<Biblioteca> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text('Biblioteca',
+                          Text('Tareas Entregadas',
                               style: TextStyle(
                                   fontFamily: 'Montserrat',
-                                  fontSize: 50.0,
+                                  fontSize: 30.0,
                                   fontWeight: FontWeight.bold)),
-                          Icon(Icons.account_balance_rounded, size: 50.0),
+                          Icon(Icons.format_list_bulleted, size: 50.0),
                         ],
                       ),
                       SizedBox(
